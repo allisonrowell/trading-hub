@@ -454,7 +454,7 @@
       <li>
         <div class="step-content">
           <strong>Run the TradingView screener + apply sector filter</strong>
-          <span>Screener → Stock Screener → apply your 4 base filters → then add Sector filter matching what's in motion. TradingView sector names: <strong style="color:#e2e8f0">Electronic technology</strong> (XLK) · <strong style="color:#e2e8f0">Finance</strong> (XLF) · <strong style="color:#e2e8f0">Health services / Health technology</strong> (XLV) · <strong style="color:#e2e8f0">Energy minerals</strong> (XLE) · <strong style="color:#e2e8f0">Consumer durables/non-durables/services</strong> (XLY). Narrow further with industry filter if needed → target 5–15 names.</span>
+          <span>Screener → Stock Screener → apply your 4 base filters → then add Sector filter matching what's in motion. TradingView sector names: <strong style="color:#e2e8f0">Electronic technology</strong> (XLK) · <strong style="color:#e2e8f0">Finance</strong> (XLF) · <strong style="color:#e2e8f0">Health services / Health technology</strong> (XLV) · <strong style="color:#e2e8f0">Energy minerals</strong> (XLE) · <strong style="color:#e2e8f0">Consumer durables / non-durables / services</strong> (XLY) · <strong style="color:#e2e8f0">Commercial / Distribution services</strong> (XLI) · <strong style="color:#e2e8f0">Utilities</strong> (XLU) · <strong style="color:#e2e8f0">Non-energy minerals</strong> (XLB). Narrow further with industry filter if needed → target 5–15 names.</span>
         </div>
       </li>
       <li>
@@ -587,6 +587,40 @@
     </div>
   </div>
 
+  <!-- S/R LOOKBACK -->
+  <div style="margin: 12px 0;">
+    <div class="card">
+      <div class="card-title">S/R Lookback — How Far Back to Look</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:10px; line-height:1.6;">
+        No fixed window — look back as far as needed to find 3 touches. These are the practical defaults by trade type.
+      </p>
+      <table class="crit-table">
+        <tr><td>Swing · Daily</td><td>3–12 months — start at 6, extend if you can't find 3 touches</td></tr>
+        <tr><td>Position · Daily + Weekly</td><td>6 months – 2 years</td></tr>
+        <tr><td>Scalp · 5-min / 15-min</td><td>Current day + prior day only</td></tr>
+      </table>
+      <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+        <div class="card-title" style="margin-bottom:8px;">Stronger levels — what to favor</div>
+        <div class="check-row">
+          <span class="check-icon">⭐</span>
+          <div class="check-text"><strong>Role reversal</strong><span>Was resistance, now acting as support (or vice versa). Strongest signal in S/R.</span></div>
+        </div>
+        <div class="check-row">
+          <span class="check-icon">⭐</span>
+          <div class="check-text"><strong>More touches</strong><span>5+ touches beats 3. The more, the stronger.</span></div>
+        </div>
+        <div class="check-row">
+          <span class="check-icon">⭐</span>
+          <div class="check-text"><strong>Touches span months, not weeks</strong><span>A level respected over 12 months is stronger than one clustered into 3 weeks.</span></div>
+        </div>
+        <div class="check-row">
+          <span class="check-icon">⭐</span>
+          <div class="check-text"><strong>High volume at each touch</strong><span>Price rejected with conviction, not quiet drift.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="divider"></div>
 
   <!-- DIRECTION REFERENCE -->
@@ -682,12 +716,14 @@
   <div class="section swing">
     <div class="section-label swing">Sector ETFs — Check Weekly</div>
     <div class="sector-grid">
-      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLK" target="_blank"><span class="etf">XLK</span><span class="name">Technology ★ Start here</span></a>
-      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLF" target="_blank"><span class="etf">XLF</span><span class="name">Financials ★ Start here</span></a>
-      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLV" target="_blank"><span class="etf">XLV</span><span class="name">Healthcare</span></a>
-      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLE" target="_blank"><span class="etf">XLE</span><span class="name">Energy</span></a>
-      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLY" target="_blank"><span class="etf">XLY</span><span class="name">Consumer Disc.</span></a>
-      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLI" target="_blank"><span class="etf">XLI</span><span class="name">Industrials</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLK" target="_blank"><span class="etf">XLK</span><span class="name">Electronic technology ★ Start here</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLF" target="_blank"><span class="etf">XLF</span><span class="name">Finance ★ Start here</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLV" target="_blank"><span class="etf">XLV</span><span class="name">Health services / technology</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLE" target="_blank"><span class="etf">XLE</span><span class="name">Energy minerals</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLY" target="_blank"><span class="etf">XLY</span><span class="name">Consumer durables / services</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLI" target="_blank"><span class="etf">XLI</span><span class="name">Commercial / Distribution services</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLU" target="_blank"><span class="etf">XLU</span><span class="name">Utilities</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLB" target="_blank"><span class="etf">XLB</span><span class="name">Non-energy minerals</span></a>
     </div>
   </div>
 

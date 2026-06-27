@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMC + SmartTrend Reference Hub</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b25;
+    --bg3: #1e2535;
+    --border: #2a3347;
+    --border2: #1e2535;
+    --text: #e8edf5;
+    --text2: #8a9ab8;
+    --text3: #5a6a85;
+    --accent-smc: #4f8ef7;
+    --accent-st: #34c98a;
+    --accent-combo: #a78bfa;
+    --accent-live: #ff6b6b;
+    --accent-lesson: #f7c14f;
+    --tag-req: #e05252;
+    --tag-req-bg: rgba(224,82,82,0.12);
+    --tag-warn: #e09a30;
+    --tag-warn-bg: rgba(224,154,48,0.12);
+    --tag-ok: #34c98a;
+    --tag-ok-bg: rgba(52,201,138,0.12);
+    --tag-info: #f7c14f;
+    --tag-info-bg: rgba(247,193,79,0.12);
+    --mono: 'SF Mono','Fira Code','Cascadia Code',monospace;
+    --sans: -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+    --radius: 8px;
+    --radius-sm: 5px;
+  }
+  .light {
+    --bg: #f8f9fc; --bg2: #ffffff; --bg3: #f1f3f8; --border: #dde2ed; --border2: #eaeef5;
+    --text: #1a2035; --text2: #4a5878; --text3: #8a9ab8;
+    --accent-smc: #2563eb; --accent-st: #16a34a; --accent-combo: #7c3aed;
+    --accent-live: #dc2626; --accent-lesson: #c8960a;
+    --tag-req: #dc2626; --tag-req-bg: rgba(220,38,38,0.08);
+    --tag-warn: #d97706; --tag-warn-bg: rgba(217,119,6,0.08);
+    --tag-ok: #16a34a; --tag-ok-bg: rgba(22,163,74,0.08);
+    --tag-info: #c8960a; --tag-info-bg: rgba(200,150,10,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.5; transition: background 0.2s, color 0.2s; }
+
+  .header { padding: 16px 24px 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .header-left { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .header-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .header-sub { font-size: 11px; color: var(--text3); }
+  .header-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; background: rgba(79,142,247,0.12); color: var(--accent-smc); border: 1px solid rgba(79,142,247,0.25); border-radius: 20px; padding: 2px 8px; margin-left: 6px; }
+  .theme-toggle { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .theme-toggle:hover { color: var(--text); border-color: var(--text3); }
+
+  .tab-bar { display: flex; gap: 2px; overflow-x: auto; }
+  .tab { padding: 7px 14px; font-size: 11px; font-weight: 500; color: var(--text3); cursor: pointer; border: none; background: transparent; border-radius: var(--radius-sm) var(--radius-sm) 0 0; transition: color 0.15s, background 0.15s; position: relative; white-space: nowrap; letter-spacing: 0.01em; }
+  .tab:hover { color: var(--text2); background: var(--bg3); }
+  .tab.active-smc { color: var(--accent-smc); background: rgba(79,142,247,0.07); }
+  .tab.active-smc::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-smc); border-radius: 2px 2px 0 0; }
+  .tab.active-st { color: var(--accent-st); background: rgba(52,201,138,0.07); }
+  .tab.active-st::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-st); border-radius: 2px 2px 0 0; }
+  .tab.active-combo { color: var(--accent-combo); background: rgba(167,139,250,0.07); }
+  .tab.active-combo::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-combo); border-radius: 2px 2px 0 0; }
+  .tab.active-live { color: var(--accent-live); background: rgba(255,107,107,0.07); }
+  .tab.active-live::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-live); border-radius: 2px 2px 0 0; }
+  .tab.active-lesson { color: var(--accent-lesson); background: rgba(247,193,79,0.07); }
+  .tab.active-lesson::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-lesson); border-radius: 2px 2px 0 0; }
+
+  .panel { display: none; padding: 20px 24px 60px; }
+  .panel.active { display: block; }
+
+  .quick-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(155px,1fr)); gap: 7px; margin-bottom: 18px; }
+  .qcard { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 11px; }
+  .qcard.smc { border-top: 2px solid var(--accent-smc); }
+  .qcard.st { border-top: 2px solid var(--accent-st); }
+  .qcard.combo { border-top: 2px solid var(--accent-combo); }
+  .qcard.live { border-top: 2px solid var(--accent-live); }
+  .qcard.lesson { border-top: 2px solid var(--accent-lesson); }
+  .qcard-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 4px; }
+  .qcard-val { font-size: 11px; color: var(--text2); line-height: 1.55; }
+  .qcard-val strong { color: var(--text); font-weight: 600; }
+
+  .sblock { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 7px; }
+  .sblock.smc .sblock-hdr { border-left: 3px solid var(--accent-smc); }
+  .sblock.st .sblock-hdr { border-left: 3px solid var(--accent-st); }
+  .sblock.combo .sblock-hdr { border-left: 3px solid var(--accent-combo); }
+  .sblock.live-block .sblock-hdr { border-left: 3px solid var(--accent-live); }
+  .sblock.lesson-block .sblock-hdr { border-left: 3px solid var(--accent-lesson); }
+  .sblock-hdr { display: flex; align-items: center; justify-content: space-between; padding: 7px 13px; background: var(--bg3); border-bottom: 1px solid var(--border2); }
+  .sblock-hdr-left { display: flex; align-items: center; gap: 8px; }
+  .step-num { width: 17px; height: 17px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); font-size: 9px; font-weight: 700; color: var(--text3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-num.blue { border-color: rgba(79,142,247,0.4); color: var(--accent-smc); }
+  .step-num.green { border-color: rgba(52,201,138,0.4); color: var(--accent-st); }
+  .step-num.purple { border-color: rgba(167,139,250,0.4); color: var(--accent-combo); }
+  .step-num.red { border-color: rgba(255,107,107,0.4); color: var(--accent-live); }
+  .step-num.gold { border-color: rgba(247,193,79,0.4); color: var(--accent-lesson); }
+  .sblock-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); }
+
+  .col-hdr { display: grid; gap: 10px; padding: 5px 13px; background: var(--bg3); border-bottom: 1px solid var(--border2); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+  .g3 { grid-template-columns: 1.2fr 2.8fr 0.9fr; }
+  .g2 { grid-template-columns: 1.5fr 3fr; }
+  .g4 { grid-template-columns: 1fr 2.5fr 1.5fr 1fr; }
+  .row { display: grid; gap: 10px; padding: 8px 13px; border-top: 1px solid var(--border2); align-items: start; }
+  .f { font-size: 12px; color: var(--text); line-height: 1.5; font-weight: 500; }
+  .fm { font-size: 11px; color: var(--text3); }
+  .fp { font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+
+  .tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: middle; margin-left: 4px; }
+  .tag-r { background: var(--tag-req-bg); color: var(--tag-req); }
+  .tag-w { background: var(--tag-warn-bg); color: var(--tag-warn); }
+  .tag-g { background: var(--tag-ok-bg); color: var(--tag-ok); }
+  .tag-i { background: var(--tag-info-bg); color: var(--accent-lesson); }
+
+  .bull { color: var(--accent-st); font-weight: 600; }
+  .bear { color: #e05252; font-weight: 600; }
+  .warn { color: var(--accent-lesson); font-weight: 600; }
+  .neutral { color: var(--text2); font-weight: 600; }
+
+  /* Color swatches for OB/FVG/Zone reference */
+  .swatch-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .swatch { width: 32px; height: 18px; border-radius: 3px; flex-shrink: 0; }
+  .sw-int-bull { background: rgba(49,121,245,0.35); border: 1px solid rgba(49,121,245,0.6); }
+  .sw-int-bear { background: rgba(247,124,128,0.35); border: 1px solid rgba(247,124,128,0.6); }
+  .sw-sw-bull { background: rgba(24,72,204,0.45); border: 1px solid rgba(24,72,204,0.8); }
+  .sw-sw-bear { background: rgba(178,40,51,0.45); border: 1px solid rgba(178,40,51,0.8); }
+  .sw-fvg-bull { background: rgba(0,255,104,0.35); border: 1px solid rgba(0,255,104,0.6); }
+  .sw-fvg-bear { background: rgba(255,0,8,0.35); border: 1px solid rgba(255,0,8,0.6); }
+  .sw-prem { background: rgba(242,54,69,0.25); border: 1px solid rgba(242,54,69,0.5); }
+  .sw-disc { background: rgba(8,153,129,0.25); border: 1px solid rgba(8,153,129,0.5); }
+  .sw-equi { background: rgba(135,139,148,0.25); border: 1px solid rgba(135,139,148,0.5); }
+
+  .ind-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 7px; padding: 12px 13px; }
+  .ind-card { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .ind-card-name { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 7px; }
+  .ind-card-name.blue { color: var(--accent-smc); }
+  .ind-card-name.green { color: var(--accent-st); }
+  .ind-card-name.gold { color: var(--accent-lesson); }
+  .ind-card-name.purple { color: var(--accent-combo); }
+  .ind-card-name.red { color: var(--accent-live); }
+  .ind-rule { font-size: 11.5px; color: var(--text2); line-height: 1.7; }
+  .ind-rule span { display: block; padding: 2px 0; border-bottom: 1px solid var(--border2); }
+  .ind-rule span:last-child { border-bottom: none; }
+
+  /* DECISION BOXES for live trading */
+  .decision-box { border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  .decision-box.go { background: rgba(52,201,138,0.08); border: 1px solid rgba(52,201,138,0.25); }
+  .decision-box.stop { background: rgba(224,82,82,0.08); border: 1px solid rgba(224,82,82,0.25); }
+  .decision-box.caution { background: rgba(247,193,79,0.08); border: 1px solid rgba(247,193,79,0.25); }
+  .decision-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .decision-title.go { color: var(--accent-st); }
+  .decision-title.stop { color: #e05252; }
+  .decision-title.caution { color: var(--accent-lesson); }
+  .decision-items { font-size: 12px; color: var(--text2); line-height: 2; }
+  .decision-items span { display: block; }
+
+  /* LIVE CARDS */
+  .live-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 10px; margin-bottom: 14px; }
+  .live-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .live-card-hdr { padding: 8px 14px; background: var(--bg3); border-bottom: 1px solid var(--border2); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .live-card-hdr.red { color: var(--accent-live); }
+  .live-card-hdr.green { color: var(--accent-st); }
+  .live-card-hdr.blue { color: var(--accent-smc); }
+  .live-card-hdr.gold { color: var(--accent-lesson); }
+  .live-card-hdr.purple { color: var(--accent-combo); }
+  .live-card-body { padding: 10px 14px; }
+  .live-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border2); font-size: 12px; gap: 8px; }
+  .live-row:last-child { border-bottom: none; }
+  .live-label { color: var(--text2); font-weight: 500; }
+  .live-bull { color: var(--accent-st); font-weight: 700; font-size: 11px; text-align: right; }
+  .live-bear { color: #e05252; font-weight: 700; font-size: 11px; text-align: right; }
+  .live-warn { color: var(--accent-lesson); font-weight: 700; font-size: 11px; text-align: right; }
+  .live-neutral { color: var(--text2); font-weight: 700; font-size: 11px; text-align: right; }
+
+  .flow { display: flex; gap: 0; padding: 12px 13px; align-items: stretch; flex-wrap: wrap; }
+  .flow-step { flex: 1; min-width: 130px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; position: relative; margin-right: 18px; margin-bottom: 8px; }
+  .flow-step:last-child { margin-right: 0; }
+  .flow-step::after { content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 13px; }
+  .flow-step:last-child::after { display: none; }
+  .flow-step-num { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent-combo); margin-bottom: 4px; }
+  .flow-step-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .flow-step-desc { font-size: 10.5px; color: var(--text3); line-height: 1.5; }
+
+  .checklist { font-size: 11.5px; color: var(--text2); line-height: 2.1; padding: 10px 13px; }
+  .checklist span { display: block; }
+
+  .note-box { background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 11.5px; color: var(--text2); line-height: 1.6; margin: 8px 13px; }
+  .note-box strong { color: var(--accent-smc); }
+  .alert-box { background: rgba(224,82,82,0.06); border: 1px solid rgba(224,82,82,0.2); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 11.5px; color: var(--text2); line-height: 1.6; margin: 8px 13px; }
+  .alert-box strong { color: var(--tag-req); }
+  .ok-box { background: rgba(52,201,138,0.06); border: 1px solid rgba(52,201,138,0.2); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 11.5px; color: var(--text2); line-height: 1.6; margin: 8px 13px; }
+  .ok-box strong { color: var(--accent-st); }
+
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-combo); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-top: 20px; }
+  .section-label:first-child { margin-top: 0; }
+
+  .dlabel { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); padding: 4px 13px; background: var(--bg); border-top: 1px solid var(--border2); }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-left">
+      <span class="header-title">SMC + SmartTrend Reference Hub</span>
+      <span class="header-sub">LuxAlgo SMC + WillyAlgo SmartTrend Pro</span>
+      <span class="header-badge">v1.0</span>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active-combo" onclick="sw('start',this,'combo')">🚀 Start Here</button>
+    <button class="tab" onclick="sw('smc',this,'smc')">SMC Indicator</button>
+    <button class="tab" onclick="sw('st',this,'st')">SmartTrend</button>
+    <button class="tab" onclick="sw('zones',this,'combo')">Zones &amp; Colors</button>
+    <button class="tab" onclick="sw('combine',this,'combo')">Combining Both</button>
+    <button class="tab" onclick="sw('swing',this,'lesson')">📅 Swing Trading</button>
+    <button class="tab" onclick="sw('live',this,'live')">🔴 Live Trading</button>
+    <button class="tab" onclick="sw('lessons',this,'lesson')">Common Pitfalls</button>
+  </div>
+</div>
+
+<!-- ══════ START HERE ══════ -->
+<div id="start" class="panel active">
+  <div class="quick-grid">
+    <div class="qcard combo"><div class="qcard-label">What this is</div><div class="qcard-val">Reference hub for 2 TradingView indicators</div></div>
+    <div class="qcard combo"><div class="qcard-label">Skill level</div><div class="qcard-val">Beginner-friendly, intermediate-deep</div></div>
+    <div class="qcard combo"><div class="qcard-label">Best for</div><div class="qcard-val">Options scalpers + swing traders</div></div>
+    <div class="qcard combo"><div class="qcard-label">Setup time</div><div class="qcard-val">~15 minutes to install both indicators</div></div>
+    <div class="qcard combo"><div class="qcard-label">Cost</div><div class="qcard-val">Both indicators are <strong>FREE on TradingView</strong></div></div>
+    <div class="qcard combo"><div class="qcard-label">Reading time</div><div class="qcard-val">~30-45 min to read all 7 tabs</div></div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">1</div><span class="sblock-title">What This Hub Covers</span></div><span class="tag tag-i">overview</span></div>
+    <div class="col-hdr g2"><span>Indicator</span><span>What It Does</span></div>
+    <div class="row g2"><div class="f">LuxAlgo SMC</div><div class="fp">Smart Money Concepts — automatically marks market structure, order blocks, fair value gaps, premium/discount zones, and BOS/CHoCH signals. The structural framework.</div></div>
+    <div class="row g2"><div class="f">SmartTrend Pro</div><div class="fp">Adaptive trend engine with confluence scoring, multi-timeframe dashboard, and built-in Entry/SL/TP levels. The execution layer.</div></div>
+    <div class="note-box"><strong>Why both together:</strong> SMC tells you WHERE the setup is. SmartTrend tells you WHEN to actually take it. Either one alone is incomplete. Combined, they form a complete decision framework.</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">2</div><span class="sblock-title">How To Install The Indicators</span></div><span class="tag tag-r">do this first</span></div>
+    <div class="col-hdr g2"><span>Step</span><span>Action</span></div>
+    <div class="row g2"><div class="f">1. Open TradingView</div><div class="fp">tradingview.com — free account works. Open any chart.</div></div>
+    <div class="row g2"><div class="f">2. Click "Indicators"</div><div class="fp">Toolbar at the top of the chart — looks like fx icon or "Indicators &amp; Strategies" button.</div></div>
+    <div class="row g2"><div class="f">3. Search "LuxAlgo SMC"</div><div class="fp">Type into search bar. Look for <strong>"Smart Money Concepts (SMC) [LuxAlgo]"</strong> by author <strong>LuxAlgo</strong>. Click to add.</div></div>
+    <div class="row g2"><div class="f">4. Search "SmartTrend"</div><div class="fp">Look for <strong>"SmartTrend Pro [WillyAlgoTrader]"</strong> by author <strong>WillyAlgoTrader</strong>. Click to add.</div></div>
+    <div class="row g2"><div class="f">5. Both should appear</div><div class="fp">You'll see colored zones, BOS/CHoCH labels, a dashboard table, and Entry/SL/TP levels.</div></div>
+    <div class="note-box"><strong>Indicator URLs (direct links on TradingView):</strong><br>• LuxAlgo SMC: search "Smart Money Concepts LuxAlgo"<br>• SmartTrend Pro: search "SmartTrend Pro WillyAlgoTrader"<br>Both are open-source free indicators — no paywalls.</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">3</div><span class="sblock-title">Recommended Reading Order</span></div><span class="tag tag-i">in this order</span></div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-step-num">First</div><div class="flow-step-title">SMC Indicator</div><div class="flow-step-desc">Learn what each visual element means: zones, OBs, FVGs, structure labels.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Second</div><div class="flow-step-title">SmartTrend</div><div class="flow-step-desc">Understand the dashboard: Score, Trend, Market, Volatility, MTF panel.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Third</div><div class="flow-step-title">Zones &amp; Colors</div><div class="flow-step-desc">Master Premium/Discount/Equilibrium rules — the #1 SMC concept.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Fourth</div><div class="flow-step-title">Combining Both</div><div class="flow-step-desc">Learn the decision matrix for when both indicators agree vs conflict.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Fifth</div><div class="flow-step-title">Scalp OR Swing</div><div class="flow-step-desc">Choose your style. Read the relevant tab. Apply the settings.</div></div>
+    </div>
+    <div class="ok-box"><strong>Beginner tip:</strong> Don't try to memorize everything in one sitting. Read tab 1, open a chart, identify what you're seeing, then read tab 2. Apply, observe, learn. Spread over 2-3 days for retention.</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">4</div><span class="sblock-title">First Day Quick-Start Checklist</span></div><span class="tag tag-r">complete in order</span></div>
+    <div class="checklist">
+      <span>☐ Install LuxAlgo SMC indicator on TradingView</span>
+      <span>☐ Install SmartTrend Pro indicator on TradingView</span>
+      <span>☐ Open a familiar ticker on a 1-min chart (scalp) or Daily chart (swing)</span>
+      <span>☐ Identify the colored zones (Premium/Discount/Equilibrium)</span>
+      <span>☐ Find the Strong High / Weak High / Strong Low / Weak Low labels</span>
+      <span>☐ Locate the SmartTrend dashboard (top-right by default)</span>
+      <span>☐ Read the current Score, Trend, Market, Volatility</span>
+      <span>☐ Open SMC settings → set Mode to "Present" (cleaner chart)</span>
+      <span>☐ Open SMC settings → turn ON Premium/Discount Zones</span>
+      <span>☐ Open SMC settings → turn ON Fair Value Gaps with Auto Threshold</span>
+      <span>☐ Open SmartTrend settings → set Preset to "Scalping" or "Conservative"</span>
+      <span>☐ DO NOT take real trades yet — observe for 1-2 sessions first</span>
+    </div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">5</div><span class="sblock-title">The 3 Core Rules To Remember Always</span></div><span class="tag tag-r">memorize</span></div>
+    <div class="col-hdr g2"><span>Rule</span><span>Why It Matters</span></div>
+    <div class="row g2"><div class="f">1. Only trade Discount zone (longs) or Premium zone (shorts)</div><div class="fp">Equilibrium trades have no statistical edge. Skip them, even when tempting. This eliminates ~70% of bad setups.</div></div>
+    <div class="row g2"><div class="f">2. SmartTrend Score ≥ 75 = take, &lt; 65 = skip</div><div class="fp">The Score is the gatekeeper. The flashy "Strong Buy/Sell" labels can fire on bad setups — the Score tells the truth.</div></div>
+    <div class="row g2"><div class="f">3. Scale 1/3 at first resistance, ALWAYS</div><div class="fp">The most common way profitable trades become losers: holding through obvious resistance. Take partial profits without exception.</div></div>
+    <div class="alert-box"><strong>If you remember nothing else:</strong> These 3 rules alone will keep you out of 80% of losing trades and protect 80% of winning trades. Everything else in this hub is detail on top of these three foundations.</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">6</div><span class="sblock-title">Common Beginner Mistakes To Avoid</span></div><span class="tag tag-w">don't do these</span></div>
+    <div class="col-hdr g2"><span>Mistake</span><span>Fix</span></div>
+    <div class="row g2"><div class="f">Trading on day 1 with real money</div><div class="fp">Paper trade for 1-2 weeks first. Learn the patterns without risk.</div></div>
+    <div class="row g2"><div class="f">Taking every signal SmartTrend prints</div><div class="fp">Filter by Score (≥75), Market (Trending), Volatility (Medium+), and SMC zone alignment.</div></div>
+    <div class="row g2"><div class="f">Ignoring the SmartTrend dashboard "Wait" signal</div><div class="fp">"Wait" means wait. The system is filtering for a reason.</div></div>
+    <div class="row g2"><div class="f">Trading Equilibrium "just because the setup looks good"</div><div class="fp">No it doesn't. Equilibrium = no edge. Skip.</div></div>
+    <div class="row g2"><div class="f">Not setting a stop loss at entry</div><div class="fp">Mental stops fail under pressure. Set the order at entry, every time.</div></div>
+    <div class="row g2"><div class="f">Holding for the "homer" instead of scaling out</div><div class="fp">Take 1/3 at first resistance, always. Lock in the win.</div></div>
+    <div class="row g2"><div class="f">Adding more indicators "to be safe"</div><div class="fp">More indicators = analysis paralysis. 4-6 max. Trust the system.</div></div>
+    <div class="row g2"><div class="f">Revenge trading after a loss</div><div class="fp">Step away 30+ minutes after any loss. Always.</div></div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">7</div><span class="sblock-title">Navigation Tips</span></div><span class="tag tag-i">how to use this hub</span></div>
+    <div class="col-hdr g2"><span>Element</span><span>What It Does</span></div>
+    <div class="row g2"><div class="f">Top tabs</div><div class="fp">Click to jump between sections. Color-coded by topic.</div></div>
+    <div class="row g2"><div class="f">Light/Dark toggle</div><div class="fp">Top right button switches theme to match your preference.</div></div>
+    <div class="row g2"><div class="f">Colored swatches</div><div class="fp">Show the actual colors of zones/boxes you'll see on your chart.</div></div>
+    <div class="row g2"><div class="f">Green/red highlighting</div><div class="fp">Green = bullish action, red = bearish action, yellow = caution.</div></div>
+    <div class="row g2"><div class="f">"Live Trading" tab</div><div class="fp">Quick-decision reference for active sessions — bookmark this view.</div></div>
+    <div class="row g2"><div class="f">"Common Pitfalls" tab</div><div class="fp">Read before every trading session as discipline primer.</div></div>
+    <div class="note-box"><strong>Suggestion:</strong> Bookmark this HTML file or save it to your desktop. Open it during chart analysis as a permanent reference. No internet needed — everything is embedded.</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">⚡</div><span class="sblock-title">Disclaimer</span></div><span class="tag tag-w">important</span></div>
+    <div class="alert-box">This hub is educational reference material only — not financial advice. Trading involves risk of capital loss. The indicators described are tools, not crystal balls. Test thoroughly with paper trading before risking real money. Past patterns don't guarantee future results. Always size positions to risk no more than 1-2% per trade. Consult a licensed financial advisor for personal investment guidance.</div>
+  </div>
+</div>
+
+<!-- ══════ SMC INDICATOR ══════ -->
+<div id="smc" class="panel">
+  <div class="quick-grid">
+    <div class="qcard smc"><div class="qcard-label">Author</div><div class="qcard-val"><strong>LuxAlgo</strong> — Smart Money Concepts</div></div>
+    <div class="qcard smc"><div class="qcard-label">Type</div><div class="qcard-val">SMC / ICT-style structure mapper</div></div>
+    <div class="qcard smc"><div class="qcard-label">Core idea</div><div class="qcard-val">Tracks pivots, OBs, FVGs, EQH/EQL, zones</div></div>
+    <div class="qcard smc"><div class="qcard-label">Default zones</div><div class="qcard-val">Premium / Discount / Equilibrium</div></div>
+    <div class="qcard smc"><div class="qcard-label">Trade signals</div><div class="qcard-val">BOS / CHoCH on structure breaks</div></div>
+    <div class="qcard smc"><div class="qcard-label">Mode</div><div class="qcard-val"><strong>Present</strong> for clean charts · Historical for review</div></div>
+  </div>
+
+  <div class="sblock smc">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num blue">1</div><span class="sblock-title">The 7 Things SMC Plots On Your Chart</span></div><span class="tag tag-i">core features</span></div>
+    <div class="col-hdr g3"><span>Feature</span><span>What It Is</span><span>How To Use</span></div>
+    <div class="row g3"><div class="f">Swing Structure</div><div class="fp">Solid lines + BOS/CHoCH labels at major pivots (50-bar lookback). The "real" trend.</div><div class="fm"><span class="tag tag-g">Trend bias</span></div></div>
+    <div class="row g3"><div class="f">Internal Structure</div><div class="fp">Dashed lines + smaller BOS/CHoCH labels (5-bar lookback). Minor swings inside the big move.</div><div class="fm"><span class="tag tag-w">Entry timing</span></div></div>
+    <div class="row g3"><div class="f">Order Blocks (OBs)</div><div class="fp">Colored boxes wrapping a specific candle — last opposing bar before a structure break. Where institutions accumulated.</div><div class="fm"><span class="tag tag-r">Entry zones</span></div></div>
+    <div class="row g3"><div class="f">Fair Value Gaps (FVGs)</div><div class="fp">Colored boxes in EMPTY space between candles — 3-bar imbalance pattern. <strong style="color:var(--accent-st)">Currently ON in your settings — bright green (bull) / bright red (bear).</strong></div><div class="fm"><span class="tag tag-w">Magnet zones</span></div></div>
+    <div class="row g3"><div class="f">EQH / EQL</div><div class="fp">Dotted lines between two swing points within threshold × ATR. Liquidity pools / stop clusters.</div><div class="fm"><span class="tag tag-i">Targets</span></div></div>
+    <div class="row g3"><div class="f">Strong / Weak H/L</div><div class="fp">Trailing labels on highest high &amp; lowest low. "Strong" = expected to hold. "Weak" = expected to break.</div><div class="fm"><span class="tag tag-r">Bias direction</span></div></div>
+    <div class="row g3"><div class="f">Premium / Discount</div><div class="fp">Splits the swing range into top 5% (sell zone), middle (no edge), bottom 5% (buy zone).</div><div class="fm"><span class="tag tag-r">Entry filter</span></div></div>
+  </div>
+
+  <div class="sblock smc">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num blue">2</div><span class="sblock-title">BOS vs CHoCH — The Difference</span></div><span class="tag tag-r">memorize this</span></div>
+    <div class="col-hdr g3"><span>Label</span><span>Means</span><span>Trade Action</span></div>
+    <div class="row g3"><div class="f bull">BOS — Bullish</div><div class="fp">Break of Structure — broke a high while ALREADY bullish. Trend continuation.</div><div class="fm"><span class="bull">Stay long / add</span></div></div>
+    <div class="row g3"><div class="f bear">BOS — Bearish</div><div class="fp">Break of Structure — broke a low while ALREADY bearish. Trend continuation.</div><div class="fm"><span class="bear">Stay short / add</span></div></div>
+    <div class="row g3"><div class="f bull">CHoCH — Bullish</div><div class="fp">Change of Character — broke a high while BEARISH. Potential reversal up.</div><div class="fm"><span class="bull">Long setup forming</span></div></div>
+    <div class="row g3"><div class="f bear">CHoCH — Bearish</div><div class="fp">Change of Character — broke a low while BULLISH. Potential reversal down.</div><div class="fm"><span class="bear">Short setup forming</span></div></div>
+    <div class="note-box"><strong>Key takeaway:</strong> CHoCH = the trend is FLIPPING (more important for entries). BOS = the trend is CONTINUING (more important for adds/holds). Both trigger order blocks to form.</div>
+  </div>
+
+  <div class="sblock smc">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num blue">3</div><span class="sblock-title">Strong / Weak High &amp; Low — Bias Prediction</span></div><span class="tag tag-r">read first</span></div>
+    <div class="col-hdr g3"><span>Label</span><span>Meaning</span><span>Implication</span></div>
+    <div class="row g3"><div class="f">Strong High</div><div class="fp">Swing high that rejected sharply AND broke the prior swing low. Sellers proved control here.</div><div class="fm"><span class="bear">Expected to HOLD</span></div></div>
+    <div class="row g3"><div class="f">Weak High</div><div class="fp">Swing high that pulled back shallow without breaking prior swing low. Sellers weren't committed.</div><div class="fm"><span class="bull">Expected to BREAK</span></div></div>
+    <div class="row g3"><div class="f">Strong Low</div><div class="fp">Swing low that bounced sharply AND broke the prior swing high. Buyers proved control here.</div><div class="fm"><span class="bull">Expected to HOLD</span></div></div>
+    <div class="row g3"><div class="f">Weak Low</div><div class="fp">Swing low that bounced shallow without breaking prior swing high. Buyers weren't committed.</div><div class="fm"><span class="bear">Expected to BREAK</span></div></div>
+    <div class="note-box"><strong>The 4 combinations:</strong><br>• Strong High + Weak Low = <span class="bear">Bearish bias</span> (sellers control, low will break)<br>• Weak High + Strong Low = <span class="bull">Bullish bias</span> (buyers control, high will break)<br>• Strong + Strong = Range-bound (mean reversion plays)<br>• Weak + Weak = Transitional / unclear (wait for one to break first)</div>
+  </div>
+
+  <div class="sblock smc">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num blue">4</div><span class="sblock-title">Order Blocks — Internal vs Swing Tiers</span></div><span class="tag tag-i">two flavors</span></div>
+    <div class="col-hdr g4"><span>Type</span><span>What It Is</span><span>Default Color</span><span>Use</span></div>
+    <div class="row g4"><div class="f">Internal Bullish OB</div><div class="fp">From 5-bar swings. Smaller, more frequent. Default ON.</div><div class="swatch-row"><div class="swatch sw-int-bull"></div><span style="font-size:10px;color:var(--text3)">light blue</span></div><div class="fm">Entry refinement</div></div>
+    <div class="row g4"><div class="f">Internal Bearish OB</div><div class="fp">From 5-bar swings. Smaller, more frequent. Default ON.</div><div class="swatch-row"><div class="swatch sw-int-bear"></div><span style="font-size:10px;color:var(--text3)">light pink</span></div><div class="fm">Entry refinement</div></div>
+    <div class="row g4"><div class="f">Swing Bullish OB</div><div class="fp">From 50-bar swings. Default navy blue but commonly customized to bright green. Extends infinitely right.</div><div class="swatch-row"><div class="swatch sw-sw-bull"></div><span style="font-size:10px;color:var(--text3)">navy / green</span></div><div class="fm">Major levels</div></div>
+    <div class="row g4"><div class="f">Swing Bearish OB</div><div class="fp">From 50-bar swings. Default maroon but commonly customized to bright red. Extends infinitely right.</div><div class="swatch-row"><div class="swatch sw-sw-bear"></div><span style="font-size:10px;color:var(--text3)">maroon / red</span></div><div class="fm">Major levels</div></div>
+    <div class="ok-box"><strong>Pro workflow:</strong> Wait for price to enter a SWING OB (bigger zone). Then enter when an INTERNAL OB forms inside it (entry trigger). "OB within an OB" is the classic high-confluence setup.</div>
+  </div>
+
+  <div class="sblock smc">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num blue">5</div><span class="sblock-title">Key Settings — Tune For Your Style</span></div><span class="tag tag-w">scalp default</span></div>
+    <div class="col-hdr g3"><span>Setting</span><span>Recommended For Scalping</span><span>Why</span></div>
+    <div class="row g3"><div class="f">Mode</div><div class="fp"><strong>Present</strong></div><div class="fm">Cleans chart — only current structure shown</div></div>
+    <div class="row g3"><div class="f">Internal Structure</div><div class="fp">On, <strong>CHoCH only</strong> (kill BOS noise)</div><div class="fm">CHoCH = reversals = where money is</div></div>
+    <div class="row g3"><div class="f">Confluence Filter</div><div class="fp"><strong>ON</strong></div><div class="fm">Removes weak structural breaks</div></div>
+    <div class="row g3"><div class="f">Swing OBs</div><div class="fp"><strong>ON, 3-5</strong></div><div class="fm">Major zones you trade off of</div></div>
+    <div class="row g3"><div class="f">OB Mitigation</div><div class="fp"><strong>Close</strong> (not High/Low)</div><div class="fm">Less twitchy on 1-min wicks</div></div>
+    <div class="row g3"><div class="f">Equal Highs/Lows</div><div class="fp">ON</div><div class="fm">EQH/EQL = liquidity targets</div></div>
+    <div class="row g3"><div class="f">Fair Value Gaps</div><div class="fp"><strong>ON</strong>, Auto Threshold, Timeframe = 5M, Extend = 10-20</div><div class="fm">Critical 1-min layer — currently OFF for you</div></div>
+    <div class="row g3"><div class="f">Premium/Discount Zones</div><div class="fp"><strong>ON</strong></div><div class="fm">The entry filter — only trade in right zone</div></div>
+    <div class="row g3"><div class="f">Daily Levels</div><div class="fp"><strong>ON</strong> (solid blue)</div><div class="fm">PDH/PDL are massive intraday magnets</div></div>
+    <div class="row g3"><div class="f">Color Candles</div><div class="fp">On (optional)</div><div class="fm">Visual bias without reading labels</div></div>
+  </div>
+</div>
+
+<!-- ══════ SMARTTREND ══════ -->
+<div id="st" class="panel">
+  <div class="quick-grid">
+    <div class="qcard st"><div class="qcard-label">Author</div><div class="qcard-val"><strong>WillyAlgoTrader</strong> — SmartTrend Pro v1.1.0</div></div>
+    <div class="qcard st"><div class="qcard-label">Type</div><div class="qcard-val">Signal generator + risk manager + MTF dashboard</div></div>
+    <div class="qcard st"><div class="qcard-label">Core engine</div><div class="qcard-val">AVTE (Adaptive Volatility Trend Engine)</div></div>
+    <div class="qcard st"><div class="qcard-label">Score floor</div><div class="qcard-val"><strong>75/100 minimum</strong> — below = skip</div></div>
+    <div class="qcard st"><div class="qcard-label">Preset for scalp</div><div class="qcard-val"><strong>Scalping</strong> mode tightens bands</div></div>
+    <div class="qcard st"><div class="qcard-label">Built-in risk</div><div class="qcard-val">Auto Entry/SL/TP1/TP2/TP3 levels drawn</div></div>
+  </div>
+
+  <div class="sblock st">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">1</div><span class="sblock-title">Dashboard Reading — The 6 Rows You Always Check</span></div><span class="tag tag-r">read first, always</span></div>
+    <div class="col-hdr g3"><span>Metric</span><span>What It Tells You</span><span>Threshold For Trade</span></div>
+    <div class="row g3"><div class="f">Trend</div><div class="fp">Current AVTE direction (Bullish / Bearish)</div><div class="fm"><span class="tag tag-r">Must match your trade direction</span></div></div>
+    <div class="row g3"><div class="f">Signal</div><div class="fp">BUY / SELL / Wait — the actual trigger fired</div><div class="fm"><span class="tag tag-r">"Wait" = no trade</span></div></div>
+    <div class="row g3"><div class="f">Score</div><div class="fp">Confluence score 0-100 across 5 factors (EMA, RSI, MACD, Volume, ADX)</div><div class="fm"><span class="bull">≥75</span> = take trade · <span class="warn">65-74</span> = half size · <span class="bear">&lt;65</span> = skip</div></div>
+    <div class="row g3"><div class="f">Market</div><div class="fp">Trending vs Ranging vs No Trend (based on ADX)</div><div class="fm"><span class="tag tag-r">"No Trend" = SKIP regardless of signal</span></div></div>
+    <div class="row g3"><div class="f">Volatility</div><div class="fp">Low / Medium / High with %</div><div class="fm"><span class="tag tag-r">Low (0%) = skip — no fuel</span></div></div>
+    <div class="row g3"><div class="f">Session</div><div class="fp">London / NY / Tokyo / Sydney / Off-hours</div><div class="fm">London/NY = best volatility</div></div>
+  </div>
+
+  <div class="sblock st">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">2</div><span class="sblock-title">Score Tiers — When To Trade vs Skip</span></div><span class="tag tag-r">the floor is 75</span></div>
+    <div class="col-hdr g3"><span>Score Range</span><span>Quality</span><span>Action</span></div>
+    <div class="row g3"><div class="f bull">85-100</div><div class="fp">🔥 A+ setup — full conviction, all factors aligned</div><div class="fm"><span class="bull">Full size, take without overthinking</span></div></div>
+    <div class="row g3"><div class="f bull">75-84</div><div class="fp">✅ A setup — clean entry, your bread and butter</div><div class="fm"><span class="bull">Standard size</span></div></div>
+    <div class="row g3"><div class="f warn">65-74</div><div class="fp">⚠️ B setup — only with strong external confluence</div><div class="fm"><span class="warn">Half size + check SMC + your levels</span></div></div>
+    <div class="row g3"><div class="f bear">50-64</div><div class="fp">❌ Coin flip — no real edge</div><div class="fm"><span class="bear">SKIP — just noise</span></div></div>
+    <div class="row g3"><div class="f bear">Below 50</div><div class="fp">❌ Anti-signal — market unclear</div><div class="fm"><span class="bear">Stand aside, definitely no trade</span></div></div>
+    <div class="alert-box"><strong>Real example:</strong> A ticker with Score 64 + "No Trend" market + Low Vol — system says WAIT regardless of how tempting the "Sell" label looks. A ticker with Score 29 + "Strong Sell" label + No Trend → label is bait, score is truth. Trust the score, not the label.</div>
+  </div>
+
+  <div class="sblock st">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">3</div><span class="sblock-title">MTF Trend Panel — Multi-Timeframe Alignment</span></div><span class="tag tag-i">confluence check</span></div>
+    <div class="col-hdr g2"><span>Timeframe</span><span>What It Tells You</span></div>
+    <div class="row g2"><div class="f">5M</div><div class="fp">Fastest read — close to your 1-min trade direction</div></div>
+    <div class="row g2"><div class="f">15M</div><div class="fp">Short-term trend — should match 5M for momentum</div></div>
+    <div class="row g2"><div class="f">1H</div><div class="fp">Intraday trend — the bigger context</div></div>
+    <div class="row g2"><div class="f">4H</div><div class="fp">Multi-day trend — where institutions sit</div></div>
+    <div class="row g2"><div class="f">1D</div><div class="fp">Macro bias — the dominant trend</div></div>
+    <div class="ok-box"><strong>The rule:</strong> Don't take a long when 4 of 5 timeframes are bear. Don't take a short when 4 of 5 are bull. Best setups have <strong>all 5 aligned</strong> in your trade direction. Less than 3 aligned = high risk.</div>
+  </div>
+
+  <div class="sblock st">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">4</div><span class="sblock-title">Auto Levels Drawn On Chart</span></div><span class="tag tag-i">execute by these</span></div>
+    <div class="col-hdr g3"><span>Level</span><span>What It Is</span><span>How To Use</span></div>
+    <div class="row g3"><div class="f">Entry</div><div class="fp">Exact entry price the algo recommends</div><div class="fm">Use this exact price, not approximations</div></div>
+    <div class="row g3"><div class="f">SL (Stop Loss)</div><div class="fp">ATR-based or Structure-based stop (1.5x ATR default)</div><div class="fm"><span class="tag tag-r">Place at entry, never mental</span></div></div>
+    <div class="row g3"><div class="f">Trailing SL</div><div class="fp">Chandelier Exit method — follows price up/down</div><div class="fm">Replaces fixed stop once you're in profit</div></div>
+    <div class="row g3"><div class="f">TP1</div><div class="fp">1.5× risk reward — first scale-out target</div><div class="fm"><span class="bull">Take 1/3 off here, always</span></div></div>
+    <div class="row g3"><div class="f">TP2</div><div class="fp">2.5× risk reward — second scale-out</div><div class="fm"><span class="bull">Take another 1/3 off, move stop to BE</span></div></div>
+    <div class="row g3"><div class="f">TP3</div><div class="fp">4× risk reward — final exit / runner</div><div class="fm">Hold last 1/3 or trail tight</div></div>
+    <div class="row g3"><div class="f">Trend Tracer</div><div class="fp">Long-term EMA (233 default) — bias confirmation line</div><div class="fm">Price above = bullish bias / below = bearish</div></div>
+    <div class="row g3"><div class="f">Cloud (Fast/Slow)</div><div class="fp">Dual EMA fill — green cloud bullish, red bearish</div><div class="fm">Color change = trend shift warning</div></div>
+  </div>
+
+  <div class="sblock st">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">5</div><span class="sblock-title">Signal Types Explained</span></div><span class="tag tag-i">on-chart labels</span></div>
+    <div class="col-hdr g3"><span>Label</span><span>Trigger</span><span>Action</span></div>
+    <div class="row g3"><div class="f bull">Buy (small)</div><div class="fp">Score ≥ minScore, trend flip bullish, filters pass</div><div class="fm"><span class="bull">Standard long</span></div></div>
+    <div class="row g3"><div class="f bull">Strong Buy</div><div class="fp">Score ≥ 75 — high-conviction long</div><div class="fm"><span class="bull">Full size long</span></div></div>
+    <div class="row g3"><div class="f bear">Sell (small)</div><div class="fp">Score ≤ sellThreshold, trend flip bearish, filters pass</div><div class="fm"><span class="bear">Standard short</span></div></div>
+    <div class="row g3"><div class="f bear">Strong Sell</div><div class="fp">Score ≤ 25 — high-conviction short</div><div class="fm"><span class="bear">Full size short</span></div></div>
+    <div class="row g3"><div class="f">Pullback Buy (circle)</div><div class="fp">In bullish trend, price pulled back to EMA, RSI rising from oversold</div><div class="fm">Re-entry in existing trend</div></div>
+    <div class="row g3"><div class="f">Pullback Sell (circle)</div><div class="fp">In bearish trend, price rallied to EMA, RSI falling from overbought</div><div class="fm">Re-entry in existing trend</div></div>
+    <div class="row g3"><div class="f">TP/SL Hit (X mark)</div><div class="fp">Price reached the level — visual confirmation</div><div class="fm">Execute scale-out</div></div>
+  </div>
+
+  <div class="sblock st">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">6</div><span class="sblock-title">Recommended Settings For Scalping</span></div><span class="tag tag-w">your style</span></div>
+    <div class="col-hdr g2"><span>Setting</span><span>Recommended Value</span></div>
+    <div class="row g2"><div class="f">Preset</div><div class="fp"><strong>Scalping</strong> — auto-adjusts sensitivity/ATR/score floor</div></div>
+    <div class="row g2"><div class="f">Min Signal Score</div><div class="fp">75 (use Score floor strictly)</div></div>
+    <div class="row g2"><div class="f">Strong Signals Only</div><div class="fp">OFF (gives you both regular and strong)</div></div>
+    <div class="row g2"><div class="f">Show Pullback Signals</div><div class="fp">ON — extra re-entry opportunities</div></div>
+    <div class="row g2"><div class="f">Show Cloud</div><div class="fp">ON (Adaptive style)</div></div>
+    <div class="row g2"><div class="f">Show Trend Tracer</div><div class="fp">OFF (already get this from SMC structure)</div></div>
+    <div class="row g2"><div class="f">Use Trend Filter</div><div class="fp">ON — only signals aligned with cloud</div></div>
+    <div class="row g2"><div class="f">Use ADX Filter</div><div class="fp">ON — kills ranging-market signals</div></div>
+    <div class="row g2"><div class="f">Show Risk Levels</div><div class="fp">ON — Entry/SL/TP1/TP2/TP3 plotted</div></div>
+    <div class="row g2"><div class="f">SL Mode</div><div class="fp">ATR (adaptive to volatility)</div></div>
+    <div class="row g2"><div class="f">SL ATR Multiplier</div><div class="fp">1.0-1.5 for scalping</div></div>
+    <div class="row g2"><div class="f">Show Dashboard</div><div class="fp">ON — your truth source</div></div>
+    <div class="row g2"><div class="f">Show MTF Panel</div><div class="fp">ON — alignment check</div></div>
+  </div>
+</div>
+
+<!-- ══════ ZONES & COLORS ══════ -->
+<div id="zones" class="panel">
+
+  <div class="section-label">The Premium / Discount / Equilibrium Framework</div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">★</div><span class="sblock-title">The Three Zones — The Single Most Important SMC Rule</span></div><span class="tag tag-r">memorize this</span></div>
+    <div class="col-hdr g4"><span>Zone</span><span>Location</span><span>Color</span><span>Rule</span></div>
+    <div class="row g4"><div class="f bear">Premium</div><div class="fp">Top 5% of swing range</div><div class="swatch-row"><div class="swatch sw-prem"></div><span style="font-size:10px;color:var(--text3)">red</span></div><div class="fm"><span class="bear">SHORT only (in bearish trend)</span></div></div>
+    <div class="row g4"><div class="f neutral">Equilibrium</div><div class="fp">Middle of swing range</div><div class="swatch-row"><div class="swatch sw-equi"></div><span style="font-size:10px;color:var(--text3)">gray</span></div><div class="fm"><span class="neutral">NO TRADE — no edge</span></div></div>
+    <div class="row g4"><div class="f bull">Discount</div><div class="fp">Bottom 5% of swing range</div><div class="swatch-row"><div class="swatch sw-disc"></div><span style="font-size:10px;color:var(--text3)">green</span></div><div class="fm"><span class="bull">LONG only (in bullish trend)</span></div></div>
+    <div class="ok-box"><strong>The master rule (one sentence):</strong> Trade longs only when price is in Discount in a bullish trend with confirmed bullish CHoCH. Trade shorts only when price is in Premium in a bearish trend with confirmed bearish CHoCH. Skip everything else.</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">M</div><span class="sblock-title">Trend × Zone Decision Matrix</span></div><span class="tag tag-r">9 combos, only 2 trade</span></div>
+    <div class="col-hdr g3"><span>Trend</span><span>Zone</span><span>Action</span></div>
+    <div class="row g3"><div class="f bull">Bullish</div><div class="fp">Discount</div><div class="fm"><span class="bull">✅ LONG (high probability)</span></div></div>
+    <div class="row g3"><div class="f bull">Bullish</div><div class="fp">Equilibrium</div><div class="fm"><span class="bear">❌ Skip — no edge</span></div></div>
+    <div class="row g3"><div class="f bull">Bullish</div><div class="fp">Premium</div><div class="fm"><span class="warn">⚠️ Take profit on longs / no new shorts</span></div></div>
+    <div class="row g3"><div class="f bear">Bearish</div><div class="fp">Premium</div><div class="fm"><span class="bull">✅ SHORT (high probability)</span></div></div>
+    <div class="row g3"><div class="f bear">Bearish</div><div class="fp">Equilibrium</div><div class="fm"><span class="bear">❌ Skip — no edge</span></div></div>
+    <div class="row g3"><div class="f bear">Bearish</div><div class="fp">Discount</div><div class="fm"><span class="warn">⚠️ Take profit on shorts / no new longs</span></div></div>
+    <div class="row g3"><div class="f neutral">Sideways</div><div class="fp">Any</div><div class="fm"><span class="bear">❌ Skip — no clear edge</span></div></div>
+    <div class="note-box">9 combos exist. Only 2 are tradeable. The other 7 are skip. <strong>This is why most trades should be skips.</strong></div>
+  </div>
+
+  <div class="section-label">Order Blocks vs Fair Value Gaps</div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">B</div><span class="sblock-title">OB vs FVG — The Difference</span></div><span class="tag tag-r">know the distinction</span></div>
+    <div class="col-hdr g3"><span>Feature</span><span>Order Block (OB)</span><span>Fair Value Gap (FVG)</span></div>
+    <div class="row g3"><div class="f">What it is</div><div class="fp">A specific candle's range — wraps AROUND the candle</div><div class="fp">Empty space BETWEEN candles — fills a gap</div></div>
+    <div class="row g3"><div class="f">Visual rule</div><div class="fp">The candle is INSIDE the box</div><div class="fp">NO candle inside the box</div></div>
+    <div class="row g3"><div class="f">Source</div><div class="fp">Last opposing candle before structure break</div><div class="fp">3-candle imbalance pattern</div></div>
+    <div class="row g3"><div class="f">Meaning</div><div class="fp">Where institutions accumulated</div><div class="fp">Where price moved so fast it left a vacuum</div></div>
+    <div class="row g3"><div class="f">Common setup</div><div class="fp"><span class="bull">ON</span> — bright GREEN/RED (often customized from navy default)</div><div class="fp"><span class="bull">ON</span> — bright GREEN/RED (default colors)</div></div>
+    <div class="note-box"><strong>Memory aid:</strong> OB = "Around the candle" · FVG = "Filling the vacuum"</div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">C</div><span class="sblock-title">Box Color Reference — What Every Color Means</span></div><span class="tag tag-i">on your chart</span></div>
+    <div class="col-hdr g4"><span>Color</span><span>Type</span><span>Bias</span><span>Action</span></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-int-bull"></div></div><div class="fp">Internal Bullish OB</div><div class="bull">Support</div><div class="fm">Long here (in bull trend)</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-int-bear"></div></div><div class="fp">Internal Bearish OB</div><div class="bear">Resistance</div><div class="fm">Short here (in bear trend)</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-sw-bull"></div></div><div class="fp">Swing Bullish OB</div><div class="bull">Major Support</div><div class="fm">Main long zone</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-sw-bear"></div></div><div class="fp">Swing Bearish OB</div><div class="bear">Major Resistance</div><div class="fm">Main short zone</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-fvg-bull"></div></div><div class="fp">Bullish FVG</div><div class="bull">Support gap</div><div class="fm">Long retest (OFF currently)</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-fvg-bear"></div></div><div class="fp">Bearish FVG</div><div class="bear">Resistance gap</div><div class="fm">Short retest (OFF currently)</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-prem"></div></div><div class="fp">Premium Zone</div><div class="bear">Sell zone</div><div class="fm">Shorts only here</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-equi"></div></div><div class="fp">Equilibrium</div><div class="neutral">No edge</div><div class="fm">SKIP — no trades</div></div>
+    <div class="row g4"><div class="swatch-row"><div class="swatch sw-disc"></div></div><div class="fp">Discount Zone</div><div class="bull">Buy zone</div><div class="fm">Longs only here</div></div>
+  </div>
+
+  <div class="section-label">The Blue Band Question (Answered)</div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">?</div><span class="sblock-title">"What Is The Blue Shaded Area?"</span></div><span class="tag tag-i">depends which</span></div>
+    <div class="col-hdr g2"><span>Where You See Blue</span><span>What It Means</span></div>
+    <div class="row g2"><div class="f">Light blue box near current price (small)</div><div class="fp"><strong>Internal Bullish OB</strong> — short-term demand zone (default LuxAlgo color #3179f5)</div></div>
+    <div class="row g2"><div class="f">Dark blue/navy box, bigger</div><div class="fp"><strong>Swing Bullish OB</strong> — major demand zone (default #1848cc)</div></div>
+    <div class="row g2"><div class="f">Blue shaded band labeled PDL</div><div class="fp"><strong>Prior Day Low</strong> zone — yesterday's session low marked as institutional support</div></div>
+    <div class="row g2"><div class="f">Blue solid line labeled PDH or PWH</div><div class="fp"><strong>Prior Day High</strong> or <strong>Prior Week High</strong> — institutional resistance memory</div></div>
+    <div class="row g2"><div class="f">Blue line on cloud (SmartTrend)</div><div class="fp">Cloud Fast EMA when bullish — trend visualization</div></div>
+    <div class="row g2"><div class="f">Light cyan line tracking price</div><div class="fp">Usually VWAP — Volume-Weighted Average Price</div></div>
+    <div class="note-box"><strong>Common case:</strong> A dark blue shaded band at the bottom labeled "PDL" is the <strong>Prior Day Low</strong> zone — yesterday's session low marked as a horizontal support zone. One of the most-watched institutional intraday levels.</div>
+  </div>
+</div>
+
+<!-- ══════ COMBINING BOTH ══════ -->
+<div id="combine" class="panel">
+  <div class="quick-grid">
+    <div class="qcard combo"><div class="qcard-label">SMC role</div><div class="qcard-val">Identifies the SETUP (structure, zones, OBs)</div></div>
+    <div class="qcard combo"><div class="qcard-label">SmartTrend role</div><div class="qcard-val">Validates the TIMING (score, MTF, regime)</div></div>
+    <div class="qcard combo"><div class="qcard-label">Trade rule</div><div class="qcard-val"><strong>Both must agree</strong> to enter — either says no = skip</div></div>
+    <div class="qcard combo"><div class="qcard-label">Conflict default</div><div class="qcard-val">SmartTrend score filter <strong>wins</strong> — below 65 = skip</div></div>
+    <div class="qcard combo"><div class="qcard-label">Best confluence</div><div class="qcard-val">SMC zone + CHoCH + Score ≥75 + MTF aligned</div></div>
+    <div class="qcard combo"><div class="qcard-label">Skip rate</div><div class="qcard-val">~80% of "valid" SMC setups fail SmartTrend filter</div></div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">1</div><span class="sblock-title">The Layered Workflow — Every Trade Decision</span></div><span class="tag tag-r">in this order</span></div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-step-num">Step 1</div><div class="flow-step-title">SMC: Identify Setup</div><div class="flow-step-desc">Trend? Zone? CHoCH? OB nearby? Is there a structural setup at all?</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 2</div><div class="flow-step-title">SmartTrend: Check Score</div><div class="flow-step-desc">Score ≥75? Signal not "Wait"? Market = Trending? Vol ≥ Medium?</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 3</div><div class="flow-step-title">MTF Confluence</div><div class="flow-step-desc">3+ of 5 timeframes (5M/15M/1H/4H/1D) aligned with trade direction?</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 4</div><div class="flow-step-title">Your Levels</div><div class="flow-step-desc">Solid yellow (daily) or dashed yellow (1-min swing) in confluence?</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 5</div><div class="flow-step-title">Execute</div><div class="flow-step-desc">All 4 agree → take trade with full size. 3 agree → half size. &lt;3 → skip.</div></div>
+    </div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">2</div><span class="sblock-title">The 5 Combination Rules — When They Agree, When They Conflict</span></div><span class="tag tag-r">resolution logic</span></div>
+    <div class="col-hdr g2"><span>Situation</span><span>Resolution</span></div>
+    <div class="row g2"><div class="f">SMC says LONG, SmartTrend score 80 BUY</div><div class="fp"><span class="bull">✅ Take it full size — A+ setup</span></div></div>
+    <div class="row g2"><div class="f">SMC says LONG, SmartTrend score 70 BUY</div><div class="fp"><span class="warn">⚠️ Half size — needs your levels to agree too</span></div></div>
+    <div class="row g2"><div class="f">SMC says LONG, SmartTrend score 50 Wait</div><div class="fp"><span class="bear">❌ Skip — SmartTrend's job is to filter</span></div></div>
+    <div class="row g2"><div class="f">SMC says LONG, SmartTrend says SELL</div><div class="fp"><span class="bear">❌ Skip — direct conflict, market unclear</span></div></div>
+    <div class="row g2"><div class="f">SmartTrend BUY, SMC trend bearish</div><div class="fp"><span class="bear">❌ Skip — counter-trend SmartTrend signals lose</span></div></div>
+    <div class="row g2"><div class="f">SmartTrend score 85, SMC in Equilibrium</div><div class="fp"><span class="warn">⚠️ Wait for price to reach Discount/Premium first</span></div></div>
+    <div class="row g2"><div class="f">Strong Sell label + Score 29</div><div class="fp"><span class="bear">❌ Label is bait — score is truth. SKIP.</span></div></div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">3</div><span class="sblock-title">Indicator Priority When They Conflict</span></div><span class="tag tag-i">tie-breakers</span></div>
+    <div class="col-hdr g2"><span>Element</span><span>Wins When</span></div>
+    <div class="row g2"><div class="f">SmartTrend score &lt; 65</div><div class="fp"><strong>Always wins → skip the trade</strong> regardless of SMC</div></div>
+    <div class="row g2"><div class="f">SmartTrend "Wait" signal</div><div class="fp">Wins over SMC setup — system is asking you to wait</div></div>
+    <div class="row g2"><div class="f">MTF dashboard all-one-direction</div><div class="fp">Wins over 1-min SMC signals — higher timeframe trumps</div></div>
+    <div class="row g2"><div class="f">SMC swing trend bias</div><div class="fp">Wins over SmartTrend on direction — never fight major swing</div></div>
+    <div class="row g2"><div class="f">SmartTrend exact entry price</div><div class="fp">Wins over SMC zone for precise execution — use Entry: $X.XX</div></div>
+    <div class="row g2"><div class="f">SMC OB break (mitigation)</div><div class="fp">Wins as exit signal — exit even if SmartTrend still long</div></div>
+    <div class="row g2"><div class="f">Your manual yellow levels</div><div class="fp">Wins as profit-taking targets — daily levels are sacred</div></div>
+  </div>
+
+  <div class="sblock combo">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num purple">4</div><span class="sblock-title">The A+ Setup — All Stars Align</span></div><span class="tag tag-g">rare but real</span></div>
+    <div class="checklist">
+      <span>✅ Swing trend matches trade direction (Strong Low + Weak High for longs, etc.)</span>
+      <span>✅ Price is in Discount zone (longs) or Premium zone (shorts)</span>
+      <span>✅ Bullish/bearish CHoCH just printed on 1-min</span>
+      <span>✅ Price at a Swing Bullish/Bearish OB (your zone)</span>
+      <span>✅ Internal OB confirms inside the swing OB ("OB within OB")</span>
+      <span>✅ SmartTrend score ≥ 75</span>
+      <span>✅ SmartTrend dashboard says "BUY" or "SELL" (not "Wait")</span>
+      <span>✅ Market = Trending (not "No Trend")</span>
+      <span>✅ Volatility ≥ Medium</span>
+      <span>✅ MTF: 4-5 of 5 timeframes aligned with direction</span>
+      <span>✅ Solid yellow (daily level) supports the move</span>
+      <span>✅ MACD confirms momentum</span>
+    </div>
+    <div class="ok-box"><strong>When 10+ of 12 check:</strong> This is a full-size trade with high conviction. Take it without overthinking. These setups happen 1-3 times per day per ticker on average.</div>
+  </div>
+</div>
+
+<!-- ══════ SWING TRADING ══════ -->
+<div id="swing" class="panel">
+
+  <div class="quick-grid">
+    <div class="qcard lesson"><div class="qcard-label">Hold time</div><div class="qcard-val"><strong>Days to weeks</strong> (not minutes)</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Primary chart</div><div class="qcard-val"><strong>Daily</strong> · confirm on 4H · trigger on 1H</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Account risk</div><div class="qcard-val"><strong>1-2% per trade</strong> (vs 0.5-1% scalp)</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Options expiry</div><div class="qcard-val"><strong>30-90 DTE</strong> · ITM strikes (0.65-0.80 delta)</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Setups per week</div><div class="qcard-val">1-3 (vs 10-20 scalp)</div></div>
+    <div class="qcard lesson"><div class="qcard-label">SmartTrend preset</div><div class="qcard-val"><strong>Conservative</strong> — score floor 70+</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">!</div><span class="sblock-title">Mindset Shift — Scalp vs Swing</span></div><span class="tag tag-r">different game</span></div>
+    <div class="col-hdr g3"><span>Aspect</span><span>Scalping</span><span>Swing Trading</span></div>
+    <div class="row g3"><div class="f">Timeframe</div><div class="fp">1-min / 5-min charts</div><div class="fp">Daily / 4H / 1H charts</div></div>
+    <div class="row g3"><div class="f">Hold time</div><div class="fp">Minutes to hours</div><div class="fp">Days to weeks</div></div>
+    <div class="row g3"><div class="f">Stops</div><div class="fp">10-30 cents</div><div class="fp">$2-5+ or 2-5% of price</div></div>
+    <div class="row g3"><div class="f">Targets</div><div class="fp">Cents to a dollar</div><div class="fp">Dollars or 5-15% moves</div></div>
+    <div class="row g3"><div class="f">Setups/week</div><div class="fp">10-20</div><div class="fp">1-3 max</div></div>
+    <div class="row g3"><div class="f">Account risk</div><div class="fp">0.5-1% per trade</div><div class="fp">1-2% per trade</div></div>
+    <div class="row g3"><div class="f">Options expiry</div><div class="fp">0-3 DTE</div><div class="fp">30-90 DTE</div></div>
+    <div class="row g3"><div class="f">Option delta</div><div class="fp">ATM or slight OTM (0.40-0.50)</div><div class="fp">ITM (0.65-0.80)</div></div>
+    <div class="row g3"><div class="f">Theta concern</div><div class="fp">Brutal — exit fast</div><div class="fp">Manageable — &lt;1%/day</div></div>
+    <div class="row g3"><div class="f">Screen time</div><div class="fp">Glued during session</div><div class="fp">10 min/day check-ins</div></div>
+    <div class="note-box"><strong>The mental reframe:</strong> 1-min noise is INVISIBLE on a Daily chart. A $1+ intraday move that matters for a scalp is a single small candle on Daily. Stop watching ticks. Set alerts. Walk away. The trade plays out over days — not minutes.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">1</div><span class="sblock-title">LuxAlgo SMC Settings For Swing Trading</span></div><span class="tag tag-i">tune for Daily chart</span></div>
+    <div class="col-hdr g3"><span>Setting</span><span>Swing Value</span><span>Why</span></div>
+    <div class="row g3"><div class="f">Mode</div><div class="fp"><strong>Historical</strong></div><div class="fm">Want to see all prior swing reactions</div></div>
+    <div class="row g3"><div class="f">Style</div><div class="fp">Colored</div><div class="fm">Same as scalp</div></div>
+    <div class="row g3"><div class="f">Color Candles</div><div class="fp">ON</div><div class="fm">Quick trend bias visualization on Daily</div></div>
+    <div class="row g3"><div class="f">Show Internal Structure</div><div class="fp"><strong>OFF</strong></div><div class="fm">Internal noise on Daily — only swing matters</div></div>
+    <div class="row g3"><div class="f">Show Swing Structure</div><div class="fp">ON, All</div><div class="fm">Main signal for swing trades</div></div>
+    <div class="row g3"><div class="f">Swing Length</div><div class="fp">50 (default)</div><div class="fm">Standard major pivots on Daily</div></div>
+    <div class="row g3"><div class="f">Show Strong/Weak H/L</div><div class="fp"><strong>ON</strong></div><div class="fm">Critical — defines bias and targets</div></div>
+    <div class="row g3"><div class="f">Show Swing Points (HH/HL)</div><div class="fp">ON</div><div class="fm">Helps see Daily trend structure clearly</div></div>
+    <div class="row g3"><div class="f">Internal Order Blocks</div><div class="fp"><strong>OFF</strong></div><div class="fm">Too granular for swing context</div></div>
+    <div class="row g3"><div class="f">Swing Order Blocks</div><div class="fp"><strong>ON, 5-10</strong></div><div class="fm">Want more historical levels for trade planning</div></div>
+    <div class="row g3"><div class="f">OB Mitigation</div><div class="fp">Close</div><div class="fm">Forgiving on daily wicks</div></div>
+    <div class="row g3"><div class="f">Equal Highs/Lows</div><div class="fp">ON</div><div class="fm">Daily EQH/EQL = major liquidity targets</div></div>
+    <div class="row g3"><div class="f">Fair Value Gaps</div><div class="fp">ON</div><div class="fm">Daily FVGs are HUGE magnets — must-have</div></div>
+    <div class="row g3"><div class="f">FVG Timeframe</div><div class="fp">Same as chart (Daily)</div><div class="fm">Only show Daily-scale FVGs</div></div>
+    <div class="row g3"><div class="f">Extend FVG</div><div class="fp">5-10 bars</div><div class="fm">See gaps as price approaches over days</div></div>
+    <div class="row g3"><div class="f">Premium/Discount Zones</div><div class="fp"><strong>ON</strong></div><div class="fm">Critical for entry quality on Daily swing</div></div>
+    <div class="row g3"><div class="f">Daily Levels</div><div class="fp">OFF (you're on Daily)</div><div class="fm">Redundant — chart IS daily</div></div>
+    <div class="row g3"><div class="f">Weekly Levels</div><div class="fp"><strong>ON</strong>, solid blue</div><div class="fm">Major weekly S/R for swing context</div></div>
+    <div class="row g3"><div class="f">Monthly Levels</div><div class="fp"><strong>ON</strong>, dashed blue</div><div class="fm">Highest-tier institutional levels</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">2</div><span class="sblock-title">SmartTrend Settings For Swing Trading</span></div><span class="tag tag-i">conservative tuning</span></div>
+    <div class="col-hdr g3"><span>Setting</span><span>Swing Value</span><span>Why</span></div>
+    <div class="row g3"><div class="f">Preset</div><div class="fp"><strong>Conservative</strong></div><div class="fm">Multiplies sensitivity ×1.4, ATR ×1.3, score floor ≥70</div></div>
+    <div class="row g3"><div class="f">Sensitivity</div><div class="fp">2.5 (default)</div><div class="fm">Conservative preset auto-boosts to 3.5 effective</div></div>
+    <div class="row g3"><div class="f">ATR Period</div><div class="fp">21 (default)</div><div class="fm">Conservative preset auto-boosts to ~27</div></div>
+    <div class="row g3"><div class="f">Min Signal Score</div><div class="fp"><strong>70+</strong></div><div class="fm">Conservative preset enforces this floor</div></div>
+    <div class="row g3"><div class="f">Strong Signals Only</div><div class="fp"><strong>ON</strong></div><div class="fm">Score ≥75 — only A+ swing setups</div></div>
+    <div class="row g3"><div class="f">Show Pullback Signals</div><div class="fp">ON</div><div class="fm">Re-entry on swing pullbacks</div></div>
+    <div class="row g3"><div class="f">Cloud Style</div><div class="fp"><strong>Smooth</strong></div><div class="fm">Wider cloud (55 fast) for swing — less noise</div></div>
+    <div class="row g3"><div class="f">Show Trend Tracer</div><div class="fp">ON</div><div class="fm">EMA 233 for swing bias confirmation</div></div>
+    <div class="row g3"><div class="f">Trend Filter (Cloud)</div><div class="fp"><strong>ON</strong></div><div class="fm">Only swing-aligned signals</div></div>
+    <div class="row g3"><div class="f">ADX Filter</div><div class="fp"><strong>ON</strong></div><div class="fm">Kills range-bound Daily setups</div></div>
+    <div class="row g3"><div class="f">Momentum Filter</div><div class="fp">ON</div><div class="fm">MACD must agree on Daily</div></div>
+    <div class="row g3"><div class="f">SL Mode</div><div class="fp">ATR</div><div class="fm">Adaptive to Daily volatility</div></div>
+    <div class="row g3"><div class="f">SL ATR Multiplier</div><div class="fp"><strong>2.0-2.5</strong></div><div class="fm">Wider stops for swing (vs 1.0-1.5 scalp)</div></div>
+    <div class="row g3"><div class="f">TP1 R:R</div><div class="fp">1.5</div><div class="fm">First scale-out target</div></div>
+    <div class="row g3"><div class="f">TP2 R:R</div><div class="fp">2.5</div><div class="fm">Standard swing target</div></div>
+    <div class="row g3"><div class="f">TP3 R:R</div><div class="fp">4.0 or higher</div><div class="fm">Runner for big swing moves</div></div>
+    <div class="row g3"><div class="f">Show Trailing Stop</div><div class="fp"><strong>ON</strong></div><div class="fm">Critical for swing — Chandelier Exit method</div></div>
+    <div class="row g3"><div class="f">Show Market Structure</div><div class="fp">ON</div><div class="fm">HH/HL/LH/LL labels for swing structure</div></div>
+    <div class="row g3"><div class="f">Swing Lookback</div><div class="fp"><strong>15-20</strong></div><div class="fm">Only major Daily swings (vs 10 scalp)</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">3</div><span class="sblock-title">The Swing Trading Workflow — Top-Down Analysis</span></div><span class="tag tag-r">execute in order</span></div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-step-num">Step 1</div><div class="flow-step-title">Daily Chart</div><div class="flow-step-desc">Identify SWING TREND. Strong/Weak labels? Last BOS or CHoCH direction? Where in the range?</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 2</div><div class="flow-step-title">Find The Zone</div><div class="flow-step-desc">Bullish trend → bullish swing OB in Discount. Bearish → bearish OB in Premium. Confluence with weekly level.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 3</div><div class="flow-step-title">4H Chart</div><div class="flow-step-desc">When price enters Daily zone, drop to 4H. Look for CHoCH in direction of Daily bias.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 4</div><div class="flow-step-title">1H Chart</div><div class="flow-step-desc">Confirm 4H CHoCH on 1H close. Volume picking up. MACD agreeing.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 5</div><div class="flow-step-title">Execute</div><div class="flow-step-desc">Enter ITM option 30-90 DTE. Stop below Daily OB. Targets at next Daily swing high/low or Strong High/Low.</div></div>
+    </div>
+    <div class="ok-box"><strong>The key insight:</strong> Higher timeframe sets DIRECTION. Lower timeframe sets TIMING. Never enter on 1H alone — Daily must agree first. Never wait for 1H confirmation on a Daily setup — you'll miss the move.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">4</div><span class="sblock-title">Options Selection For Swing Trades</span></div><span class="tag tag-r">strike + expiry math</span></div>
+    <div class="col-hdr g3"><span>Hold Time</span><span>Expiry</span><span>Strike (Delta)</span></div>
+    <div class="row g3"><div class="f">1-3 days</div><div class="fp">1-2 weeks out (weekly)</div><div class="fp">ATM or slight ITM (0.50-0.60 delta)</div></div>
+    <div class="row g3"><div class="f">1-2 weeks</div><div class="fp"><strong>4-6 weeks out (monthly)</strong></div><div class="fp"><strong>ITM (0.65-0.75 delta)</strong></div></div>
+    <div class="row g3"><div class="f">2-4 weeks</div><div class="fp">60-90 days out</div><div class="fp">ITM (0.70-0.80 delta)</div></div>
+    <div class="row g3"><div class="f">1-3 months</div><div class="fp">120+ days (LEAPS-lite)</div><div class="fp">Deep ITM (0.75-0.85 delta)</div></div>
+    <div class="note-box"><strong>Rule of thumb:</strong> Buy 2-3× more TIME than you think you need. Theta is the swing trader's enemy. If you think the move takes 2 weeks, buy 6 weeks of expiration. The extra premium is INSURANCE against being right on direction but wrong on timing.</div>
+    <div class="alert-box"><strong>Avoid OTM calls/puts on swing trades.</strong> They look "cheap" but theta destroys them while you wait days for the move to play out. Pay up for ITM — the higher delta means the option moves dollar-for-dollar with the underlying once your thesis works.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">5</div><span class="sblock-title">The Theta Math (Why ITM Matters)</span></div><span class="tag tag-i">decay reality</span></div>
+    <div class="col-hdr g3"><span>Expiry</span><span>Daily Theta Decay</span><span>Held 2 weeks = total decay</span></div>
+    <div class="row g3"><div class="f">0DTE</div><div class="fp">30-50% per day</div><div class="fp">N/A (done same day)</div></div>
+    <div class="row g3"><div class="f">1 week</div><div class="fp">5-10% per day</div><div class="fp">~70% decay if not moving</div></div>
+    <div class="row g3"><div class="f">1 month</div><div class="fp">1-3% per day</div><div class="fp"><span class="bull">~20% decay (manageable)</span></div></div>
+    <div class="row g3"><div class="f">3 months</div><div class="fp">&lt;1% per day</div><div class="fp"><span class="bull">~10% decay (forgiving)</span></div></div>
+    <div class="row g3"><div class="f">LEAPS (6mo+)</div><div class="fp">~0.3% per day</div><div class="fp"><span class="bull">~4% decay (minimal)</span></div></div>
+    <div class="ok-box"><strong>Translation:</strong> For a 2-week swing trade, a 1-month option loses ~20% to theta even if the move happens. A 3-month option loses only ~10%. The extra cost of the longer-dated option pays for itself in reduced decay risk.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">6</div><span class="sblock-title">Swing Entry Checklist</span></div><span class="tag tag-r">all must check</span></div>
+    <div class="checklist">
+      <span>☐ Daily chart shows clear swing trend (Strong/Weak labels confirm direction)</span>
+      <span>☐ Price entered Discount (longs) or Premium (shorts) zone on Daily</span>
+      <span>☐ At a Daily Swing OB OR Daily FVG (institutional zone)</span>
+      <span>☐ Weekly or Monthly level supports the trade direction</span>
+      <span>☐ 4H chart printed CHoCH in trade direction</span>
+      <span>☐ 1H close confirmed the 4H signal</span>
+      <span>☐ SmartTrend on Daily: Score ≥ 75</span>
+      <span>☐ SmartTrend Signal = BUY/SELL (not Wait)</span>
+      <span>☐ Market = Trending (ADX &gt; 25)</span>
+      <span>☐ Volatility ≥ Medium</span>
+      <span>☐ MTF dashboard: 4-5 of 5 timeframes aligned with direction</span>
+      <span>☐ Option strike picked: ITM (0.65+ delta)</span>
+      <span>☐ Expiry picked: 30-90 days out</span>
+      <span>☐ Stop level identified: below Daily OB (longs) or above (shorts)</span>
+      <span>☐ Target 1, 2, 3 written down BEFORE entry</span>
+      <span>☐ Position size = ≤2% of account risked</span>
+      <span>☐ No earnings or major news in expiry window</span>
+    </div>
+    <div class="ok-box"><strong>When 15+ of 17 check:</strong> A+ swing trade — take full size. When 12-14: half size with tighter stop. Less than 12: SKIP. Save for the cleaner setup.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">7</div><span class="sblock-title">Managing The Swing Trade Over Days</span></div><span class="tag tag-i">post-entry rules</span></div>
+    <div class="col-hdr g2"><span>Situation</span><span>Action</span></div>
+    <div class="row g2"><div class="f">Day 1 — entered the trade</div><div class="fp">Set alerts at stop, T1, T2. Close TradingView. Don't watch ticks.</div></div>
+    <div class="row g2"><div class="f">Day 2-5 — trade goes against you</div><div class="fp">Daily close below your stop level = EXIT. Don't move stop. Honor the level.</div></div>
+    <div class="row g2"><div class="f">Day 3-7 — T1 hit</div><div class="fp">Scale 1/3 off. Move stop to break-even on remainder. Trade now risk-free.</div></div>
+    <div class="row g2"><div class="f">T2 hit</div><div class="fp">Scale another 1/3 off. Move stop to T1 level. Lock real profit on remainder.</div></div>
+    <div class="row g2"><div class="f">T3 hit or running hot</div><div class="fp">Exit final 1/3 OR use Chandelier trailing stop. Don't get greedy on full position.</div></div>
+    <div class="row g2"><div class="f">Earnings approach mid-trade</div><div class="fp">Either exit before OR confirm thesis includes earnings catalyst. Don't get gamma-trapped.</div></div>
+    <div class="row g2"><div class="f">Daily CHoCH against you</div><div class="fp">Major warning. Exit at least half. Reassess thesis on next close.</div></div>
+    <div class="row g2"><div class="f">Trade stalls for 3+ days</div><div class="fp">Theta is eating you. Either thesis is wrong or move needs more time. Reduce size.</div></div>
+    <div class="row g2"><div class="f">Trade reaches 50%+ of expiry time without move</div><div class="fp">Roll to next expiry OR exit. Don't hold dying options hoping.</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">8</div><span class="sblock-title">Open Swing Positions Maintenance</span></div><span class="tag tag-i">weekly task</span></div>
+    <div class="col-hdr g2"><span>Check</span><span>Action If Fails</span></div>
+    <div class="row g2"><div class="f">Daily trend still aligned with position?</div><div class="fp">If trend flipped → reduce or exit</div></div>
+    <div class="row g2"><div class="f">Price still above your entry OB?</div><div class="fp">If broken → exit (thesis invalid)</div></div>
+    <div class="row g2"><div class="f">Daily MACD still supporting direction?</div><div class="fp">If diverging → tighten stop or take partial</div></div>
+    <div class="row g2"><div class="f">Strong/Weak labels unchanged?</div><div class="fp">If shifted against you → reassess</div></div>
+    <div class="row g2"><div class="f">Earnings inside expiry window?</div><div class="fp">Either confirm thesis includes it OR exit before</div></div>
+    <div class="row g2"><div class="f">More than 50% of expiry time elapsed?</div><div class="fp">Roll to next expiry OR exit (don't hold dying options)</div></div>
+    <div class="alert-box"><strong>Weekly routine:</strong> Open every active swing position on Daily chart. Run through the checks above. Any fail = act on it that day, don't defer.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">9</div><span class="sblock-title">Daily Check-In Routine (10 Minutes)</span></div><span class="tag tag-w">every evening</span></div>
+    <div class="checklist">
+      <span>☐ Open Daily chart for each watchlist ticker (5-10 tickers)</span>
+      <span>☐ Check Strong/Weak label status — any shifts?</span>
+      <span>☐ Note which tickers entered a Daily zone (Discount or Premium)</span>
+      <span>☐ Check SmartTrend dashboard on Daily for any score ≥75</span>
+      <span>☐ Set 4H alerts on tickers approaching zones</span>
+      <span>☐ Review open swing positions — still aligned?</span>
+      <span>☐ Update trade journal with any closed positions</span>
+      <span>☐ Check upcoming earnings calendar for swing tickers</span>
+      <span>☐ Plan tomorrow's potential entries (if any zones reached)</span>
+      <span>☐ Close laptop — done for the day</span>
+    </div>
+    <div class="ok-box"><strong>This routine = your swing trading edge.</strong> 10 minutes per evening compounds into massive context advantage. You'll spot setups others miss because you've been watching the Daily structure develop over weeks, not hunting it intraday.</div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">⚡</div><span class="sblock-title">When To Scalp vs Swing (Decision Tree)</span></div><span class="tag tag-i">two separate games</span></div>
+    <div class="col-hdr g2"><span>Use Scalp Approach When</span><span>Use Swing Approach When</span></div>
+    <div class="row g2"><div class="f">Available during market hours (9:30-4:00)</div><div class="fp">Limited screen time during day (job, kids, etc.)</div></div>
+    <div class="row g2"><div class="f">High volatility intraday environment</div><div class="fp">Calm trend day with clear Daily structure</div></div>
+    <div class="row g2"><div class="f">Power-hour or open-session setups</div><div class="fp">Daily zone reached on liquid ticker</div></div>
+    <div class="row g2"><div class="f">Stress-tested emotional state</div><div class="fp">Patient, less-stressful position management</div></div>
+    <div class="row g2"><div class="f">Small account ($1K-$10K)</div><div class="fp">Larger account allowing diversified swing positions</div></div>
+    <div class="row g2"><div class="f">Strong directional 1-min momentum</div><div class="fp">Strong directional Daily momentum</div></div>
+    <div class="note-box"><strong>The split:</strong> Many successful traders do BOTH but with separate mental accounts. Scalp money is "active trading risk" — swing money is "thesis trading risk." Different psychology, different timeframes, different position sizes. Don't mix the strategies on the same ticker on the same day.</div>
+  </div>
+</div>
+
+<!-- ══════ LIVE TRADING ══════ -->
+<div id="live" class="panel">
+
+  <div class="quick-grid">
+    <div class="qcard live"><div class="qcard-label">First check</div><div class="qcard-val">SmartTrend score &amp; signal</div></div>
+    <div class="qcard live"><div class="qcard-label">Second check</div><div class="qcard-val">SMC zone (where is price?)</div></div>
+    <div class="qcard live"><div class="qcard-label">Third check</div><div class="qcard-val">MTF alignment dashboard</div></div>
+    <div class="qcard live"><div class="qcard-label">Fourth check</div><div class="qcard-val">Your yellow levels (daily/swing)</div></div>
+    <div class="qcard live"><div class="qcard-label">Execute when</div><div class="qcard-val">All 4 agree — ANY conflict = skip</div></div>
+    <div class="qcard live"><div class="qcard-label">Profit rule</div><div class="qcard-val"><strong>Scale 1/3 at first resistance, ALWAYS</strong></div></div>
+  </div>
+
+  <div class="decision-box go">
+    <div class="decision-title go">✅ Take The Trade — All Of These Are True</div>
+    <div class="decision-items">
+      <span>Swing trend matches direction (Strong/Weak labels checked)</span>
+      <span>Price in Discount (long) or Premium (short) zone</span>
+      <span>CHoCH just printed in your direction</span>
+      <span>SmartTrend score ≥ 75</span>
+      <span>SmartTrend signal = BUY or SELL (not Wait)</span>
+      <span>Market regime = Trending (not No Trend)</span>
+      <span>Volatility ≥ Medium</span>
+      <span>3+ MTF timeframes aligned with direction</span>
+      <span>SL ready to place at SmartTrend's exact stop level</span>
+    </div>
+  </div>
+
+  <div class="decision-box stop">
+    <div class="decision-title stop">🚫 Do Not Trade — Any Of These Are True</div>
+    <div class="decision-items">
+      <span>Price in Equilibrium zone (no edge)</span>
+      <span>SmartTrend score &lt; 65</span>
+      <span>SmartTrend signal = "Wait"</span>
+      <span>Market = "No Trend" — chop confirmed</span>
+      <span>Volatility = Low (0%) — no fuel for move</span>
+      <span>SMC trend conflicts with SmartTrend signal direction</span>
+      <span>Strong High + Strong Low (range-bound, no breakout)</span>
+      <span>Less than 3 MTF timeframes aligned</span>
+      <span>Lunch hour (11:30-2:00 ET) AND low volatility</span>
+      <span>Just took a loss — emotional state impaired</span>
+    </div>
+  </div>
+
+  <div class="decision-box caution">
+    <div class="decision-title caution">⚠️ Proceed With Caution (Half Size Only)</div>
+    <div class="decision-items">
+      <span>SmartTrend score 65-74 — needs strong external confluence</span>
+      <span>Price approaching but not yet in target zone</span>
+      <span>3 of 5 MTF aligned but 2 disagree</span>
+      <span>CHoCH printed but on small candle (could be fake-out)</span>
+      <span>Approaching session change (London close, NY open)</span>
+      <span>Counter-trend retracement to a major level</span>
+      <span>News pending in next 30 minutes (Fed, earnings, etc.)</span>
+    </div>
+  </div>
+
+  <div class="live-grid">
+    <div class="live-card">
+      <div class="live-card-hdr blue">SMC Quick Read</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">Strong Low + Weak High</span><span class="live-bull">Bullish — long Discount only</span></div>
+        <div class="live-row"><span class="live-label">Strong High + Weak Low</span><span class="live-bear">Bearish — short Premium only</span></div>
+        <div class="live-row"><span class="live-label">Price in Equilibrium</span><span class="live-warn">No trade — wait for zone entry</span></div>
+        <div class="live-row"><span class="live-label">Bullish CHoCH in Discount</span><span class="live-bull">Long trigger fired</span></div>
+        <div class="live-row"><span class="live-label">Bearish CHoCH in Premium</span><span class="live-bear">Short trigger fired</span></div>
+        <div class="live-row"><span class="live-label">Green OB just appeared</span><span class="live-bull">Structure confirmed — entry zone live</span></div>
+        <div class="live-row"><span class="live-label">Red OB just appeared</span><span class="live-bear">Structure confirmed — short zone live</span></div>
+        <div class="live-row"><span class="live-label">OB broken on close</span><span class="live-warn">Mitigated — exit if in trade</span></div>
+      </div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-hdr green">SmartTrend Quick Read</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">Score ≥ 85</span><span class="live-bull">A+ — full size</span></div>
+        <div class="live-row"><span class="live-label">Score 75-84</span><span class="live-bull">A — standard size</span></div>
+        <div class="live-row"><span class="live-label">Score 65-74</span><span class="live-warn">B — half size + confluence required</span></div>
+        <div class="live-row"><span class="live-label">Score &lt; 65</span><span class="live-bear">SKIP — no edge</span></div>
+        <div class="live-row"><span class="live-label">Signal = "Wait"</span><span class="live-bear">SKIP regardless of label</span></div>
+        <div class="live-row"><span class="live-label">Market = "No Trend"</span><span class="live-bear">SKIP — chop</span></div>
+        <div class="live-row"><span class="live-label">Vol = "Low (0%)"</span><span class="live-bear">SKIP — no fuel</span></div>
+        <div class="live-row"><span class="live-label">MTF 5/5 aligned</span><span class="live-bull">High conviction</span></div>
+      </div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-hdr gold">Profit-Taking Rules</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">At first resistance</span><span class="live-bull">Scale 1/3 off — always</span></div>
+        <div class="live-row"><span class="live-label">At round number ($300, $500)</span><span class="live-warn">Take partial — stop runs likely</span></div>
+        <div class="live-row"><span class="live-label">At your daily yellow level</span><span class="live-bull">Take another 1/3 off</span></div>
+        <div class="live-row"><span class="live-label">At Strong High (longs) / Strong Low (shorts)</span><span class="live-bull">Final exit — expected to hold</span></div>
+        <div class="live-row"><span class="live-label">Wick above 300 + immediate reversal</span><span class="live-bear">Stop run — EXIT FAST</span></div>
+        <div class="live-row"><span class="live-label">MACD bars stop growing</span><span class="live-warn">Momentum dying — lock profit</span></div>
+        <div class="live-row"><span class="live-label">Stoch RSI ≥ 90 + price stalling</span><span class="live-warn">Exhaustion — scale out</span></div>
+      </div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-hdr red">Exit Triggers — Be Ruthless</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">Green OB broken (in long)</span><span class="live-bear">EXIT — thesis dead</span></div>
+        <div class="live-row"><span class="live-label">Red OB broken (in short)</span><span class="live-bear">EXIT — thesis dead</span></div>
+        <div class="live-row"><span class="live-label">SL hit (SmartTrend X mark)</span><span class="live-bear">EXIT — system stopped</span></div>
+        <div class="live-row"><span class="live-label">Bearish CHoCH (in long)</span><span class="live-bear">EXIT — micro-trend flipped</span></div>
+        <div class="live-row"><span class="live-label">Bullish CHoCH (in short)</span><span class="live-bear">EXIT — micro-trend flipped</span></div>
+        <div class="live-row"><span class="live-label">VWAP reclaim against you</span><span class="live-warn">Tighten stop or exit</span></div>
+        <div class="live-row"><span class="live-label">Time stop: no progress 5+ min</span><span class="live-warn">Exit at BE — don't bleed theta</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box"><strong>The most common winner-into-loser pattern:</strong> Bullish breakout, +5% profit unrealized, doesn't scale at round-number resistance, doesn't exit when key OB breaks → winner reverses into loss. <strong>Permanent fix: scale 1/3 at first resistance, ALWAYS. Move stop to BE after T1. Exit on OB break, no exceptions.</strong></div>
+
+</div>
+
+<!-- ══════ COMMON PITFALLS ══════ -->
+<div id="lessons" class="panel">
+  <div class="quick-grid">
+    <div class="qcard lesson"><div class="qcard-label">Framework</div><div class="qcard-val">Universal trader pitfalls every retail trader hits</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Use</div><div class="qcard-val">Read BEFORE every session as discipline primer</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Biggest pitfall</div><div class="qcard-val"><strong>Not scaling at resistance</strong></div></div>
+    <div class="qcard lesson"><div class="qcard-label">Second biggest</div><div class="qcard-val">Revenge trading after a loss</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Third biggest</div><div class="qcard-val">Greed chasing after a win</div></div>
+    <div class="qcard lesson"><div class="qcard-label">Rule of three</div><div class="qcard-val">If you broke any of the top 3 → close the app</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">✓</div><span class="sblock-title">Disciplined Trader Behaviors (Build These)</span></div><span class="tag tag-g">do these</span></div>
+    <div class="checklist">
+      <span>✅ Skip setups that don't meet ALL criteria (Score ≥ 75, structure, zone, MTF)</span>
+      <span>✅ Skip Equilibrium-zone trades regardless of how tempting</span>
+      <span>✅ Skip trades when MACD divergence warns against direction</span>
+      <span>✅ Skip counter-trend setups when MTF disagrees</span>
+      <span>✅ Wait for confirmation candle close, not pre-position on touch</span>
+      <span>✅ Enter only with stop loss set at entry — never mental</span>
+      <span>✅ Take partial profits at first major resistance, ALWAYS</span>
+      <span>✅ Move stop to break-even after T1 hit</span>
+      <span>✅ Exit immediately on OB break against position (no hoping)</span>
+      <span>✅ Walk away from screen after any closed trade (win or loss)</span>
+    </div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">!</div><span class="sblock-title">The 5 Most Expensive Mistakes (Avoid These)</span></div><span class="tag tag-r">avoid these</span></div>
+    <div class="alert-box"><strong>The cardinal mistake:</strong> Not scaling out at obvious resistance when in profit. Watching a winner reverse into a loss because of incomplete profit-taking discipline. This is the single most common way profitable trades become losing trades.</div>
+    <div class="col-hdr g2"><span>Mistake Pattern</span><span>Fix</span></div>
+    <div class="row g2"><div class="f">Held full position through major resistance</div><div class="fp">Scale 1/3 off at first resistance, no exceptions</div></div>
+    <div class="row g2"><div class="f">Didn't move stop after T1 profit</div><div class="fp">Always move stop to break-even after T1 hit</div></div>
+    <div class="row g2"><div class="f">Watched key level (OB) break without exiting</div><div class="fp">Exit IMMEDIATELY on close through invalidation level</div></div>
+    <div class="row g2"><div class="f">Hoped for bounce back after thesis invalid</div><div class="fp">Accept invalidation = thesis dead, exit fast and reassess</div></div>
+    <div class="row g2"><div class="f">Asked "what's next" within 5 min of a loss</div><div class="fp">Step away 30+ minutes after any loss — emotional state impaired</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">R</div><span class="sblock-title">The Permanent Rules — Written In Blood</span></div><span class="tag tag-r">no exceptions</span></div>
+    <div class="col-hdr g2"><span>Rule</span><span>Detail</span></div>
+    <div class="row g2"><div class="f">Scale 1/3 at first resistance</div><div class="fp">Always. Not "if it looks right." Always. Round numbers count.</div></div>
+    <div class="row g2"><div class="f">Move stop to BE after T1</div><div class="fp">Once 1/3 is taken, breakeven stop on remainder. Worst case is scratch.</div></div>
+    <div class="row g2"><div class="f">OB break = immediate exit</div><div class="fp">If the green OB you're long off of breaks, exit ALL. No hoping. No "maybe it'll come back."</div></div>
+    <div class="row g2"><div class="f">Score 75 is the floor</div><div class="fp">Below 75 = skip. No exceptions. The label doesn't matter, the score does.</div></div>
+    <div class="row g2"><div class="f">Equilibrium = no trade</div><div class="fp">Even if you've been watching for an hour. Even if it "looks like it'll break out." Wait for Discount or Premium.</div></div>
+    <div class="row g2"><div class="f">Loss = 30 min break</div><div class="fp">After any loss, walk away. Revenge trades have negative expected value.</div></div>
+    <div class="row g2"><div class="f">Wick + reversal = exit</div><div class="fp">Wick above key resistance + immediate close back below = stop run = high probability local top. Exit, don't hope.</div></div>
+    <div class="row g2"><div class="f">Confirmation before entry</div><div class="fp">Two-candle confirmation at contested levels. Don't pre-position. React, don't predict.</div></div>
+    <div class="row g2"><div class="f">MACD divergence kills longs</div><div class="fp">If price makes higher highs but MACD makes lower highs, momentum is dying — don't add, take profits.</div></div>
+    <div class="row g2"><div class="f">Stoch RSI extremes = pause</div><div class="fp">Stoch RSI at 0 → bounce coming, don't chase short. Stoch RSI at 100 → exhaustion, don't chase long.</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">P</div><span class="sblock-title">Pattern Library — Recognize These In Real-Time</span></div><span class="tag tag-i">build library</span></div>
+    <div class="col-hdr g2"><span>Pattern</span><span>What It Looks Like</span></div>
+    <div class="row g2"><div class="f">Bull Trap</div><div class="fp">Push above resistance + immediate reversal + OB break. Smart money sells to retail FOMO. Most common at round numbers.</div></div>
+    <div class="row g2"><div class="f">V-Bottom Bounce</div><div class="fp">Sharp drop to support, instant CHoCH, ripping reversal. Reliable when Stoch RSI hits extreme oversold.</div></div>
+    <div class="row g2"><div class="f">Stop Run / Liquidity Grab</div><div class="fp">Quick wick above/below a known level, then snap back. Pre-positioned algos grab stops, reverse.</div></div>
+    <div class="row g2"><div class="f">Failed Breakout</div><div class="fp">Tests resistance multiple times, finally breaks, then can't sustain. Re-enters range, reverses.</div></div>
+    <div class="row g2"><div class="f">Double-Top Rejection</div><div class="fp">Two tests of same high with no break = strong rejection. Common at swing OBs.</div></div>
+    <div class="row g2"><div class="f">Absorption Pattern</div><div class="fp">Multiple OBs stacking at higher prices = institutional buying through resistance. Bullish continuation.</div></div>
+    <div class="row g2"><div class="f">MACD Bearish Divergence</div><div class="fp">Price up, momentum down. Warning of failed breakout.</div></div>
+    <div class="row g2"><div class="f">Equilibrium Rejection</div><div class="fp">In bearish trend, counter-trend bounce stalls at Equilibrium top. Short setup.</div></div>
+  </div>
+
+  <div class="sblock lesson-block">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">T</div><span class="sblock-title">Tomorrow's Checklist</span></div><span class="tag tag-w">apply daily</span></div>
+    <div class="checklist">
+      <span>☐ Review prior day's high/low/dashed-yellow swing levels before open</span>
+      <span>☐ Mark daily levels as solid yellow on watchlist tickers</span>
+      <span>☐ Wait until 5-10 min after open before considering any trade</span>
+      <span>☐ Check SmartTrend dashboard FIRST every time — score is gatekeeper</span>
+      <span>☐ Identify swing trend bias (Strong/Weak labels) on each ticker</span>
+      <span>☐ Only consider trades in Discount (long) or Premium (short)</span>
+      <span>☐ Wait for CHoCH confirmation, not just zone touch</span>
+      <span>☐ Stop loss set at entry, NEVER mental</span>
+      <span>☐ Scale 1/3 at first resistance — non-negotiable</span>
+      <span>☐ Move stop to BE after T1 hit</span>
+      <span>☐ Exit ALL position on OB break against you</span>
+      <span>☐ Skip trades in Equilibrium, Low Vol, Score &lt; 75</span>
+      <span>☐ Max 2-3 trades per day — quality over quantity</span>
+      <span>☐ After any loss: 30-minute break, no exceptions</span>
+      <span>☐ End of day: journal what worked, what didn't</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function sw(id, el, platform) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active-smc','active-st','active-combo','active-live','active-lesson'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const cls = platform === 'smc' ? 'active-smc' : platform === 'st' ? 'active-st' : platform === 'combo' ? 'active-combo' : platform === 'live' ? 'active-live' : 'active-lesson';
+  el.classList.add(cls);
+}
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById('themeBtn');
+  if (body.classList.contains('light')) { body.classList.remove('light'); btn.textContent = '☀ Light'; }
+  else { body.classList.add('light'); btn.textContent = '☾ Dark'; }
+}
+</script>
+</body>
+</html>
