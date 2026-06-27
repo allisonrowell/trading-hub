@@ -448,25 +448,31 @@
       <li>
         <div class="step-content">
           <strong>Check sector momentum — calls AND puts</strong>
-          <span>Open TradingView. Pull up XLK and XLF on the daily chart. <strong style="color:#3b82f6">Call setup:</strong> price above both SMAs, 20 above 50, higher highs + higher lows. <strong style="color:#ef4444">Put setup:</strong> price below both SMAs, 20 below 50, lower highs + lower lows. <strong style="color:#64748b">Skip:</strong> SMAs tangled, price chopping between them — no clear structure. See the Direction Reference card below.</span>
+          <span>Open TradingView. Pull up XLK and XLF on the daily chart. Use the <strong style="color:#e2e8f0">Direction Reference card below</strong> to determine: call week or put week? <strong style="color:#3b82f6">Call setup:</strong> price above both SMAs, 20 above 50, higher highs + higher lows → select that sector in screener. <strong style="color:#ef4444">Put setup:</strong> price below both SMAs, 20 below 50, lower highs + lower lows → select that sector in screener. <strong style="color:#64748b">Skip:</strong> SMAs tangled — move to next sector ETF.</span>
         </div>
       </li>
       <li>
         <div class="step-content">
-          <strong>Run the TradingView screener</strong>
-          <span>Screener → Stock Screener → apply your saved "Swing Candidates" filter set (see filters below). You'll get 50–100 names. Filter by your sector of the week.</span>
+          <strong>Run the TradingView screener + apply sector filter</strong>
+          <span>Screener → Stock Screener → apply your 4 base filters → then add Sector filter matching what's in motion. TradingView sector names: <strong style="color:#e2e8f0">Electronic technology</strong> (XLK) · <strong style="color:#e2e8f0">Finance</strong> (XLF) · <strong style="color:#e2e8f0">Health services / Health technology</strong> (XLV) · <strong style="color:#e2e8f0">Energy minerals</strong> (XLE) · <strong style="color:#e2e8f0">Consumer durables/non-durables/services</strong> (XLY). Narrow further with industry filter if needed → target 5–15 names.</span>
         </div>
       </li>
       <li>
         <div class="step-content">
           <strong>Apply LJ's method to the short list</strong>
-          <span>For each candidate: open daily chart → confirmed S/R level (3 touches)? → switch to 4H → MA ribbon direction clear? → all 4 indicators aligned? If yes to all → candidate.</span>
+          <span>For each candidate: open <strong style="color:#e2e8f0">daily chart</strong> → confirmed S/R level (3 touches minimum, drawn on daily)? → switch to <strong style="color:#e2e8f0">4H chart</strong> → do all 4 indicators agree with trade direction? The 4 indicators are: <strong style="color:#3b82f6">① MA Ribbon (SMA 20 above/below SMA 50) ② RSI ③ MACD ④ Stoch RSI K-line.</strong> Minimum 3 of 4 must align. All 4 is ideal. Only 2 agree = skip the name. Land on 2–3 candidates.</span>
         </div>
       </li>
       <li>
         <div class="step-content">
           <strong>Write your thesis for 2–3 names</strong>
-          <span>Use the template below. If you can't complete it, the setup isn't clear enough. Don't trade it.</span>
+          <span>Use the thesis template below. If you can't complete it, the setup isn't clear enough. Don't trade it.</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Options check — Barchart then Market Chameleon</strong>
+          <span><strong style="color:#e2e8f0">Barchart:</strong> type ticker → Options tab → check IV Rank (see ② card below). This tells you whether options are fairly priced before you buy. <strong style="color:#e2e8f0">Market Chameleon:</strong> check for unusual options activity and confirm no hidden catalyst (earnings date, FDA decision) falls inside your 14–45 day DTE window. Both checks take 2 minutes per name.</span>
         </div>
       </li>
       <li>
@@ -479,7 +485,7 @@
   </div>
 
   <div class="section swing">
-    <div class="section-label swing">Daily Routine — Mon–Fri (10–15 min)</div>
+    <div class="section-label swing">Daily Routine — Mon–Fri (10–15 min · Do this 8:00–9:15 AM ET)</div>
     <ul class="steps">
       <li>
         <div class="step-content">
@@ -490,13 +496,13 @@
       <li>
         <div class="step-content">
           <strong>Ask: has price reached my entry trigger?</strong>
-          <span>Entry = price breaking and holding through your key S/R level, OR pulling back to S/R and holding. Not "close to it." At it and holding.</span>
+          <span>Entry = price breaking and holding through your key S/R level, OR pulling back to S/R and holding. S/R levels are drawn on the <strong style="color:#e2e8f0">daily chart</strong> — that's where you check. Not "close to it." At it and holding.</span>
         </div>
       </li>
       <li>
         <div class="step-content">
           <strong>Confirm setup is still valid</strong>
-          <span>4H trend still intact? Indicators still aligned? No earnings this week within your DTE? If all yes → execute per plan.</span>
+          <span>4H trend still intact? All 4 indicators (MA ribbon, RSI, MACD, Stoch RSI) still aligned? No earnings this week within your DTE? If all yes → execute per plan at or after open.</span>
         </div>
       </li>
       <li>
@@ -508,22 +514,46 @@
     </ul>
   </div>
 
-  <div class="grid-2">
+  <!-- THREE COLUMN CARDS -->
+  <div class="grid-3">
     <div class="card">
-      <div class="card-title">Screener Filters — Save as "Swing Candidates"</div>
+      <div class="card-title">① TradingView Screener Filters</div>
+      <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">These 4 filters are the only ones that belong in TradingView. Save as "Swing Candidates."</p>
       <table class="crit-table">
         <tr><td>Exchange</td><td>NYSE + NASDAQ</td></tr>
         <tr><td>Price</td><td>$20 – $500</td></tr>
-        <tr><td>Avg Volume (20D)</td><td>&gt; 5,000,000</td></tr>
-        <tr><td>ATR%</td><td>&gt; 2%</td></tr>
-        <tr><td>IV Rank</td><td>20 – 50</td></tr>
-        <tr><td>DTE (options)</td><td>14 – 45 days</td></tr>
-        <tr><td>Bid/ask spread</td><td>&lt; 10% of premium</td></tr>
-        <tr><td>Open interest</td><td>&gt; 500 at strike</td></tr>
-        <tr><td>Earnings within DTE</td><td>None — hard rule</td></tr>
+        <tr><td>Avg Volume (30D)</td><td>&gt; 5,000,000</td></tr>
+        <tr><td>ATR 14</td><td>&gt; 2%</td></tr>
+      </table>
+      <div style="margin-top:10px; padding:8px 10px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted);">
+        Everything else is checked <strong style="color:var(--text);">after</strong> you have your 2–3 candidates — not here.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">② IV Rank Check — Barchart</div>
+      <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">After LJ's method confirms setup. Barchart → ticker → Options tab → IV Rank at top.</p>
+      <table class="crit-table">
+        <tr><td>IV Rank 20–50</td><td>Normal — good to trade</td></tr>
+        <tr><td>Below 20</td><td>Cheap — buying fine</td></tr>
+        <tr><td>50–70</td><td>Expensive — size smaller</td></tr>
+        <tr><td>Above 70</td><td>Very expensive — avoid buying; check for catalyst</td></tr>
       </table>
     </div>
 
+    <div class="card">
+      <div class="card-title">③ Options Contract Selection</div>
+      <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Applied in the options chain on Webull or Tastytrade — not in TradingView.</p>
+      <table class="crit-table">
+        <tr><td>DTE</td><td>14 – 45 days out</td></tr>
+        <tr><td>Bid/ask spread</td><td>&lt; 10% of premium</td></tr>
+        <tr><td>Open interest</td><td>&gt; 500 at your strike</td></tr>
+        <tr><td>Earnings in window</td><td>None — hard rule; exit or avoid</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin: 12px 0;">
     <div class="card">
       <div class="card-title">Valid vs. Invalid Setup</div>
       <div class="check-row">
@@ -798,6 +828,36 @@
   <div class="alert warn">
     <span class="icon">⚠️</span>
     <span>Scalping requires active screen time from 9:00–10:30 AM ET minimum. Options with ≤3 DTE decay extremely fast. Size small. Losses compound quickly if stops aren't mechanical.</span>
+  </div>
+
+  <div class="section scalp">
+    <div class="section-label scalp">Night Before / Early Morning Prep — Before 8:00 AM</div>
+    <ul class="steps">
+      <li>
+        <div class="step-content">
+          <strong>Night before (after 4:00 PM) — earnings calendar</strong>
+          <span>Check which names are reporting earnings before open the next day. These are either prime candidates (if catalyst is strong) or names to avoid entirely. Use <a href="https://www.barchart.com/stocks/earnings-watch" target="_blank" style="color:var(--scalp);">Barchart Earnings Watch</a> or Webull calendar.</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Night before — note any scheduled macro events</strong>
+          <span>Fed speeches, CPI, jobs report, or major economic data scheduled for the next morning? These move the whole market at open. Know them in advance so you're not caught off guard.</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Morning (as early as 6:00 AM) — check futures</strong>
+          <span>Open TradingView → ES1! (S&P futures) or NQ1! (Nasdaq futures). Are they significantly up or down? This tells you whether the open is likely bullish or bearish before the market opens. Sets your bias for the day.</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>6:00–8:00 AM — early gapper watch (optional)</strong>
+          <span>Pre-market movers start forming as early as 6:00 AM on Finviz or Trade-Ideas. You can begin watching but <strong style="color:#e2e8f0">don't commit to names yet</strong> — volume is too thin before 8:00 AM to be reliable. Watch only.</span>
+        </div>
+      </li>
+    </ul>
   </div>
 
   <div class="section scalp">
