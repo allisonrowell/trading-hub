@@ -224,7 +224,7 @@
   .position .steps li::before { background: var(--position-dim); color: var(--position); }
   .scalp .steps li::before { background: var(--scalp-dim); color: var(--scalp); }
 
-  .step-content strong {
+  .step-content > strong {
     display: block;
     font-weight: 600;
     color: #fff;
@@ -423,6 +423,81 @@
     background: var(--border);
     margin: 24px 0;
   }
+
+  /* BACK-TO-HUB BUTTON */
+  .back-to-hub {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .back-to-hub:hover {
+    color: var(--text);
+    border-color: #334155;
+  }
+
+  /* ROUTINE BLOCKS — wrap weekly and daily routines for visual separation */
+  .routine {
+    background: rgba(59, 130, 246, 0.025);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--swing);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+  }
+  .routine-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--swing-dim);
+  }
+  .routine-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--swing);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .routine-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--swing);
+  }
+  .routine-reference {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+  .routine-reference-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  @media (max-width: 700px) {
+    .routine { padding: 16px; }
+    .routine-title { font-size: 11px; }
+  }
 </style>
 </head>
 <body>
@@ -431,6 +506,7 @@
   <div class="header-top">
     <h1>⬡ TRADING SCREENER HUB</h1>
     <span class="tagline">LJ System · Webull · TradingView</span>
+    <a href="/" class="back-to-hub">← Hub</a>
   </div>
   <div class="tabs">
     <button class="tab active-swing" onclick="switchTab('swing')">📈 Swing / 2–10 Days</button>
@@ -442,8 +518,12 @@
 <!-- ===================== SWING TAB ===================== -->
 <div id="panel-swing" class="panel active">
 
-  <div class="section swing">
-    <div class="section-label swing">Weekly Routine — Sunday Setup (30–45 min)</div>
+  <!-- WEEKLY ROUTINE -->
+  <div class="routine">
+    <div class="routine-header">
+      <span class="routine-num">1</span>
+      <span class="routine-title">Weekly Routine — Sunday Setup (30–45 min)</span>
+    </div>
     <ul class="steps">
       <li>
         <div class="step-content">
@@ -454,7 +534,13 @@
       <li>
         <div class="step-content">
           <strong>Run the TradingView screener + apply sector filter</strong>
-          <span>Screener → Stock Screener → apply your 4 base filters → then add Sector filter matching what's in motion. TradingView sector names: <strong style="color:#e2e8f0">Electronic technology</strong> (XLK) · <strong style="color:#e2e8f0">Finance</strong> (XLF) · <strong style="color:#e2e8f0">Health services / Health technology</strong> (XLV) · <strong style="color:#e2e8f0">Energy minerals</strong> (XLE) · <strong style="color:#e2e8f0">Consumer durables / non-durables / services</strong> (XLY) · <strong style="color:#e2e8f0">Commercial / Distribution services</strong> (XLI) · <strong style="color:#e2e8f0">Utilities</strong> (XLU) · <strong style="color:#e2e8f0">Non-energy minerals</strong> (XLB). Narrow further with industry filter if needed → target 5–15 names.</span>
+          <span>Screener → Stock Screener → apply your 4 base filters (see <strong style="color:#3b82f6">card ① below</strong>) → then add Sector filter matching what's in motion. TradingView sector names: <strong style="color:#e2e8f0">Electronic technology</strong> (XLK) · <strong style="color:#e2e8f0">Finance</strong> (XLF) · <strong style="color:#e2e8f0">Health services / Health technology</strong> (XLV) · <strong style="color:#e2e8f0">Energy minerals</strong> (XLE) · <strong style="color:#e2e8f0">Consumer durables / non-durables / services</strong> (XLY) · <strong style="color:#e2e8f0">Commercial / Distribution services</strong> (XLI) · <strong style="color:#e2e8f0">Utilities</strong> (XLU) · <strong style="color:#e2e8f0">Non-energy minerals</strong> (XLB).</span>
+          <div style="margin-top:10px; padding:11px 13px; background:var(--surface); border-left:2px solid var(--swing); border-radius:4px; color:var(--muted); font-size:12px; line-height:1.6;">
+            <strong style="color:#e2e8f0; display:block; margin-bottom:6px;">Still &gt;20 names after sector? Narrow further:</strong>
+            <strong style="color:#3b82f6;">①</strong> <strong style="color:#e2e8f0">Add Industry filter</strong> — each sector has sub-types (e.g. within Electronic technology: Semiconductors, Software, Internet retail). Pick 1–2 matching today's theme.<br>
+            <strong style="color:#3b82f6;">②</strong> <strong style="color:#e2e8f0">Sort by Change %</strong> descending → take top 10–15 names moving in your direction (positive for calls, negative for puts).<br>
+            <strong style="color:#e2e8f0;">Target:</strong> 5–15 names to chart-read in step 3.
+          </div>
         </div>
       </li>
       <li>
@@ -472,7 +558,7 @@
       <li>
         <div class="step-content">
           <strong>Options check — Barchart then Market Chameleon</strong>
-          <span><strong style="color:#e2e8f0">Barchart:</strong> type ticker → Options tab → check IV Rank (see ② card below). This tells you whether options are fairly priced before you buy. <strong style="color:#e2e8f0">Market Chameleon:</strong> check for unusual options activity and confirm no hidden catalyst (earnings date, FDA decision) falls inside your 14–45 day DTE window. Both checks take 2 minutes per name.</span>
+          <span><strong style="color:#e2e8f0">Barchart:</strong> type ticker → Options tab → check IV Rank (see <strong style="color:#3b82f6">card ② below</strong>). This tells you whether options are fairly priced before you buy. <strong style="color:#e2e8f0">Market Chameleon:</strong> check for unusual options activity and confirm no hidden catalyst (earnings date, FDA decision) falls inside your 14–45 day DTE window. Both checks take 2 minutes per name.</span>
         </div>
       </li>
       <li>
@@ -482,10 +568,55 @@
         </div>
       </li>
     </ul>
+
+    <div class="routine-reference">
+      <div class="routine-reference-label">↓ Reference cards — used in the steps above</div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">① TradingView Screener Filters</div>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">These 4 filters are the only ones that belong in TradingView. Save as "Swing Candidates."</p>
+          <table class="crit-table">
+            <tr><td>Exchange</td><td>NYSE + NASDAQ</td></tr>
+            <tr><td>Price</td><td>$20 – $500</td></tr>
+            <tr><td>Avg Volume (30D)</td><td>&gt; 5,000,000</td></tr>
+            <tr><td>ATR 14</td><td>&gt; 2%</td></tr>
+          </table>
+          <div style="margin-top:10px; padding:8px 10px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted);">
+            Everything else is checked <strong style="color:var(--text);">after</strong> you have your 2–3 candidates — not here.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">② IV Rank Check — Barchart</div>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">After LJ's method confirms setup. Barchart → ticker → Options tab → IV Rank at top.</p>
+          <table class="crit-table">
+            <tr><td>IV Rank 20–50</td><td>Normal — good to trade</td></tr>
+            <tr><td>Below 20</td><td>Cheap — buying fine</td></tr>
+            <tr><td>50–70</td><td>Expensive — size smaller</td></tr>
+            <tr><td>Above 70</td><td>Very expensive — avoid buying; check for catalyst</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-title">③ Options Contract Selection</div>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Applied in the options chain on Webull or Tastytrade — not in TradingView.</p>
+          <table class="crit-table">
+            <tr><td>DTE</td><td>14 – 45 days out</td></tr>
+            <tr><td>Bid/ask spread</td><td>&lt; 10% of premium</td></tr>
+            <tr><td>Open interest</td><td>&gt; 500 at your strike</td></tr>
+            <tr><td>Earnings in window</td><td>None — hard rule; exit or avoid</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="section swing">
-    <div class="section-label swing">Daily Routine — Mon–Fri (10–15 min · Do this 8:00–9:15 AM ET)</div>
+  <!-- DAILY ROUTINE -->
+  <div class="routine">
+    <div class="routine-header">
+      <span class="routine-num">2</span>
+      <span class="routine-title">Daily Routine — Mon–Fri (10–15 min · 8:00–9:15 AM ET)</span>
+    </div>
     <ul class="steps">
       <li>
         <div class="step-content">
@@ -512,45 +643,6 @@
         </div>
       </li>
     </ul>
-  </div>
-
-  <!-- THREE COLUMN CARDS -->
-  <div class="grid-3">
-    <div class="card">
-      <div class="card-title">① TradingView Screener Filters</div>
-      <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">These 4 filters are the only ones that belong in TradingView. Save as "Swing Candidates."</p>
-      <table class="crit-table">
-        <tr><td>Exchange</td><td>NYSE + NASDAQ</td></tr>
-        <tr><td>Price</td><td>$20 – $500</td></tr>
-        <tr><td>Avg Volume (30D)</td><td>&gt; 5,000,000</td></tr>
-        <tr><td>ATR 14</td><td>&gt; 2%</td></tr>
-      </table>
-      <div style="margin-top:10px; padding:8px 10px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted);">
-        Everything else is checked <strong style="color:var(--text);">after</strong> you have your 2–3 candidates — not here.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">② IV Rank Check — Barchart</div>
-      <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">After LJ's method confirms setup. Barchart → ticker → Options tab → IV Rank at top.</p>
-      <table class="crit-table">
-        <tr><td>IV Rank 20–50</td><td>Normal — good to trade</td></tr>
-        <tr><td>Below 20</td><td>Cheap — buying fine</td></tr>
-        <tr><td>50–70</td><td>Expensive — size smaller</td></tr>
-        <tr><td>Above 70</td><td>Very expensive — avoid buying; check for catalyst</td></tr>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title">③ Options Contract Selection</div>
-      <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Applied in the options chain on Webull or Tastytrade — not in TradingView.</p>
-      <table class="crit-table">
-        <tr><td>DTE</td><td>14 – 45 days out</td></tr>
-        <tr><td>Bid/ask spread</td><td>&lt; 10% of premium</td></tr>
-        <tr><td>Open interest</td><td>&gt; 500 at your strike</td></tr>
-        <tr><td>Earnings in window</td><td>None — hard rule; exit or avoid</td></tr>
-      </table>
-    </div>
   </div>
 
   <div style="margin: 12px 0;">
