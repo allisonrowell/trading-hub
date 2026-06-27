@@ -518,6 +518,39 @@
 <!-- ===================== SWING TAB ===================== -->
 <div id="panel-swing" class="panel active">
 
+  <!-- AT-A-GLANCE QUICK REFERENCE -->
+  <div style="margin-bottom: 18px;">
+    <div class="card" style="border-left: 3px solid var(--swing);">
+      <div class="card-title">⚡ Routines at a Glance — Quick Reference</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">The whole workflow in 10 lines. Detailed steps below.</p>
+      <div class="grid-2" style="gap: 18px;">
+        <div>
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:var(--text); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.08em; padding-bottom:6px; border-bottom:1px solid var(--swing-dim);">🗓 Sunday Setup · 30–45 min</div>
+          <ol style="list-style:none; padding:0; margin:0; font-size:12.5px; color:var(--muted); line-height:1.85;">
+            <li><strong style="color:var(--swing); margin-right:8px;">1.</strong>Sector check — XLK/XLF first → <strong style="color:var(--text);">call or put week</strong></li>
+            <li><strong style="color:var(--swing); margin-right:8px;">2.</strong>Run screener — 4 base filters + sector → <strong style="color:var(--text);">5–15 names</strong></li>
+            <li><strong style="color:var(--swing); margin-right:8px;">3.</strong>LJ method — S/R (3+ touches) · 4H · <strong style="color:var(--text);">3 of 4 indicators</strong></li>
+            <li><strong style="color:var(--swing); margin-right:8px;">4.</strong>Write thesis for the <strong style="color:var(--text);">2–3 finalists</strong></li>
+            <li><strong style="color:var(--swing); margin-right:8px;">5.</strong>Barchart <strong style="color:var(--text);">IV rank</strong> + Market Chameleon <strong style="color:var(--text);">catalysts</strong></li>
+            <li><strong style="color:var(--swing); margin-right:8px;">6.</strong>Log to Notion — ticker · thesis · score · pending</li>
+          </ol>
+        </div>
+        <div>
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:var(--text); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.08em; padding-bottom:6px; border-bottom:1px solid var(--swing-dim);">⏰ Daily · 10–15 min · 8:00–9:15 AM ET</div>
+          <ol style="list-style:none; padding:0; margin:0; font-size:12.5px; color:var(--muted); line-height:1.85;">
+            <li><strong style="color:var(--swing); margin-right:8px;">1.</strong>Open <strong style="color:var(--text);">your 2–3 watchlist names only</strong> — ignore the rest</li>
+            <li><strong style="color:var(--swing); margin-right:8px;">2.</strong>Has price reached your <strong style="color:var(--text);">entry trigger</strong>?</li>
+            <li><strong style="color:var(--swing); margin-right:8px;">3.</strong>Setup still valid — 4H + 4 indicators + <strong style="color:var(--text);">no earnings</strong> in DTE?</li>
+            <li><strong style="color:var(--swing); margin-right:8px;">4.</strong>If invalid → mark rejected, <strong style="color:var(--text);">no revenge trade</strong></li>
+          </ol>
+          <div style="margin-top:14px; padding:10px 12px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+            All checks pass → drop to the <strong style="color:#10b981;">Entry · Stop · Target · R:R</strong> card below for the trade math.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- WEEKLY ROUTINE -->
   <div class="routine">
     <div class="routine-header">
@@ -731,6 +764,64 @@
         Full reference (3 core concepts + buyers-vs-sellers read) lives in the
         <a href="/lj-system.html" style="color:var(--swing); text-decoration:none; font-weight:500;">LJ Training Hub → Quick Reference</a>.
       </div>
+    </div>
+  </div>
+
+  <!-- SETUP VALID → TRADE MATH -->
+  <div style="margin: 12px 0;">
+    <div class="card" style="border-left: 3px solid #10b981;">
+      <div class="card-title">✅ Setup Valid → Entry · Stop · Target · R:R</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Once Valid/Invalid + S/R Lookback + VRVP all clear, here's the trade math. Same logic both directions — flip "above/below" for puts.</p>
+
+      <div class="grid-2" style="gap: 12px;">
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">📍 Entry</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            <strong style="color:#3b82f6;">Calls (long):</strong> at resistance <strong style="color:var(--text);">break</strong> (price holding above) <em>OR</em> pullback to support that's <strong style="color:var(--text);">holding</strong>.<br>
+            <strong style="color:#ef4444;">Puts (short):</strong> at support <strong style="color:var(--text);">break</strong> (price holding below) <em>OR</em> pullback to resistance that's <strong style="color:var(--text);">holding</strong>.<br>
+            <strong style="color:var(--text);">Rule:</strong> at it and holding. Not "close to."
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">🛑 Stop Loss</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            <strong style="color:#3b82f6;">Long:</strong> just <strong style="color:var(--text);">below</strong> the support that held.<br>
+            <strong style="color:#ef4444;">Short:</strong> just <strong style="color:var(--text);">above</strong> the resistance that held.<br>
+            <strong style="color:var(--text);">Buffer 5–10¢</strong> — wicks lie. Don't sit right on the level.<br>
+            <strong style="color:#ef4444;">Set at entry order time</strong> — never mental.
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">🎯 Target</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            <strong style="color:#3b82f6;">Calls:</strong> next <strong style="color:var(--text);">resistance above</strong> entry.<br>
+            <strong style="color:#ef4444;">Puts:</strong> next <strong style="color:var(--text);">support below</strong> entry.<br>
+            Same S/R rules — 3+ touches, drawn on daily.<br>
+            Use S/R Lookback card to identify the next level.
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">📐 R:R Math</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.85; font-family:var(--mono);">
+            <strong style="color:var(--text);">R</strong> = entry − stop (long) | stop − entry (short)<br>
+            <strong style="color:var(--text);">Reward</strong> = target − entry (long) | entry − target (short)<br>
+            <strong style="color:var(--text);">R:R</strong> = Reward ÷ R<br>
+            <span style="color:#10b981;"><strong>≥ 2R → take.</strong></span> <span style="color:#ef4444;"><strong>&lt; 2R → skip.</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:14px; padding:12px 14px; background:var(--surface2); border:1px dashed var(--border); border-radius:6px; font-size:12.5px; color:var(--muted); line-height:1.7;">
+        <strong style="color:var(--text); display:block; margin-bottom:6px;">Worked example — NVDA long</strong>
+        Entry <strong style="color:var(--text);">$118</strong> (broke and held) · Stop <strong style="color:var(--text);">$116.50</strong> · Target <strong style="color:var(--text);">$124</strong> (next resistance).<br>
+        R = $118 − $116.50 = <strong style="color:var(--text);">$1.50</strong> · Reward = $124 − $118 = <strong style="color:var(--text);">$6</strong> · R:R = $6 ÷ $1.50 = <strong style="color:#10b981;">4R · take it ✓</strong>
+      </div>
+
     </div>
   </div>
 
