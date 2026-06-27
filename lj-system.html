@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Training Hub — Dr. Rowell</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b25;
+    --bg3: #1e2535;
+    --border: #2a3347;
+    --border2: #1e2535;
+    --text: #e8edf5;
+    --text2: #8a9ab8;
+    --text3: #5a6a85;
+    --accent-lj: #f7c14f;
+    --accent-rules: #34c98a;
+    --accent-ref: #a78bfa;
+    --tag-req: #e05252;
+    --tag-req-bg: rgba(224,82,82,0.12);
+    --tag-warn: #e09a30;
+    --tag-warn-bg: rgba(224,154,48,0.12);
+    --tag-ok: #34c98a;
+    --tag-ok-bg: rgba(52,201,138,0.12);
+    --tag-info: #f7c14f;
+    --tag-info-bg: rgba(247,193,79,0.12);
+    --mono: 'SF Mono','Fira Code','Cascadia Code',monospace;
+    --sans: -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+    --radius: 8px;
+    --radius-sm: 5px;
+  }
+  .light {
+    --bg: #f8f9fc; --bg2: #ffffff; --bg3: #f1f3f8; --border: #dde2ed; --border2: #eaeef5;
+    --text: #1a2035; --text2: #4a5878; --text3: #8a9ab8;
+    --accent-lj: #c8960a; --accent-rules: #16a34a; --accent-ref: #7c3aed;
+    --tag-req: #dc2626; --tag-req-bg: rgba(220,38,38,0.08);
+    --tag-warn: #d97706; --tag-warn-bg: rgba(217,119,6,0.08);
+    --tag-ok: #16a34a; --tag-ok-bg: rgba(22,163,74,0.08);
+    --tag-info: #c8960a; --tag-info-bg: rgba(200,150,10,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.5; transition: background 0.2s, color 0.2s; }
+
+  .header { padding: 16px 24px 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .header-left { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .header-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .header-sub { font-size: 11px; color: var(--text3); }
+  .header-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; background: rgba(247,193,79,0.12); color: var(--accent-lj); border: 1px solid rgba(247,193,79,0.25); border-radius: 20px; padding: 2px 8px; margin-left: 6px; }
+  .theme-toggle { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .theme-toggle:hover { color: var(--text); border-color: var(--text3); }
+
+  .tab-bar { display: flex; gap: 2px; overflow-x: auto; }
+  .tab { padding: 7px 14px; font-size: 11px; font-weight: 500; color: var(--text3); cursor: pointer; border: none; background: transparent; border-radius: var(--radius-sm) var(--radius-sm) 0 0; transition: color 0.15s, background 0.15s; position: relative; white-space: nowrap; letter-spacing: 0.01em; }
+  .tab:hover { color: var(--text2); background: var(--bg3); }
+  .tab.active-lj { color: var(--accent-lj); background: rgba(247,193,79,0.07); }
+  .tab.active-lj::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-lj); border-radius: 2px 2px 0 0; }
+  .tab.active-rules { color: var(--accent-rules); background: rgba(52,201,138,0.07); }
+  .tab.active-rules::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-rules); border-radius: 2px 2px 0 0; }
+  .tab.active-ref { color: var(--accent-ref); background: rgba(167,139,250,0.07); }
+  .tab.active-ref::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-ref); border-radius: 2px 2px 0 0; }
+  .tab.active-live { color: #ff6b6b; background: rgba(255,107,107,0.07); }
+  .tab.active-live::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: #ff6b6b; border-radius: 2px 2px 0 0; }
+
+  .panel { display: none; padding: 20px 24px 60px; }
+  .panel.active { display: block; }
+
+  .quick-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(155px,1fr)); gap: 7px; margin-bottom: 18px; }
+  .qcard { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 11px; }
+  .qcard.lj { border-top: 2px solid var(--accent-lj); }
+  .qcard.rules { border-top: 2px solid var(--accent-rules); }
+  .qcard.live { border-top: 2px solid #ff6b6b; }
+  .qcard-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 4px; }
+  .qcard-val { font-size: 11px; color: var(--text2); line-height: 1.55; }
+  .qcard-val strong { color: var(--text); font-weight: 600; }
+
+  .sblock { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 7px; }
+  .sblock.lj .sblock-hdr { border-left: 3px solid var(--accent-lj); }
+  .sblock.rules .sblock-hdr { border-left: 3px solid var(--accent-rules); }
+  .sblock.ref .sblock-hdr { border-left: 3px solid var(--accent-ref); }
+  .sblock.live-block .sblock-hdr { border-left: 3px solid #ff6b6b; }
+  .sblock-hdr { display: flex; align-items: center; justify-content: space-between; padding: 7px 13px; background: var(--bg3); border-bottom: 1px solid var(--border2); }
+  .sblock-hdr-left { display: flex; align-items: center; gap: 8px; }
+  .step-num { width: 17px; height: 17px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); font-size: 9px; font-weight: 700; color: var(--text3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-num.gold { border-color: rgba(247,193,79,0.4); color: var(--accent-lj); }
+  .step-num.green { border-color: rgba(52,201,138,0.4); color: var(--accent-rules); }
+  .step-num.red { border-color: rgba(255,107,107,0.4); color: #ff6b6b; }
+  .sblock-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); }
+
+  .ind-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 7px; padding: 12px 13px; }
+  .ind-card { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .ind-card-name { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 7px; }
+  .ind-card-name.gold { color: var(--accent-lj); }
+  .ind-card-name.green { color: var(--accent-rules); }
+  .ind-card-name.blue { color: #4f8ef7; }
+  .ind-card-name.purple { color: var(--accent-ref); }
+  .ind-rule { font-size: 11.5px; color: var(--text2); line-height: 1.7; }
+  .ind-rule span { display: block; padding: 2px 0; border-bottom: 1px solid var(--border2); }
+  .ind-rule span:last-child { border-bottom: none; }
+  .bull { color: var(--accent-rules); font-weight: 600; }
+  .bear { color: #e05252; font-weight: 600; }
+  .warn { color: var(--accent-lj); font-weight: 600; }
+
+  .col-hdr { display: grid; gap: 10px; padding: 5px 13px; background: var(--bg3); border-bottom: 1px solid var(--border2); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+  .g3 { grid-template-columns: 1.2fr 2.8fr 0.9fr; }
+  .g2 { grid-template-columns: 1.5fr 3fr; }
+  .row { display: grid; gap: 10px; padding: 8px 13px; border-top: 1px solid var(--border2); align-items: start; }
+  .f { font-size: 12px; color: var(--text); line-height: 1.5; font-weight: 500; }
+  .fm { font-size: 11px; color: var(--text3); }
+  .fp { font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+  .drill { font-size: 11px; color: var(--text3); line-height: 1.6; margin-top: 4px; border-left: 2px solid var(--border); padding-left: 7px; }
+  .drill span { display: block; margin-bottom: 1px; }
+
+  .tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: middle; margin-left: 4px; }
+  .tag-r { background: var(--tag-req-bg); color: var(--tag-req); }
+  .tag-w { background: var(--tag-warn-bg); color: var(--tag-warn); }
+  .tag-g { background: var(--tag-ok-bg); color: var(--tag-ok); }
+  .tag-i { background: var(--tag-info-bg); color: var(--accent-lj); }
+
+  .flow { display: flex; gap: 0; padding: 12px 13px; align-items: stretch; flex-wrap: wrap; }
+  .flow-step { flex: 1; min-width: 120px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; position: relative; margin-right: 18px; }
+  .flow-step:last-child { margin-right: 0; }
+  .flow-step::after { content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 13px; }
+  .flow-step:last-child::after { display: none; }
+  .flow-step-num { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent-lj); margin-bottom: 4px; }
+  .flow-step-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .flow-step-desc { font-size: 10.5px; color: var(--text3); line-height: 1.5; }
+
+  .rule-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 6px; }
+  .rule-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .rule-card-hdr { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--bg3); border-bottom: 1px solid var(--border2); }
+  .rule-trigger { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--accent-lj); }
+  .rule-copy { font-size: 9px; color: var(--text3); cursor: pointer; padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border); background: transparent; transition: all 0.1s; }
+  .rule-copy:hover { color: var(--text); border-color: var(--text3); }
+  .rule-copy.copied { color: var(--tag-ok); border-color: var(--tag-ok); }
+  .rule-body { padding: 8px 10px; font-size: 11.5px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
+
+  .checklist { font-size: 11.5px; color: var(--text2); line-height: 2.1; padding: 10px 13px; }
+  .checklist span { display: block; }
+
+  /* LIVE REFERENCE — big readable cards for active trading */
+  .live-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 10px; margin-bottom: 14px; }
+  .live-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .live-card-hdr { padding: 8px 14px; background: var(--bg3); border-bottom: 1px solid var(--border2); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .live-card-hdr.red { color: #ff6b6b; }
+  .live-card-hdr.green { color: var(--accent-rules); }
+  .live-card-hdr.gold { color: var(--accent-lj); }
+  .live-card-hdr.purple { color: var(--accent-ref); }
+  .live-card-body { padding: 10px 14px; }
+  .live-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border2); font-size: 12px; }
+  .live-row:last-child { border-bottom: none; }
+  .live-label { color: var(--text2); font-weight: 500; }
+  .live-bull { color: var(--accent-rules); font-weight: 700; font-size: 11px; }
+  .live-bear { color: #e05252; font-weight: 700; font-size: 11px; }
+  .live-warn { color: var(--accent-lj); font-weight: 700; font-size: 11px; }
+
+  /* BIG DECISION BOX */
+  .decision-box { border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  .decision-box.go { background: rgba(52,201,138,0.08); border: 1px solid rgba(52,201,138,0.25); }
+  .decision-box.stop { background: rgba(224,82,82,0.08); border: 1px solid rgba(224,82,82,0.25); }
+  .decision-box.caution { background: rgba(247,193,79,0.08); border: 1px solid rgba(247,193,79,0.25); }
+  .decision-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .decision-title.go { color: var(--accent-rules); }
+  .decision-title.stop { color: #e05252; }
+  .decision-title.caution { color: var(--accent-lj); }
+  .decision-items { font-size: 12px; color: var(--text2); line-height: 2; }
+  .decision-items span { display: block; }
+
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-ref); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-top: 20px; }
+  .section-label:first-child { margin-top: 0; }
+  .note-box { background: rgba(247,193,79,0.06); border: 1px solid rgba(247,193,79,0.2); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 11.5px; color: var(--text2); line-height: 1.6; margin: 8px 13px; }
+  .note-box strong { color: var(--accent-lj); }
+  .alert-box { background: rgba(224,82,82,0.06); border: 1px solid rgba(224,82,82,0.2); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 11.5px; color: var(--text2); line-height: 1.6; margin: 8px 0; }
+  .alert-box strong { color: var(--tag-req); }
+
+  .dlabel { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); padding: 4px 13px; background: var(--bg); border-top: 1px solid var(--border2); }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px; font-size: 12px; color: var(--text); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 999; }
+  .toast.show { opacity: 1; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-left">
+      <span class="header-title">Trading Training Hub</span>
+      <span class="header-sub">Dr. Rowell — LJ Mentorship</span>
+      <span class="header-badge">Session 1</span>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active-lj" onclick="sw('lesson1',this,'lj')">Lesson 1 — Setup</button>
+    <button class="tab" onclick="sw('rules',this,'rules')">Trade Rules</button>
+    <button class="tab" onclick="sw('watchlist',this,'ref')">Top 10 S&amp;P</button>
+    <button class="tab" onclick="sw('homework',this,'rules')">Homework</button>
+    <button class="tab" onclick="sw('traderef',this,'ref')">Quick Reference</button>
+    <button class="tab" onclick="sw('liveref',this,'live')">🔴 Live Trading</button>
+  </div>
+</div>
+
+<!-- ══════ LESSON 1 ══════ -->
+<div id="lesson1" class="panel active">
+  <div class="quick-grid">
+    <div class="qcard lj"><div class="qcard-label">Mentor</div><div class="qcard-val"><strong>La'Darius Jackson</strong> — LJ Enterprises</div></div>
+    <div class="qcard lj"><div class="qcard-label">Session 1 date</div><div class="qcard-val">June 15, 2026 — Setup &amp; Onboarding</div></div>
+    <div class="qcard lj"><div class="qcard-label">Live account</div><div class="qcard-val">Webull · $500 · <strong>+$55 net</strong> (2 weeks)</div></div>
+    <div class="qcard lj"><div class="qcard-label">Charting</div><div class="qcard-val">TradingView — save indicator template after setup</div></div>
+    <div class="qcard rules"><div class="qcard-label">Paper trading</div><div class="qcard-val">Robinhood — watchlist only, not true paper simulator</div></div>
+    <div class="qcard rules"><div class="qcard-label">Best trade window</div><div class="qcard-val">Open → 11 AM for day trades. Swings set up throughout day.</div></div>
+  </div>
+
+  <div class="sblock lj">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">1</div><span class="sblock-title">Analysis Flow — Always Top-Down</span></div><span class="tag tag-i">every trade</span></div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-step-num">Step 1</div><div class="flow-step-title">Day Chart</div><div class="flow-step-desc">Ground zero. Sets overall bias — bullish or bearish. Always start here.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 2</div><div class="flow-step-title">4-Hour Chart</div><div class="flow-step-desc">Confirms intermediate trend. 2 candles on 4hr = 1 day candle.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Step 3</div><div class="flow-step-title">1-Minute Chart</div><div class="flow-step-desc">Times the entry. Only after Day bias confirmed.</div></div>
+      <div class="flow-step"><div class="flow-step-num">Result</div><div class="flow-step-title">Trade or Skip</div><div class="flow-step-desc">All align → trade. Conflicting → skip or drop timeframe.</div></div>
+    </div>
+    <div class="note-box"><strong>MACD domino effect:</strong> MACD crossovers cascade across timeframes — 4hr crossover precedes Day, Day precedes Week. They all work into each other. A pop from one timeframe's crossover pushes the stock higher, pulling the next timeframe's MACD closer to crossing. Use this sequence to time entries.</div>
+    <div class="note-box"><strong>Timeframes to pin in TradingView:</strong> 1 min · 4 hr · Day · Week. Trade on 1-min. Mark up on Day first. Use 5-min if 1-min feels too fast — it's slightly slower but still valid.</div>
+  </div>
+
+  <div class="sblock lj">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">2</div><span class="sblock-title">Indicator Stack — Configure &amp; Save Template</span></div><span class="tag tag-i">4 indicators</span></div>
+    <div class="ind-grid">
+      <div class="ind-card">
+        <div class="ind-card-name gold">MA Ribbon</div>
+        <div class="ind-rule">
+          <span>SMA 20 — <span class="bull">green</span> · SMA 50 — <span class="warn">orange</span></span>
+          <span>Remove bottom two MAs — keep only 20 + 50</span>
+          <span><span class="bull">Green above orange</span> = uptrend → calls</span>
+          <span><span class="bear">Orange above green</span> = downtrend → puts</span>
+          <span>20 crossing under 50 = stock may be going down</span>
+        </div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-card-name green">RSI</div>
+        <div class="ind-rule">
+          <span>Enter when purple number is <span class="bull">45–55</span></span>
+          <span>Slightly outside is OK — it's about direction + room</span>
+          <span><span class="bear">Above 70</span> = overbought, high risk of reversal</span>
+          <span><span class="bull">Below 30</span> = oversold</span>
+          <span>RSI tops out ~70 — confirms how much space is left</span>
+        </div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-card-name blue">MACD — Trade heavy options on this one</div>
+        <div class="ind-rule">
+          <span><span class="bull">Blue above orange</span> = stock going to spike up → calls</span>
+          <span><span class="bear">Orange above blue</span> = stock going to spike down → puts</span>
+          <span><span class="bull">Green histogram</span> = buying pressure = price going up</span>
+          <span><span class="bear">Dark red histogram</span> = strong selling pressure</span>
+          <span><span class="warn">Light red histogram</span> = selling strength fading → watch for reversal</span>
+          <span>Histogram color confirms which line is on top</span>
+        </div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-card-name purple">Stoch RSI — K-line only</div>
+        <div class="ind-rule">
+          <span>Remove D-line — it's just an average of K (noise)</span>
+          <span>Range: 0–100 · K pointing up = momentum up</span>
+          <span><span class="bull">Cross above 20</span> = confirmed upward momentum — safe entry zone</span>
+          <span>Wait for cross above 20 before entering from downside</span>
+          <span><span class="warn">Above 80</span> = last leg of the race — sharp reversal risk</span>
+          <span>0 doesn't mean it crosses 20 immediately — wait for confirmation</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert-box"><strong>Conflicting indicators rule (LJ exact):</strong> 2 bullish / 2 bearish → skip the trade or drop to a lower timeframe. 3-to-1 situations are tradeable. When confused, step down: Day → 4hr → 1hr. By the 1hr, something usually makes sense.</div>
+  </div>
+
+  <div class="sblock lj">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">3</div><span class="sblock-title">Support &amp; Resistance — LJ's Rules Direct from Session</span></div><span class="tag tag-i">draw on Day first</span></div>
+    <div class="col-hdr g3"><span>Concept</span><span>Rule</span><span>Status</span></div>
+    <div class="row g3"><div class="f">Support</div><div class="fp">Below current price — always. One line.</div><div class="fm"><span class="tag tag-r">Required</span></div></div>
+    <div class="row g3"><div class="f">Resistance</div><div class="fp">Above current price — always. One line. If two are above, that's wrong.</div><div class="fm"><span class="tag tag-r">Required</span></div></div>
+    <div class="row g3"><div class="f">Valid level</div><div class="fp">At least 3 touches. Look for candle color changes + clusters = indecision. Not single spike highs/lows.</div><div class="fm"><span class="tag tag-r">Hard rule</span></div></div>
+    <div class="row g3"><div class="f">Where to draw</div><div class="fp">Through the zone of most activity — mix of bodies and wicks is correct. Don't chase outlier wicks.</div><div class="fm"><span class="tag tag-w">Technique</span></div></div>
+    <div class="row g3"><div class="f">After breakout</div><div class="fp">Always expect a retest. Price coming back to confirm = locking the door. Not a reason to exit.</div><div class="fm"><span class="tag tag-i">Key concept</span></div></div>
+    <div class="row g3"><div class="f">How far back</div><div class="fp">Not specified by LJ. Find 3 touches however far back needed. Ask at Session 2.</div><div class="fm"><span class="tag tag-w">Confirm S2</span></div></div>
+    <div class="row g3"><div class="f">Future goal</div><div class="fp">2 above + 2 below current price. Not the current homework — that's one of each.</div><div class="fm"><span class="tag tag-i">Later</span></div></div>
+    <div class="row g3"><div class="f">Strike selection</div><div class="fp">Calls → nearest resistance. Puts → nearest support. Always nearest level.</div><div class="fm"><span class="tag tag-g">Always</span></div></div>
+    <div class="dlabel">Clean your chart first: trash can → Remove All Drawings and Indicators. Option+R to reset view.</div>
+  </div>
+
+  <div class="sblock lj">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num gold">4</div><span class="sblock-title">Platform Setup</span></div><span class="tag tag-w">do once</span></div>
+    <div class="col-hdr g3"><span>Platform</span><span>Purpose</span><span>Status</span></div>
+    <div class="row g3"><div class="f">TradingView</div><div class="fp">Charting. Save indicator template. Pin: 1min, 4hr, Day, Week. Wait for July 1 sale before upgrading (~$217/yr vs $60/mo).</div><div class="fm"><span class="tag tag-g">Active</span></div></div>
+    <div class="row g3"><div class="f">Robinhood</div><div class="fp">Day trading UX. Watchlist = pseudo paper trading (no true paper). Evaluate before Session 2.</div><div class="fm"><span class="tag tag-w">Evaluate</span></div></div>
+    <div class="row g3"><div class="f">Webull</div><div class="fp">Current live account ($500, +$55 net). Keep open. LJ says it's a solid platform.</div><div class="fm"><span class="tag tag-g">Active</span></div></div>
+    <div class="row g3"><div class="f">Fidelity</div><div class="fp">Legacy broker, 100+ years. Better for slower/long-term trading and bigger positions. Not for active day trading. "Things go in but don't really come out."</div><div class="fm"><span class="tag tag-i">Long-term only</span></div></div>
+    <div class="row g3"><div class="f">Charles Schwab / TOS</div><div class="fp">Have account, unfunded. Not prioritized yet.</div><div class="fm"><span class="tag tag-w">On hold</span></div></div>
+    <div class="dlabel">Good to separate goals: Robinhood for active day trading · Fidelity for long-term / dividends / equity</div>
+  </div>
+</div>
+
+<!-- ══════ TRADE RULES ══════ -->
+<div id="rules" class="panel">
+  <div class="quick-grid">
+    <div class="qcard rules"><div class="qcard-label">Stop loss</div><div class="qcard-val"><strong>Set at entry.</strong> Not mentally — at the same time you enter.</div></div>
+    <div class="qcard rules"><div class="qcard-label">Entry window</div><div class="qcard-val">Wait <strong>5–10 min after open.</strong> Need structure first.</div></div>
+    <div class="qcard rules"><div class="qcard-label">Late alert</div><div class="qcard-val">Ask LJ: <strong>"What's your average?"</strong> before entering.</div></div>
+    <div class="qcard rules"><div class="qcard-label">Going long</div><div class="qcard-val">Longer expiration = more time to reach target. Calls when stock expected to go up.</div></div>
+    <div class="qcard rules"><div class="qcard-label">W pattern</div><div class="qcard-val">Double bottom = reversal incoming. Wait for break above the middle peak.</div></div>
+    <div class="qcard rules"><div class="qcard-label">Known leak</div><div class="qcard-val">Mental stops not executed. IWM lesson: -95% holding a 0DTE. Never again.</div></div>
+  </div>
+
+  <div class="sblock rules">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">✓</div><span class="sblock-title">Stop Loss — LJ's Exact Words</span></div><span class="tag tag-r">every trade</span></div>
+    <div class="alert-box"><strong>"You can't just let it go to zero. Bad habit. Cut it, don't just let it go all the way down."</strong><br>A mental stop that you don't act on is not a stop. It's hope. Getting stopped out is the point — protection, not failure. Many traders avoid stops because it kicks them out of trades. That's the whole point.</div>
+    <div class="col-hdr g2"><span>Rule</span><span>Detail</span></div>
+    <div class="row g2"><div class="f">Place at entry</div><div class="fp">Set stop loss order at the same time you enter — not after it moves against you.</div></div>
+    <div class="row g2"><div class="f">Mental stops fail</div><div class="fp">IWM trade (June 15): mental stop at -$20. Didn't act. Position dropped ~95%. Cost: $50–60. The stop existed. The execution didn't.</div></div>
+    <div class="row g2"><div class="f">Mo's approach ≠ yours</div><div class="fp">"She doesn't do stop losses — she IS a stop loss." Different risk profile. Don't inherit someone else's style.</div></div>
+    <div class="row g2"><div class="f">At -$20 / 30-40%</div><div class="fp">That was the mental stop. That was when to get out. The moment you said you would get out is the moment to get out.</div></div>
+    <div class="row g2"><div class="f">0DTE decay</div><div class="fp">Zero DTE options decay extremely fast. If it's going against you on a 0DTE, it is NOT coming back. Cut immediately.</div></div>
+  </div>
+
+  <div class="sblock rules">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">✓</div><span class="sblock-title">Entry Checklist — Pre-Trade</span></div><span class="tag tag-i">before every trade</span></div>
+    <div class="checklist">
+      <span>☐ Day chart bias identified — bullish or bearish</span>
+      <span>☐ At least 3 indicators agree — if 2/2 split, skip or drop timeframe</span>
+      <span>☐ RSI purple number in 45–55 range (slightly outside OK)</span>
+      <span>☐ Stoch RSI K-line has crossed above 20 — momentum confirmed</span>
+      <span>☐ Support drawn below current price (3+ touches)</span>
+      <span>☐ Resistance drawn above current price (3+ touches)</span>
+      <span>☐ Strike = nearest resistance (calls) or nearest support (puts)</span>
+      <span>☐ 5–10 minutes after open have passed — no trades at bell</span>
+      <span>☐ Stop loss order placed at same time as entry</span>
+      <span>☐ Chart is clean — old lines removed before drawing new ones</span>
+    </div>
+  </div>
+
+  <div class="sblock rules">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">✓</div><span class="sblock-title">Live Session Protocol — Following LJ's Alerts</span></div><span class="tag tag-w">every live call</span></div>
+    <div class="col-hdr g2"><span>Situation</span><span>Action</span></div>
+    <div class="row g2"><div class="f">Feel late on a call</div><div class="fp">Ask in voice chat: "What's your average?" — tells you if entry is still valid.</div></div>
+    <div class="row g2"><div class="f">Contract near LJ's avg</div><div class="fp">Entry may still be valid. Get in. You can also ask: "Is this trade still good to get in on?"</div></div>
+    <div class="row g2"><div class="f">Contract far above LJ's avg</div><div class="fp">Wait for the next setup. The move already happened. Let it go.</div></div>
+    <div class="row g2"><div class="f">Want to ask a question</div><div class="fp">Say "Hey LJ" in voice — people are quiet, listening. Chat fills up fast, voice is cleaner.</div></div>
+    <div class="row g2"><div class="f">Once you're in a trade</div><div class="fp">Stay on THAT chart. Don't follow LJ around to other tickers. He's watching it on a back monitor. Your job is to manage your position.</div></div>
+    <div class="row g2"><div class="f">LJ says "watch" a level</div><div class="fp">"Watch" = wait for confirmation before entering. Not an immediate entry signal. Watch a few candles first.</div></div>
+  </div>
+
+  <div class="sblock rules">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">✓</div><span class="sblock-title">Candle Anatomy — LJ's Framework</span></div><span class="tag tag-i">from session transcript</span></div>
+    <div class="col-hdr g2"><span>Element</span><span>Meaning</span></div>
+    <div class="row g2"><div class="f">Wick</div><div class="fp">Price was there that day but didn't stay. Shows test/rejection. Not the closing reality.</div></div>
+    <div class="row g2"><div class="f">Body</div><div class="fp">The actual gain or loss for that candle period. This is what the market committed to.</div></div>
+    <div class="row g2"><div class="f">Color change</div><div class="fp">Green → red or red → green = indecision. This is where you draw your S/R levels.</div></div>
+    <div class="row g2"><div class="f">Weekend gap up</div><div class="fp">Stock up big overnight/weekend = people will take profits at open = puts opportunity. IWM +$5 example from session.</div></div>
+  </div>
+</div>
+
+<!-- ══════ TOP 10 S&P ══════ -->
+<div id="watchlist" class="panel">
+  <div class="quick-grid">
+    <div class="qcard lj"><div class="qcard-label">Homework</div><div class="qcard-val">1 support + 1 resistance on each — send screenshots to LJ</div></div>
+    <div class="qcard lj"><div class="qcard-label">Chart</div><div class="qcard-val">Daily chart — find 3 touches, however far back needed</div></div>
+    <div class="qcard lj"><div class="qcard-label">Rule</div><div class="qcard-val">1 above current price · 1 below current price. Two above = wrong.</div></div>
+    <div class="qcard lj"><div class="qcard-label">Data as of</div><div class="qcard-val">June 11, 2026 (Slickcharts)</div></div>
+  </div>
+
+  <div class="sblock ref">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num" style="border-color:rgba(167,139,250,0.4);color:var(--accent-ref)">★</div><span class="sblock-title">Top 10 S&amp;P 500 by Index Weight</span></div><span class="tag tag-i">homework list</span></div>
+    <div class="col-hdr g3"><span>Ticker</span><span>Company</span><span>S&amp;P Weight</span></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">NVDA</div><div class="fp">NVIDIA Corp — <span class="tag tag-g">Done ✓</span> $224.80R · $194.87S</div><div class="f" style="color:var(--accent-lj)">7.37%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">AAPL</div><div class="fp">Apple Inc — <span class="tag tag-g">Done ✓</span> $300.47R · $280.64S</div><div class="f" style="color:var(--accent-lj)">6.34%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">MSFT</div><div class="fp">Microsoft Corp — <span class="tag tag-g">Done ✓</span> $510.90R · $368.34S</div><div class="f" style="color:var(--accent-lj)">4.30%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">AMZN</div><div class="fp">Amazon.com Inc</div><div class="f" style="color:var(--accent-lj)">3.80%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">GOOGL</div><div class="fp">Alphabet Inc (Class A + C — treat as one)</div><div class="f" style="color:var(--accent-lj)">3.36%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">AVGO</div><div class="fp">Broadcom Inc</div><div class="f" style="color:var(--accent-lj)">2.69%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">TSLA</div><div class="fp">Tesla Inc</div><div class="f" style="color:var(--accent-lj)">2.26%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">META</div><div class="fp">Meta Platforms Inc</div><div class="f" style="color:var(--accent-lj)">2.13%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">MU</div><div class="fp">Micron Technology Inc</div><div class="f" style="color:var(--accent-lj)">1.64%</div></div>
+    <div class="row g3"><div class="f" style="font-family:var(--mono)">BRK.B</div><div class="fp">Berkshire Hathaway <span class="tag tag-w">Only non-tech</span></div><div class="f" style="color:var(--accent-lj)">1.56%</div></div>
+    <div class="dlabel">Top 10 = ~36% of total S&amp;P 500 weight · 9 of 10 are tech or tech-adjacent</div>
+  </div>
+
+  <div class="sblock ref" style="margin-top:10px;">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num" style="border-color:rgba(167,139,250,0.4);color:var(--accent-ref)">✓</div><span class="sblock-title">Homework Tracker</span></div><span class="tag tag-r">send to LJ before Session 2</span></div>
+    <div class="checklist">
+      <span>✅ NVDA — $224.80 resistance · $194.87 support · screenshot sent</span>
+      <span>✅ AAPL — $300.47 resistance · $280.64 support · screenshot sent</span>
+      <span>✅ MSFT — $510.90 resistance · $368.34 support · screenshot sent</span>
+      <span>☐ AMZN — support drawn · resistance drawn · screenshot taken</span>
+      <span>☐ GOOGL — support drawn · resistance drawn · screenshot taken</span>
+      <span>☐ AVGO — support drawn · resistance drawn · screenshot taken</span>
+      <span>☐ TSLA — support drawn · resistance drawn · screenshot taken</span>
+      <span>☐ META — support drawn · resistance drawn · screenshot taken</span>
+      <span>☐ MU — support drawn · resistance drawn · screenshot taken</span>
+      <span>☐ BRK.B — support drawn · resistance drawn · screenshot taken</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ HOMEWORK ══════ -->
+<div id="homework" class="panel">
+  <div class="quick-grid">
+    <div class="qcard rules"><div class="qcard-label">Session 2 deadline</div><div class="qcard-val">Before June 25 — LJ in San Francisco that day</div></div>
+    <div class="qcard rules"><div class="qcard-label">Priority #1</div><div class="qcard-val">Stop loss execution — must be set at entry, not mentally</div></div>
+    <div class="qcard rules"><div class="qcard-label">Priority #2</div><div class="qcard-val">S/R charts — 1 above + 1 below for all 10 tickers</div></div>
+  </div>
+
+  <div class="sblock rules">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num green">✓</div><span class="sblock-title">Session 2 Homework Checklist</span></div><span class="tag tag-r">complete before next call</span></div>
+    <div class="col-hdr g2"><span>Task</span><span>Detail</span></div>
+    <div class="row g2"><div class="f">S/R charts<span class="tag tag-r">Required</span></div><div class="fp">1 support + 1 resistance on all 10 top S&P tickers on Daily chart. Find 3 touches — however far back needed. Screenshot each. Send to LJ.</div></div>
+    <div class="row g2"><div class="f">Stock Basics video<span class="tag tag-r">Required</span></div><div class="fp">Watch from LJ's email course. Skip options/captions video — "that's where it gets real, don't watch that yet." Stock basics first.</div></div>
+    <div class="row g2"><div class="f">Save indicator template<span class="tag tag-r">Required</span></div><div class="fp">All 4 indicators configured → save template in TradingView. Do NOT check "remember symbol" or "remember interval."</div></div>
+    <div class="row g2"><div class="f">Robinhood<span class="tag tag-w">Evaluate</span></div><div class="fp">Download, explore. Note: watchlist = pseudo paper trading (no true paper mode). Evaluate UX vs. Webull. Report to LJ at Session 2.</div></div>
+    <div class="row g2"><div class="f">Schedule Session 2<span class="tag tag-r">Required</span></div><div class="fp">Book before June 25 — LJ travels to San Francisco. Slots fill fast. Do it now.</div></div>
+    <div class="row g2"><div class="f">TradingView upgrade<span class="tag tag-g">Wait</span></div><div class="fp">Do NOT upgrade yet. Wait for July 1 sale. ~$217/yr vs. $60/mo. Still have 17 days on free trial which aligns perfectly.</div></div>
+    <div class="row g2"><div class="f">Stop loss research<span class="tag tag-i">Research</span></div><div class="fp">Can you set a stop loss on an options position at entry in Robinhood or Webull? This is the highest-priority mechanics question before next live trade.</div></div>
+  </div>
+  <div class="alert-box"><strong>Highest priority before Session 2:</strong> IWM trade June 15 — held 0DTE to ~95% loss. Mental stop at -$20 existed, wasn't executed. Same pattern as GOOGL trade. Fix is platform-level: set stop at entry. Don't rely on mental execution under pressure.</div>
+</div>
+
+<!-- ══════ QUICK REFERENCE ══════ -->
+<div id="traderef" class="panel">
+  <div class="section-label">Copyable Rules</div>
+  <div class="rule-grid">
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Indicator conflict rule</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">2 bullish / 2 bearish → skip the trade or drop to a lower timeframe. 3-to-1 is tradeable. Never force when the stack disagrees. No trade is a valid trade.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Stop loss rule</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Never let a trade go to zero. Cut it. Don't watch it burn. Place stop loss at entry — not mentally. A mental stop you don't act on is hope, not a stop.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Entry timing rule</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Do not trade the first 5–10 minutes after market open. No structure yet. Wait for candles to form support, resistance, and pattern clarity.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Analysis flow</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Day chart → bias. 4-hour → confirms. 1-minute → times entry. Always top-down. Never skip to 1-min without Day confirmation first.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">S/R level validity</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">At least 3 touches. Draw at candle color changes and clusters — indecision zones. Not single-touch spike highs or lows. Mix of bodies and wicks is correct.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Retest rule</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">After a breakout, always expect a retest. Price coming back to confirm the broken level = locking the door. Normal. Not a reason to panic-exit.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Strike selection</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Calls → nearest resistance level as strike. Puts → nearest support level as strike. Going long = longer expiration to give trade time to reach target.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Late alert protocol</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Feel late on LJ's alert → ask: "What's your average?" Near his avg = still valid entry. Far above his avg = wait for next setup. Can also ask "Is this trade still good?"</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Stoch RSI entry rule</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Wait for K-line to cross above 20 before entering from the downside. Just because it's at 0 doesn't mean it crosses 20 immediately. Crossing 20 = confirmed momentum. Above 80 = sharp reversal risk — last leg of the race.</div></div>
+    <div class="rule-card"><div class="rule-card-hdr"><span class="rule-trigger">Weekend gap rule</span><button class="rule-copy" onclick="copyRule(this)">Copy</button></div><div class="rule-body">Stock up big overnight or over weekend → people will take profits at open → puts opportunity. Volume coming in = people selling their winners. Wait to confirm direction before entering.</div></div>
+  </div>
+
+  <div class="section-label" style="margin-top:20px;">Parked Until LJ Covers It</div>
+  <div class="sblock ref">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num" style="border-color:rgba(167,139,250,0.4);color:var(--accent-ref)">⏳</div><span class="sblock-title">Do Not Add Yet</span></div></div>
+    <div class="col-hdr g2"><span>Topic</span><span>Note</span></div>
+    <div class="row g2"><div class="f">VRVP Indicator</div><div class="fp">LJ: "cheat code" but requires solid S/R foundation + volume understanding first. Explicitly deferred. Do not add to chart yet.</div></div>
+    <div class="row g2"><div class="f">Multi-timeframe analysis</div><div class="fp">Will be taught — "something we're going to be working on." Not yet.</div></div>
+    <div class="row g2"><div class="f">Patterns (bull flags, wedges)</div><div class="fp">Coming in future sessions. Only W pattern (double bottom) introduced so far.</div></div>
+    <div class="row g2"><div class="f">Options course (Week 4)</div><div class="fp">Skip for now. Stock Basics video first. Captions video: "that's where it gets real — don't watch that yet."</div></div>
+    <div class="row g2"><div class="f">2 above / 2 below S/R</div><div class="fp">Future goal. Current homework is 1 above + 1 below only.</div></div>
+    <div class="row g2"><div class="f">Swing trading contracts</div><div class="fp">LJ posts swings. Some are $108, some $800+. Not for now — day trading fundamentals first.</div></div>
+  </div>
+</div>
+
+<!-- ══════ LIVE TRADING REFERENCE ══════ -->
+<div id="liveref" class="panel">
+
+  <div class="quick-grid">
+    <div class="qcard live"><div class="qcard-label">First move</div><div class="qcard-val">Check Day chart bias before anything else</div></div>
+    <div class="qcard live"><div class="qcard-label">Entry window</div><div class="qcard-val"><strong>Wait 5–10 min after open</strong> — no trades at the bell</div></div>
+    <div class="qcard live"><div class="qcard-label">Stop loss</div><div class="qcard-val"><strong>Set it at entry.</strong> Not after. Not mentally.</div></div>
+    <div class="qcard live"><div class="qcard-label">Feel late?</div><div class="qcard-val">Ask LJ: <strong>"What's your average?"</strong></div></div>
+    <div class="qcard live"><div class="qcard-label">Once you're in</div><div class="qcard-val">Stay on THAT chart. Don't follow LJ to other tickers.</div></div>
+    <div class="qcard live"><div class="qcard-label">0DTE going wrong</div><div class="qcard-val"><strong>Cut it.</strong> It is not coming back. Do not watch it burn.</div></div>
+  </div>
+
+  <!-- INSTANT ENTRY DECISION -->
+  <div class="decision-box go">
+    <div class="decision-title go">✅ Take the Trade — All of These Are True</div>
+    <div class="decision-items">
+      <span>Day chart bias is clear (bullish = calls, bearish = puts)</span>
+      <span>3 or more indicators agree with that bias</span>
+      <span>RSI purple number is in the 45–55 zone</span>
+      <span>Stoch RSI K-line has crossed above 20</span>
+      <span>Support and resistance drawn — know your levels</span>
+      <span>5–10 minutes have passed since open</span>
+      <span>Stop loss is ready to place at same time as entry</span>
+    </div>
+  </div>
+
+  <div class="decision-box stop">
+    <div class="decision-title stop">🚫 Do Not Trade — Any of These Are True</div>
+    <div class="decision-items">
+      <span>First 5–10 minutes of market open — no structure yet</span>
+      <span>Indicators are 2 bullish / 2 bearish — skip or drop timeframe</span>
+      <span>RSI above 70 on your entry timeframe — overbought, high reversal risk</span>
+      <span>Stoch RSI above 80 — last leg, sharp reversal possible</span>
+      <span>No clear S/R drawn — you don't know your levels</span>
+      <span>You feel rushed or unsure of the setup — wait for the next one</span>
+      <span>Playing a 0DTE and it's going against you — cut it now</span>
+    </div>
+  </div>
+
+  <div class="decision-box caution">
+    <div class="decision-title caution">⚠️ Proceed With Caution</div>
+    <div class="decision-items">
+      <span>RSI slightly outside 45–55 but trending in right direction — tighter stop</span>
+      <span>3-to-1 indicator split — tradeable but reduce size</span>
+      <span>Feel late on LJ's alert — ask "What's your average?" first</span>
+      <span>Stock gapped up big overnight — expect profit-taking selloff, consider puts</span>
+      <span>Price just broke out — wait for retest to confirm new support before entering</span>
+    </div>
+  </div>
+
+  <!-- INDICATOR QUICK READ -->
+  <div class="live-grid">
+    <div class="live-card">
+      <div class="live-card-hdr green">MA Ribbon — Quick Read</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">Green (20) above Orange (50)</span><span class="live-bull">BULLISH → Calls</span></div>
+        <div class="live-row"><span class="live-label">Orange (50) above Green (20)</span><span class="live-bear">BEARISH → Puts</span></div>
+        <div class="live-row"><span class="live-label">Lines crossing / converging</span><span class="live-warn">CAUTION — trend changing</span></div>
+      </div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-hdr green">RSI — Quick Read</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">45–55, moving up</span><span class="live-bull">ENTER — room to run</span></div>
+        <div class="live-row"><span class="live-label">Above 70</span><span class="live-bear">OVERBOUGHT — risky for calls</span></div>
+        <div class="live-row"><span class="live-label">Below 30</span><span class="live-bull">OVERSOLD — watch for reversal</span></div>
+        <div class="live-row"><span class="live-label">At 61, trending up</span><span class="live-warn">9 points to 70 — space left</span></div>
+      </div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-hdr blue" style="color:#4f8ef7;">MACD — Quick Read</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">Blue above orange</span><span class="live-bull">BULLISH → Calls</span></div>
+        <div class="live-row"><span class="live-label">Orange above blue</span><span class="live-bear">BEARISH → Puts</span></div>
+        <div class="live-row"><span class="live-label">Green histogram</span><span class="live-bull">Buying pressure → up</span></div>
+        <div class="live-row"><span class="live-label">Dark red histogram</span><span class="live-bear">Strong selling pressure</span></div>
+        <div class="live-row"><span class="live-label">Light red histogram</span><span class="live-warn">Selling fading → watch reversal</span></div>
+      </div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-hdr purple">Stoch RSI — Quick Read</div>
+      <div class="live-card-body">
+        <div class="live-row"><span class="live-label">K-line crossing above 20</span><span class="live-bull">CONFIRMED momentum up</span></div>
+        <div class="live-row"><span class="live-label">K-line pointing up</span><span class="live-bull">Momentum = up</span></div>
+        <div class="live-row"><span class="live-label">K-line pointing down</span><span class="live-bear">Momentum = down</span></div>
+        <div class="live-row"><span class="live-label">Above 80</span><span class="live-warn">LAST LEG — reversal risk</span></div>
+        <div class="live-row"><span class="live-label">K-line at 0, not above 20</span><span class="live-warn">Wait — not confirmed yet</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MACD HISTOGRAM COLOR KEY -->
+  <div class="sblock live-block" style="margin-top:10px;">
+    <div class="sblock-hdr"><div class="sblock-hdr-left"><div class="step-num red">M</div><span class="sblock-title">MACD Histogram — Color = Direction Strength</span></div><span class="tag tag-r">trade heavy options on this</span></div>
+    <div class="col-hdr g3"><span>Color</span><span>Meaning</span><span>Action</span></div>
+    <div class="row g3"><div class="f bull">Bright green / growing</div><div class="fp">Strong buying pressure, momentum building</div><div class="fm"><span class="bull">Calls — stay in</span></div></div>
+    <div class="row g3"><div class="f bull">Green shrinking</div><div class="fp">Buying pressure fading — watch for crossover</div><div class="fm"><span class="warn">Watch — consider exit</span></div></div>
+    <div class="row g3"><div class="f bear">Dark red / growing</div><div class="fp">Strong selling pressure, downtrend accelerating</div><div class="fm"><span class="bear">Puts — stay in</span></div></div>
+    <div class="row g3"><div class="f warn">Light red / shrinking</div><div class="fp">Selling strength fading — reversal possible</div><div class="fm"><span class="bull">Watch — possible call setup</span></div></div>
+  </div>
+
+  <!-- STOP LOSS REMINDER -->
+  <div class="alert-box" style="margin-top:10px;">
+    <strong>IWM Lesson — burned into the rules:</strong> Mental stop at -$20 existed. Didn't act. Held 0DTE to -95%. Cost: $50–60. LJ: "You can't just let it go to zero. Bad habit. Cut it." — This is why the stop goes in at entry. Every time. No exceptions.
+  </div>
+
+</div>
+
+<script>
+function sw(id, el, platform) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active-lj','active-rules','active-ref','active-live'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const cls = platform === 'lj' ? 'active-lj' : platform === 'rules' ? 'active-rules' : platform === 'live' ? 'active-live' : 'active-ref';
+  el.classList.add(cls);
+}
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById('themeBtn');
+  if (body.classList.contains('light')) { body.classList.remove('light'); btn.textContent = '☀ Light'; }
+  else { body.classList.add('light'); btn.textContent = '☾ Dark'; }
+}
+function copyRule(btn) {
+  const body = btn.closest('.rule-card').querySelector('.rule-body').textContent.trim();
+  navigator.clipboard.writeText(body).then(() => {
+    btn.textContent = '✓'; btn.classList.add('copied');
+    showToast();
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+</script>
+</body>
+</html>

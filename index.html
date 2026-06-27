@@ -1,11 +1,247 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=/screener.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BDB Trading Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --border-hover: #334155;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --screener: #3b82f6;
+    --lj: #f7c14f;
+    --smc: #a78bfa;
+    --live: #10b981;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 56px 32px 32px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+
+  .tagline {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  main {
+    flex: 1;
+    padding: 56px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+
+  .card.screener { border-top-color: var(--screener); }
+  .card.lj       { border-top-color: var(--lj); }
+  .card.smc      { border-top-color: var(--smc); }
+
+  .card:hover:not(.disabled) {
+    transform: translateY(-2px);
+    border-color: var(--border-hover);
+  }
+  .card.screener:hover:not(.disabled) { border-top-color: var(--screener); }
+  .card.lj:hover:not(.disabled)       { border-top-color: var(--lj); }
+
+  .card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+
+  .card h2 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card.screener h2 { color: var(--screener); }
+  .card.lj h2       { color: var(--lj); }
+  .card.smc h2      { color: var(--smc); }
+
+  .summary {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .tabs-mini {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+
+  .tabs-mini strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .status {
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .status.live   { background: rgba(16, 185, 129, 0.13); color: var(--live); }
+  .status.coming { background: rgba(100, 116, 139, 0.15); color: var(--muted); }
+
+  .arrow { color: var(--muted); }
+  .card:hover:not(.disabled) .arrow { color: var(--text); }
+
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: 1fr; gap: 14px; }
+    header { padding: 36px 20px 24px; }
+    main   { padding: 32px 20px; }
+    h1     { font-size: 19px; }
+    .card  { min-height: auto; }
+  }
+</style>
 </head>
 <body>
-<script>window.location.href = '/screener.html';</script>
+
+<header>
+  <h1>⬡ BDB TRADING HUB</h1>
+  <div class="tagline">Workflows · References · Live trading</div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <a class="card screener" href="/screener.html">
+      <div class="icon">📈</div>
+      <h2>Screener Hub</h2>
+      <div class="summary">Pre-trade screening workflow — narrow the universe to 2–3 candidates per week.</div>
+      <div class="tabs-mini">
+        <strong>Swing</strong> · 2–10 days<br>
+        <strong>Position</strong> · 10+ days<br>
+        <strong>Scalping</strong> · partner · ≤3 DTE
+      </div>
+      <div class="card-cta">
+        <span class="status live">Live</span>
+        <span class="arrow">Open →</span>
+      </div>
+    </a>
+
+    <a class="card lj" href="/lj-system.html">
+      <div class="icon">🎯</div>
+      <h2>LJ Training Hub</h2>
+      <div class="summary">LJ's mentorship system — setup, indicator stack, S/R rules, and a live-trading reference panel.</div>
+      <div class="tabs-mini">
+        <strong>Lesson 1</strong> · Setup<br>
+        <strong>Trade Rules</strong> · Top 10 S&amp;P · Homework<br>
+        <strong>🔴 Live Trading</strong> · go / stop / caution
+      </div>
+      <div class="card-cta">
+        <span class="status live">Live</span>
+        <span class="arrow">Open →</span>
+      </div>
+    </a>
+
+    <div class="card smc disabled">
+      <div class="icon">🌐</div>
+      <h2>SMC Hub</h2>
+      <div class="summary">Smart Money Concepts — to be built. Third pillar alongside Screener and LJ.</div>
+      <div class="tabs-mini">
+        Pending build
+      </div>
+      <div class="card-cta">
+        <span class="status coming">Coming soon</span>
+        <span class="arrow">—</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  bdb-trading-hub.netlify.app
+</footer>
+
 </body>
 </html>
