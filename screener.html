@@ -577,11 +577,32 @@
       </li>
       <li>
         <div class="step-content">
-          <strong>Run the TradingView screener + apply sector filter</strong>
-          <span>Screener → Stock Screener → apply your 4 base filters (see <strong style="color:#3b82f6">card ① below</strong>) → then add Sector filter matching what's in motion. TradingView sector names: <strong style="color:#e2e8f0">Electronic technology</strong> (XLK) · <strong style="color:#e2e8f0">Finance</strong> (XLF) · <strong style="color:#e2e8f0">Health services / Health technology</strong> (XLV) · <strong style="color:#e2e8f0">Energy minerals</strong> (XLE) · <strong style="color:#e2e8f0">Consumer durables / non-durables / services</strong> (XLY) · <strong style="color:#e2e8f0">Commercial / Distribution services</strong> (XLI) · <strong style="color:#e2e8f0">Utilities</strong> (XLU) · <strong style="color:#e2e8f0">Non-energy minerals</strong> (XLB).</span>
+          <strong>Run the screener + apply sub-sector filter</strong>
+          <span>Apply your 4 base filters (see <strong style="color:#3b82f6">card ① below</strong>) → then add the sub-sector filter matching the ETF you identified in step 1. The mapping below covers both Webull (more granular sub-sectors) and TradingView taxonomies.</span>
+          <div style="margin-top:12px; padding:11px 13px; background:var(--surface); border-radius:5px; font-size:11.5px; line-height:1.6;">
+            <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">Sub-sector → ETF mapping</div>
+            <table style="width:100%; border-collapse:collapse; color:var(--muted); font-size:12px;">
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:5px 8px 5px 0; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:0.06em;">Webull sub-sector</td>
+                <td style="padding:5px 0; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:0.06em;">Check ETF</td>
+              </tr>
+              <tr><td style="padding:6px 8px 6px 0;">Software &amp; IT Services · Technology Equipment</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLK</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Telecommunications Services</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLC</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Banking &amp; Investment · Insurance</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLF</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Healthcare Services · Pharmaceuticals &amp; Medical Research</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLV</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Energy - Fossil Fuels</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLE</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Renewable Energy · Uranium</td><td style="padding:6px 0; color:var(--text); font-weight:500;">ICLN / URA <span style="color:var(--muted); font-size:11px;">(niche)</span></td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Chemicals · Applied Resources · Mineral Resources</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLB</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Transportation · Industrial Goods · Industrial &amp; Commercial Services</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLI</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Automobiles · Cyclical Consumer Services · Retailers · Cyclical Consumer Products</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLY</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Food &amp; Beverages · Personal &amp; Household · Food &amp; Drug Retailing</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLP</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Real Estate</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLRE</td></tr>
+              <tr><td style="padding:6px 8px 6px 0;">Utilities</td><td style="padding:6px 0; color:var(--text); font-weight:500;">XLU</td></tr>
+            </table>
+          </div>
           <div style="margin-top:10px; padding:11px 13px; background:var(--surface); border-left:2px solid var(--swing); border-radius:4px; color:var(--muted); font-size:12px; line-height:1.6;">
-            <strong style="color:#e2e8f0; display:block; margin-bottom:6px;">Still &gt;20 names after sector? Narrow further:</strong>
-            <strong style="color:#3b82f6;">①</strong> <strong style="color:#e2e8f0">Add Industry filter</strong> — each sector has sub-types (e.g. within Electronic technology: Semiconductors, Software, Internet retail). Pick 1–2 matching today's theme.<br>
+            <strong style="color:#e2e8f0; display:block; margin-bottom:6px;">Still &gt;20 names after sub-sector? Narrow further:</strong>
+            <strong style="color:#3b82f6;">①</strong> <strong style="color:#e2e8f0">Add a Technical Signal filter</strong> on Webull (MACD bullish cross, RSI exiting oversold) — pre-finds names already signaling the LJ direction.<br>
             <strong style="color:#3b82f6;">②</strong> <strong style="color:#e2e8f0">Sort by Change %</strong> descending → take top 10–15 names moving in your direction (positive for calls, negative for puts).<br>
             <strong style="color:#e2e8f0;">Target:</strong> 5–15 names to chart-read in step 3.
           </div>
@@ -1117,6 +1138,9 @@
       <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLI" target="_blank"><span class="etf">XLI</span><span class="name">Commercial / Distribution services</span></a>
       <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLU" target="_blank"><span class="etf">XLU</span><span class="name">Utilities</span></a>
       <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLB" target="_blank"><span class="etf">XLB</span><span class="name">Non-energy minerals</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLC" target="_blank"><span class="etf">XLC</span><span class="name">Communication services · META · GOOGL · NFLX</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLP" target="_blank"><span class="etf">XLP</span><span class="name">Consumer staples · WMT · COST · KO</span></a>
+      <a class="sector-card" href="https://www.tradingview.com/chart/?symbol=XLRE" target="_blank"><span class="etf">XLRE</span><span class="name">Real estate · REITs</span></a>
     </div>
   </div>
 
