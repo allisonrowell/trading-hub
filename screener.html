@@ -662,13 +662,24 @@
         <div class="card" style="border-left: 3px solid var(--swing);">
           <div class="card-title">⚙ Market Chameleon — Side Checks (Catalysts + Unusual Activity)</div>
           <p style="font-size:11.5px; color:var(--muted); margin-bottom:12px;">Runs alongside ② on the same 2–3 names. Different tool, different purpose — <strong style="color:#f59e0b;">NOT for IV Rank</strong> (use Barchart for that).</p>
+
+          <div style="background:var(--surface2); border-radius:4px; padding:10px 12px; margin-bottom:12px; font-size:11.5px; line-height:1.6;">
+            <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Where each lives in Market Chameleon</div>
+            <ol style="list-style:decimal; padding-left:18px; color:var(--muted); margin:0;">
+              <li><strong style="color:var(--text);">Earnings for your ticker</strong> — search ticker (top-right) → Overview page → <strong style="color:var(--text);">Earnings</strong> link in sub-nav · or direct: <code style="background:var(--bg); padding:1px 5px; border-radius:3px; font-size:10.5px;">/Overview/&lt;TICKER&gt;/Earnings/Earnings-Dates/</code></li>
+              <li><strong style="color:var(--text);">All earnings across the market</strong> — top nav → <strong style="color:var(--text);">Earnings Calendar</strong> (it's a top-level nav item, not a tab) · direct: <code style="background:var(--bg); padding:1px 5px; border-radius:3px; font-size:10.5px;">/Calendar/Earnings</code></li>
+              <li><strong style="color:var(--text);">Unusual flow</strong> — top nav → <strong style="color:var(--text);">Unusual Options Volume</strong></li>
+            </ol>
+          </div>
+
           <table class="crit-table">
-            <tr><td>Calendar tab</td><td>Earnings · FDA dates · ex-div · Fed events inside your 14–45 day DTE? → <strong style="color:#ef4444;">YES on any = skip or shorten DTE</strong></td></tr>
-            <tr><td>Unusual Options Volume</td><td>Block trades · premium spent · vol-to-OI ratio. Tells you if institutions are positioning — confirms or challenges your direction</td></tr>
+            <tr><td>Earnings inside your DTE</td><td>14–45 day window → <strong style="color:#ef4444;">YES = skip or shorten DTE</strong> (hard kill rule)</td></tr>
+            <tr><td>Other catalysts inside DTE</td><td>FDA dates · ex-div · Fed events — check via the dedicated calendars in top nav · same rule applies</td></tr>
+            <tr><td>Unusual Options Volume</td><td>Block trades · premium spent · vol-to-OI ratio. Institutional positioning — confirms or challenges your direction</td></tr>
             <tr><td>Open Interest changes</td><td>Rising OI at your strike = positioning building · Falling OI = unwinding</td></tr>
           </table>
           <div style="margin-top:10px; padding:9px 11px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.55;">
-            <strong style="color:var(--text);">Why two tools?</strong> Barchart gives you the IV Rank number you trust. Market Chameleon gives you the calendar + institutional-flow lens. They overlap on options data but each has a strength — use both per their lane.
+            <strong style="color:var(--text);">Why two tools?</strong> Barchart owns the IV Rank number. Market Chameleon owns the calendar + institutional-flow lens. They overlap on options data but each has a strength — use both per their lane.
           </div>
         </div>
       </div>
