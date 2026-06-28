@@ -518,6 +518,14 @@
 <!-- ===================== SWING TAB ===================== -->
 <div id="panel-swing" class="panel active">
 
+  <!-- WORKFLOW STACK BANNER -->
+  <div style="margin-bottom: 18px; padding: 12px 18px; background: linear-gradient(90deg, rgba(59,130,246,0.07), rgba(167,139,250,0.07)); border-left: 3px solid var(--swing); border-right: 3px solid #a78bfa; border-radius: 6px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); text-align: center; letter-spacing: 0.03em; line-height: 1.7;">
+    <strong style="color: var(--text);">Your Stack:</strong>
+    🔍 <strong style="color: var(--swing);">LJ</strong> screens (Sunday) ·
+    🎯 <strong style="color: #a78bfa;">SMC + SmartTrend</strong> times entry/exit (Mon–Fri) ·
+    📝 log to <strong style="color: var(--text);">Notion Watchlist</strong>
+  </div>
+
   <!-- AT-A-GLANCE QUICK REFERENCE -->
   <div style="margin-bottom: 18px;">
     <div class="card" style="border-left: 3px solid var(--swing);">
@@ -782,7 +790,8 @@
       <li>
         <div class="step-content">
           <strong>Ask: has price reached my entry trigger?</strong>
-          <span>Entry = price breaking and holding through your key S/R level, OR pulling back to S/R and holding. S/R levels are drawn on the <strong style="color:#e2e8f0">daily chart</strong> — that's where you check. Not "close to it." At it and holding.</span>
+          <span><strong style="color:#3b82f6">LJ trigger:</strong> price breaking and holding through your key S/R level (drawn on the <strong style="color:#e2e8f0">daily chart</strong>), OR pulling back to S/R and holding. Not "close to it." At it and holding.</span>
+          <span style="display:block; margin-top:6px;"><strong style="color:#a78bfa">SMC confirms:</strong> price in <strong style="color:#a78bfa">Discount zone</strong> (longs) or <strong style="color:#a78bfa">Premium zone</strong> (shorts) · <strong style="color:#a78bfa">BOS/CHoCH</strong> in your direction · ideally an <strong style="color:#a78bfa">Order Block tap</strong>. SmartTrend Pro's Entry signal = pull-the-trigger.</span>
         </div>
       </li>
       <li>
@@ -942,6 +951,61 @@
         <strong style="color:var(--text); display:block; margin-bottom:6px;">Worked example — NVDA long</strong>
         Entry <strong style="color:var(--text);">$118</strong> (broke and held) · Stop <strong style="color:var(--text);">$116.50</strong> · Target <strong style="color:var(--text);">$124</strong> (next resistance).<br>
         R = $118 − $116.50 = <strong style="color:var(--text);">$1.50</strong> · Reward = $124 − $118 = <strong style="color:var(--text);">$6</strong> · R:R = $6 ÷ $1.50 = <strong style="color:#10b981;">4R · take it ✓</strong>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SMC ENTRY/EXIT LENS -->
+  <div style="margin: 12px 0;">
+    <div class="card" style="border-left: 3px solid #a78bfa;">
+      <div class="card-title" style="color: #a78bfa;">🌐 SMC Entry/Exit Lens — Sharpens LJ's Trade Math</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">LJ tells you direction + structural levels. SMC tells you the precise zone, the institutional level, and the FVG fill targets. Run SMC <em>after</em> LJ has confirmed the setup — before pulling the trigger.</p>
+
+      <div class="grid-2" style="gap: 12px;">
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px 16px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">📍 Sharper Entry</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            <strong style="color:#3b82f6;">Long:</strong> price in <strong style="color:#a78bfa;">Discount zone</strong> + <strong style="color:#a78bfa;">BOS/CHoCH up</strong> + ideally an <strong style="color:#a78bfa;">Order Block tap</strong>.<br>
+            <strong style="color:#ef4444;">Short:</strong> price in <strong style="color:#a78bfa;">Premium zone</strong> + <strong style="color:#a78bfa;">BOS/CHoCH down</strong> + Order Block tap.<br>
+            <strong style="color:var(--text);">Trigger:</strong> SmartTrend Pro's built-in Entry signal = pull-the-trigger.
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px 16px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">🛑 Sharper Stop</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            <strong style="color:#3b82f6;">Long:</strong> just below the <strong style="color:#a78bfa;">Order Block low</strong> or the swing low that BOS confirmed.<br>
+            <strong style="color:#ef4444;">Short:</strong> just above the <strong style="color:#a78bfa;">Order Block high</strong> or swing high.<br>
+            <strong style="color:var(--text);">SmartTrend SL</strong> = starting point — still apply LJ's 5–10¢ buffer.
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px 16px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">🎯 Sharper Targets — 3-stage</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            <strong style="color:var(--text);">T1 — 50% off:</strong> nearest <strong style="color:#a78bfa;">FVG fill</strong> (above for longs, below for shorts).<br>
+            <strong style="color:var(--text);">T2 — 30% off:</strong> next <strong style="color:#a78bfa;">BOS level</strong> on the opposite side.<br>
+            <strong style="color:var(--text);">T3 — last 20%:</strong> opposite zone (Premium for long target · Discount for short).
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:14px 16px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">⚙ SmartTrend Pro — Built-in Levels</div>
+          <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+            The SmartTrend dashboard shows <strong style="color:var(--text);">Entry · SL · TP1 · TP2 · TP3</strong> directly on the chart.<br>
+            Use these as a sanity check against your LJ-derived stop + SMC-derived targets. <strong style="color:#10b981;">All three agree</strong> = high conviction.<br>
+            <strong style="color:#f59e0b;">They disagree</strong> = default to tighter stop + smaller target.
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:14px; padding:12px 14px; background:var(--surface2); border:1px dashed var(--border); border-radius:6px; font-size:12.5px; color:var(--muted); line-height:1.7;">
+        <strong style="color:var(--text); display:block; margin-bottom:6px;">Workflow stack — worked example</strong>
+        🔍 <strong style="color:var(--swing);">LJ</strong>: "NVDA long here, $118 S/R with 3+ touches, all 4 indicators align on 4H." → 🎯 <strong style="color:#a78bfa;">SMC</strong>: "wait for price to tap the Discount-zone Order Block at $118.20, BOS up on 1H, then fire. T1 = FVG fill at $121, T2 = BOS at $124, T3 = Premium zone at $128." → execute.<br>
+        <span style="font-style:italic; font-size:11.5px;">Full SMC reference: <a href="/smc.html" style="color:#a78bfa; text-decoration:none; font-weight:500;">SMC Hub →</a></span>
       </div>
 
     </div>
