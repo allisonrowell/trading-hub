@@ -660,33 +660,79 @@
       <!-- Sister tool — runs alongside ② on the same names -->
       <div style="margin-top:12px;">
         <div class="card" style="border-left: 3px solid var(--swing);">
-          <div class="card-title">⚙ Market Chameleon — Side Checks (Catalysts + Unusual Activity)</div>
-          <p style="font-size:11.5px; color:var(--muted); margin-bottom:12px;">Runs alongside ② on the same 2–3 names. Different tool, different purpose — <strong style="color:#f59e0b;">NOT for IV Rank</strong> (use Barchart for that).</p>
+          <div class="card-title">⚙ Sister Checks — Earnings · Catalysts · Unusual Flow · OI</div>
+          <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Four checks to run on your 2–3 finalists alongside ② IV Rank. Some happen in TradingView, some need Market Chameleon. Each block tells you WHAT to look at and what decision to make.</p>
 
-          <div style="background:rgba(59,130,246,0.08); border-left:2px solid var(--swing); border-radius:4px; padding:10px 12px; margin-bottom:12px; font-size:11.5px; line-height:1.6; color:var(--muted);">
-            <strong style="color:var(--swing); display:block; margin-bottom:6px;">⚡ Shortcut: do the earnings check inside TradingView</strong>
-            If you're already on a chart, don't leave it. Right-click chart → <strong style="color:var(--text);">Settings</strong> → <strong style="color:var(--text);">Events</strong> tab → check <strong style="color:var(--text);">Show Earnings on Chart</strong>. E-markers appear on report dates (green = positive surprise · red = negative · grey = no surprise · pink = future unknown). If an E falls inside your 14–45 day DTE → <strong style="color:#ef4444;">skip or shorten</strong>.<br>
-            <strong style="color:var(--text); display:block; margin-top:8px;">Macro events too:</strong> TradingView's Economic Calendar (left sidebar) covers Fed · CPI · jobs.<br>
-            <strong style="color:var(--text); display:block; margin-top:8px;">You still need Market Chameleon for:</strong> unusual options volume + institutional flow · FDA dates · ex-div · other one-off catalysts.
+          <!-- ═══ EARNINGS ═══ -->
+          <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:10px;">
+            <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">📅 Earnings</div>
+            <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">What:</strong> Date the company reports financial results.</div>
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">Why it matters:</strong> Options pricing goes unpredictable around earnings — IV spikes, then crushes after. Your direction can be right and you still lose.</div>
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">Where to look:</strong> TradingView's E-markers on your chart (already on). Hover for the exact date.</div>
+              <div><strong style="color:#10b981;">Rule:</strong> E inside 14–45 day DTE → <strong style="color:#ef4444;">skip or shorten DTE</strong> to expire before E. Hard kill.</div>
+              <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); font-size:11.5px; color:var(--muted); font-style:italic;">Skip Market Chameleon for this — TV's E-markers are enough since you're never trading <em>through</em> earnings.</div>
+            </div>
           </div>
 
-          <div style="background:var(--surface2); border-radius:4px; padding:10px 12px; margin-bottom:12px; font-size:11.5px; line-height:1.6;">
-            <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Where each lives in Market Chameleon</div>
-            <ol style="list-style:decimal; padding-left:18px; color:var(--muted); margin:0;">
-              <li><strong style="color:var(--text);">Earnings for your ticker</strong> — search ticker (top-right) → Overview page → <strong style="color:var(--text);">Earnings</strong> link in sub-nav · or direct: <code style="background:var(--bg); padding:1px 5px; border-radius:3px; font-size:10.5px;">/Overview/&lt;TICKER&gt;/Earnings/Earnings-Dates/</code></li>
-              <li><strong style="color:var(--text);">All earnings across the market</strong> — top nav → <strong style="color:var(--text);">Earnings Calendar</strong> (it's a top-level nav item, not a tab) · direct: <code style="background:var(--bg); padding:1px 5px; border-radius:3px; font-size:10.5px;">/Calendar/Earnings</code></li>
-              <li><strong style="color:var(--text);">Unusual flow</strong> — top nav → <strong style="color:var(--text);">Unusual Options Volume</strong></li>
-            </ol>
+          <!-- ═══ CATALYSTS ═══ -->
+          <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:10px;">
+            <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">🎯 Catalysts — Which Actually Matter</div>
+            <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+              <div style="margin-bottom:8px;"><strong style="color:var(--text);">The problem:</strong> TV's Economic Calendar shows hundreds of events daily. 95% are noise. Filter to four kinds that actually move your stocks:</div>
+              <div style="margin-bottom:6px; padding-left:12px; border-left:2px solid var(--swing-dim);">
+                <strong style="color:var(--text);">① Fed / FOMC meetings</strong> — moves the WHOLE market. Especially XLF (financials) and rate-sensitive sectors. <br><span style="color:var(--muted);">Where: TV Economic Calendar → filter <strong style="color:var(--text);">Importance: High</strong> → look for FOMC.</span>
+              </div>
+              <div style="margin-bottom:6px; padding-left:12px; border-left:2px solid var(--swing-dim);">
+                <strong style="color:var(--text);">② CPI · NFP (jobs) · GDP</strong> — major macro releases. Moves SPY/QQQ broadly. <br><span style="color:var(--muted);">Where: TV Economic Calendar → <strong style="color:var(--text);">High importance</strong> filter catches these.</span>
+              </div>
+              <div style="margin-bottom:6px; padding-left:12px; border-left:2px solid var(--swing-dim);">
+                <strong style="color:var(--text);">③ FDA dates</strong> — <strong style="color:#f59e0b;">ONLY if biotech/pharma</strong>. For NVDA/AAPL/MSFT/META = irrelevant, skip. <br><span style="color:var(--muted);">Where: Market Chameleon's FDA calendar, or biopharmcatalyst.com.</span>
+              </div>
+              <div style="margin-bottom:8px; padding-left:12px; border-left:2px solid var(--swing-dim);">
+                <strong style="color:var(--text);">④ Stock-specific events</strong> — Apple events, Tesla delivery numbers, big contract announcements. <br><span style="color:var(--muted);">Where: news headlines on the ticker — you'll usually see these without a calendar.</span>
+              </div>
+              <div><strong style="color:#10b981;">Rule:</strong> High-importance macro event inside your DTE → <strong style="color:#f59e0b;">plan to be flat before it</strong>, or skip the trade.</div>
+              <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); font-size:11.5px; color:var(--muted); font-style:italic;">Everything else on the Economic Calendar (housing starts, ISM Services, foreign data) = ignore unless you've been burned by it before.</div>
+            </div>
           </div>
 
-          <table class="crit-table">
-            <tr><td>Earnings inside your DTE</td><td>14–45 day window → <strong style="color:#ef4444;">YES = skip or shorten DTE</strong> (hard kill rule)</td></tr>
-            <tr><td>Other catalysts inside DTE</td><td>FDA dates · ex-div · Fed events — check via the dedicated calendars in top nav · same rule applies</td></tr>
-            <tr><td>Unusual Options Volume</td><td>Block trades · premium spent · vol-to-OI ratio. Institutional positioning — confirms or challenges your direction</td></tr>
-            <tr><td>Open Interest changes</td><td>Rising OI at your strike = positioning building · Falling OI = unwinding</td></tr>
-          </table>
+          <!-- ═══ UNUSUAL OPTIONS VOLUME ═══ -->
+          <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:10px;">
+            <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">🐋 Unusual Options Volume — Institutional Positioning</div>
+            <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">What:</strong> Today's options volume on a strike that's WAY above normal. Example: AAPL 220 calls normally trade 500 contracts/day — today they traded 25,000.</div>
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">Why it matters:</strong> Someone with deep pockets just placed a big directional bet. They might know something — or just be hedging. Useful as one input, not the deciding factor.</div>
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">Where to look:</strong> Market Chameleon → top nav → <strong style="color:var(--text);">Unusual Options Volume</strong> → search your ticker. Three columns to scan:</div>
+              <div style="margin-bottom:4px; padding-left:14px; font-size:12px;">▸ <strong style="color:var(--text);">Direction</strong> — calls (bullish) or puts (bearish)?</div>
+              <div style="margin-bottom:4px; padding-left:14px; font-size:12px;">▸ <strong style="color:var(--text);">Premium spent</strong> — large $ amounts = institutional, small $ = retail (skip)</div>
+              <div style="margin-bottom:8px; padding-left:14px; font-size:12px;">▸ <strong style="color:var(--text);">Vol / OI ratio</strong> — <strong style="color:var(--text);">5×+</strong> = noteworthy</div>
+              <div><strong style="color:#10b981;">Rule:</strong> Match to your direction.<br>
+                <span style="display:inline-block; margin-top:4px;">🟢 Flow agrees with your bias → confirmation, proceed</span><br>
+                <span>🟡 Flow opposite your bias → caution, look harder before entering</span><br>
+                <span>⚪ No unusual flow → neutral, proceed if other checks pass</span>
+              </div>
+              <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); font-size:11.5px; color:var(--muted); font-style:italic;">Don't blindly follow institutional flow — they may be hedging existing positions, not making a directional bet. One signal, not the final word.</div>
+            </div>
+          </div>
+
+          <!-- ═══ OPEN INTEREST CHANGES ═══ -->
+          <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:10px;">
+            <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">📊 Open Interest Changes — Crowd Agreement at Your Strike</div>
+            <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">What:</strong> OI = total contracts outstanding at a strike. Different from volume — volume = today's trades, OI = total contracts still open (never closed).</div>
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">Why it matters:</strong> Rising OI at YOUR strike = other traders agree it's a meaningful level. Higher OI also = tighter bid/ask spread, easier to fill and exit.</div>
+              <div style="margin-bottom:6px;"><strong style="color:var(--text);">Where to look:</strong> Options chain on Webull or Tastytrade (also on Market Chameleon's options page). Find the <strong style="color:var(--text);">OI column</strong> at your target strike. Note today vs prior day.</div>
+              <div><strong style="color:#10b981;">Rule</strong> when picking a strike in card ③:<br>
+                <span style="display:inline-block; margin-top:4px;">🟢 OI &gt; 500 AND growing day-over-day → ideal</span><br>
+                <span>🟡 OI &gt; 500 but flat or falling → acceptable, lower conviction</span><br>
+                <span>🔴 OI &lt; 500 → skip (already a hard rule in ③)</span>
+              </div>
+            </div>
+          </div>
+
           <div style="margin-top:10px; padding:9px 11px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.55;">
-            <strong style="color:var(--text);">Why two tools?</strong> Barchart owns the IV Rank number. Market Chameleon owns the calendar + institutional-flow lens. They overlap on options data but each has a strength — use both per their lane.
+            <strong style="color:var(--text);">Why two tools?</strong> Barchart owns the IV Rank number. TradingView owns earnings + macro. Market Chameleon owns the unusual-flow lens (+ FDA if you trade biotech). Each in its lane — don't cross-shop.
           </div>
         </div>
       </div>
