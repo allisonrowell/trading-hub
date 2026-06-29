@@ -665,16 +665,23 @@
       <div class="routine-reference-label">↓ Reference cards — used in the steps above</div>
       <div class="grid-3">
         <div class="card">
-          <div class="card-title">① TradingView Screener Filters</div>
-          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">These 4 filters are the only ones that belong in TradingView. Save as "Swing Candidates."</p>
+          <div class="card-title">① Webull Screener Filter Stack</div>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Save as preset <strong style="color:var(--text);">"LJ Swing Base."</strong> Pre-filter 2 of 4 LJ indicators at the screen level (MA + MACD), chart-read the other 2 (RSI + Stoch K) on 4H.</p>
           <table class="crit-table">
-            <tr><td>Exchange</td><td>NYSE + NASDAQ</td></tr>
+            <tr><td colspan="2" style="color:#3b82f6; font-weight:600; padding-top:8px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid var(--border);">Base filters (always on)</td></tr>
+            <tr><td>Region</td><td>United States</td></tr>
             <tr><td>Price</td><td>$20 – $500</td></tr>
-            <tr><td>Avg Volume (30D)</td><td>&gt; 5,000,000</td></tr>
-            <tr><td>ATR 14</td><td>&gt; 2%</td></tr>
+            <tr><td>Avg Volume (60D)</td><td>&gt; 5,000,000</td></tr>
+            <tr><td>ATR%</td><td>&gt; 2 <span style="color:var(--muted);">(relax to &gt;1.5 for indices)</span></td></tr>
+            <tr><td colspan="2" style="color:#3b82f6; font-weight:600; padding-top:10px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid var(--border);">Add per Sunday's setup</td></tr>
+            <tr><td>Sub-sector</td><td>Match the ETF in motion (see mapping in step 2)</td></tr>
+            <tr><td>IV Percentile</td><td>20–70 (cuts overpriced + dead names)</td></tr>
+            <tr><td colspan="2" style="color:#3b82f6; font-weight:600; padding-top:10px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid var(--border);">Technical signals — pre-filter 2 of 4 LJ indicators</td></tr>
+            <tr><td>MA (3 conditions)</td><td>Price&gt;MA20 · Price&gt;MA60 · MA20&gt;MA60 <span style="color:var(--muted);">(mirror for puts)</span></td></tr>
+            <tr><td>MACD</td><td>Bullish cross (longs) · Bearish cross (puts)</td></tr>
           </table>
-          <div style="margin-top:10px; padding:8px 10px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted);">
-            Everything else is checked <strong style="color:var(--text);">after</strong> you have your 2–3 candidates — not here.
+          <div style="margin-top:10px; padding:8px 10px; background:var(--surface2); border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.5;">
+            <strong style="color:var(--text);">Don't stack RSI/Stoch as filters</strong> — they need positional reads (45–55 vs 70 vs 30, K below 20 pointing up, etc.). Chart-read on 4H instead.
           </div>
         </div>
 
@@ -795,6 +802,88 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- WEBULL OPERATING MANUAL -->
+  <div style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid var(--swing);">
+      <div class="card-title">⚙ Webull Operating Manual — 5 Phases + Tab Reference</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">How to use Webull as your <strong style="color:var(--text);">primary screener + execution</strong>. TradingView stays the charting workbench (4-indicator template, S/R drawings, VRVP, SMC zones). Web app is fine for most uses; desktop app for Sunday planning and live execution when you want multiple panels visible.</p>
+
+      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">The 5 Phases</div>
+      <div class="grid-2" style="gap:10px; margin-bottom:16px;">
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 1 · Setup (one-time)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Pin News + Analyst panel to right side<br>
+            • Build 4 watchlists matching Notion Status: <strong style="color:var(--text);">Pending Entry · Live · Researching · Partner's Scalps</strong><br>
+            • Save <strong style="color:var(--text);">"LJ Swing Base"</strong> screener preset (filters from card ① above)<br>
+            • Pin <strong style="color:var(--text);">Positions tab</strong> to bottom strip — always visible
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 2 · Sunday (30–45 min)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • TradingView → sector ETF check<br>
+            • Webull → load <strong style="color:var(--text);">"LJ Swing Base"</strong> preset + add sub-sector + technical signal<br>
+            • Cross-check <strong style="color:var(--text);">Top Options</strong> for institutional flow<br>
+            • Save 2–3 finalists to <strong style="color:var(--text);">"Pending Entry"</strong> watchlist
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 3 · Daily prep (10–15 min · 8–9:15 AM)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Open <strong style="color:var(--text);">"Pending Entry"</strong> watchlist<br>
+            • News panel per name — overnight gap? Catalyst?<br>
+            • TradingView 4H check + SMC zone read<br>
+            • Right-click ticker → <strong style="color:var(--text);">Set Alert</strong> at your entry trigger
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 4 · Live execution</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Right-click ticker → <strong style="color:var(--text);">Options Chain</strong> (pre-load it)<br>
+            • Confirm strike: DTE 14–45 · <strong style="color:var(--text);">OI &gt;500</strong> · <strong style="color:var(--text);">Bid/Ask &lt;10%</strong> · no earnings<br>
+            • Build <strong style="color:#f59e0b;">Bracket / OCO order</strong> — entry + stop in one ticket<br>
+            • Submit → confirm fill → watch Positions tab
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 5 · Position management</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • T1 hit → <strong style="color:var(--text);">close 50%</strong> (right-click → Close Partial)<br>
+            • Trade keeps moving → <strong style="color:var(--text);">trail stop up</strong> (never against you)<br>
+            • Setup invalidates → manual close, don't wait<br>
+            • Approaching ≤5 DTE → exit before theta crush
+          </div>
+        </div>
+
+        <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">⚡ Bracket Order Discipline</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            Always enter with the <strong style="color:var(--text);">stop loss attached in the same OCO ticket</strong>. Eliminates the IWM-style mental-stop failure pattern from LJ's lesson. <strong style="color:var(--text);">Single most important Webull feature.</strong> Without it, you're back to hoping you'll act on a mental stop under pressure — you won't.
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Screener Tab Reference — what each is for</div>
+      <table class="crit-table">
+        <tr><td><strong style="color:var(--text);">Screeners</strong></td><td>Stock screen with full filter stack — your Sunday workflow lives here</td></tr>
+        <tr><td><strong style="color:var(--text);">Option Screener</strong></td><td>Filter options directly (DTE · IV · Delta · OI · spread) — pre-find tradeable contracts</td></tr>
+        <tr><td><strong style="color:var(--text);">Top Options</strong></td><td>Today's most-traded option strikes. <strong style="color:var(--text);">Skip SPY/QQQ at top</strong> — that's normal. Watch when a <em>single-name</em> stock shows up high = institutional positioning. Cross-reference with your screener candidates</td></tr>
+        <tr><td><strong style="color:var(--text);">Tops · Top Gainers</strong></td><td>Biggest % gainers today. Momentum lens. Use for catalyst-driven setups you might miss in a sector screen. <strong style="color:#f59e0b;">Caution:</strong> often already-extended names — late entries are risky</td></tr>
+        <tr><td><strong style="color:var(--text);">Tops · Top Losers</strong></td><td>Biggest % losers. Pullback/reversal candidates if in an uptrending sector. Also lets you spot capitulation in oversold names where Stoch K is below 20</td></tr>
+        <tr><td><strong style="color:var(--text);">Active</strong></td><td>Most volume traded today. Liquidity lens — high volume = tight spreads = tradeable options</td></tr>
+        <tr><td><strong style="color:var(--text);">52 Week</strong></td><td>New 52-week highs / lows. Breakout (longs) or breakdown (puts) candidates. Cross-check with LJ's 3-touch S/R rule before treating as valid</td></tr>
+        <tr><td><strong style="color:var(--text);">ETFs</strong></td><td>ETF-specific screen. Use for sector ETF momentum check or finding tradeable index ETFs (SPY/QQQ/IWM)</td></tr>
+        <tr><td><strong style="color:var(--text);">Bonds</strong></td><td>Skip — not relevant for swing options</td></tr>
+      </table>
     </div>
   </div>
 
@@ -1030,6 +1119,90 @@
         <strong style="color:var(--text); display:block; margin-bottom:6px;">Workflow stack — worked example</strong>
         🔍 <strong style="color:var(--swing);">LJ</strong>: "NVDA long here, $118 S/R with 3+ touches, all 4 indicators align on 4H." → 🎯 <strong style="color:#a78bfa;">SMC</strong>: "wait for price to tap the Discount-zone Order Block at $118.20, BOS up on 1H, then fire. T1 = FVG fill at $121, T2 = BOS at $124, T3 = Premium zone at $128." → execute.<br>
         <span style="font-style:italic; font-size:11.5px;">Full SMC reference: <a href="/smc.html" style="color:#a78bfa; text-decoration:none; font-weight:500;">SMC Hub →</a></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OPTIONS FUNDAMENTALS REFERENCE -->
+  <div style="margin: 12px 0;">
+    <div class="card" style="border-left: 3px solid #f59e0b;">
+      <div class="card-title" style="color: #f59e0b;">📚 Options Fundamentals — Strike Selection · Liquidity · OI</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Three concepts every options trade hinges on. Reference these when picking a strike in card ③.</p>
+
+      <!-- ITM/ATM/OTM -->
+      <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:10px;">
+        <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">🎯 ITM / ATM / OTM — Strike vs Stock Price</div>
+        <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+          <strong style="color:var(--text);">ITM</strong> (In The Money) = strike has intrinsic value · for calls: strike <em>below</em> stock · for puts: strike <em>above</em><br>
+          <strong style="color:var(--text);">ATM</strong> (At The Money) = strike ≈ stock price<br>
+          <strong style="color:var(--text);">OTM</strong> (Out The Money) = pure time value · for calls: strike <em>above</em> stock · for puts: strike <em>below</em><br>
+          <strong style="color:var(--text);">% =</strong> |Strike − Stock| ÷ Stock × 100 — how far the strike is from current price
+        </div>
+
+        <table class="crit-table" style="margin-top:12px;">
+          <tr><td colspan="2" style="color:var(--text); font-weight:600; padding-top:6px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em;">Tradeoff matrix</td></tr>
+          <tr><td><strong style="color:#10b981;">Deep ITM (&gt;5%)</strong></td><td>High cost · low leverage (moves dollar-for-dollar) · highest probability · capital-heavy</td></tr>
+          <tr><td><strong style="color:var(--text);">Slightly ITM (0–5%)</strong></td><td>Medium cost · balanced leverage · good when you want survival through choppy weeks</td></tr>
+          <tr><td><strong style="color:#3b82f6;">ATM</strong></td><td>All time value · delta ~50 · 50/50 odds · balanced</td></tr>
+          <tr><td><strong style="color:#3b82f6;">Slightly OTM (0–5%)</strong></td><td><strong style="color:var(--text);">LJ's sweet spot</strong> — cheap, high leverage if right, matches "nearest resistance/support" rule</td></tr>
+          <tr><td><strong style="color:#f59e0b;">5–10% OTM</strong></td><td>Cheap · very high leverage if right · needs big move within DTE</td></tr>
+          <tr><td><strong style="color:#ef4444;">&gt;10% OTM</strong></td><td>Lottery ticket · usually expires worthless · skip unless catalyst-driven</td></tr>
+        </table>
+
+        <div style="margin-top:10px; padding:10px 12px; background:var(--surface); border:1px dashed var(--border); border-radius:5px; font-size:12px; color:var(--muted); line-height:1.7;">
+          <strong style="color:var(--text); display:block; margin-bottom:4px;">P&amp;L story — NVDA at $200, 30 DTE, $1,400 budget</strong>
+          <strong style="color:var(--text);">Stock +10% to $220:</strong> ITM (1cx, $1,300) = +$1,700 (+131%) · ATM (2cx, $1,400) = +$2,600 (+186%) · OTM (4cx, $1,400) = +$2,600 (+186%)<br>
+          <strong style="color:var(--text);">Stock +5% to $210:</strong> ITM = +$700 ✓ · ATM = +$600 ✓ · OTM = <span style="color:#ef4444;">-$1,400 ❌ total loss</span><br>
+          <strong style="color:var(--text);">Stock flat at $200:</strong> ITM = -$300 (time only) · ATM = <span style="color:#ef4444;">-$1,400 ❌</span> · OTM = <span style="color:#ef4444;">-$1,400 ❌</span><br>
+          <strong style="color:var(--text);">Stock -5% to $190:</strong> all three = total loss (-$1,300 / -$1,400 / -$1,400)<br>
+          <strong style="color:#10b981; display:block; margin-top:6px;">Lesson:</strong> OTM wins big when you're right + big move. ITM survives when you're right but timing is slow. Stock has to <em>actually move</em> for ATM/OTM to make money.
+        </div>
+      </div>
+
+      <!-- BID/ASK SPREAD -->
+      <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:10px;">
+        <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">📏 Bid/Ask &lt;10% — Liquidity Friction Rule</div>
+        <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+          <strong style="color:var(--text);">Bid</strong> = what someone will pay to buy from you (you sell at this)<br>
+          <strong style="color:var(--text);">Ask</strong> = what someone will sell to you (you buy at this)<br>
+          <strong style="color:var(--text);">Spread</strong> = Ask − Bid · this is friction you lose the moment you enter
+        </div>
+
+        <table class="crit-table" style="margin-top:12px;">
+          <tr><td colspan="2" style="color:var(--text); font-weight:600; padding-top:6px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em;">Examples — AAPL call</td></tr>
+          <tr><td>Bid $1.80 / Ask $2.00</td><td>Spread $0.20 ÷ mid $1.90 = <strong style="color:#ef4444;">10.5% — FAIL, skip</strong></td></tr>
+          <tr><td>Bid $4.50 / Ask $4.70</td><td>Spread $0.20 ÷ mid $4.60 = <strong style="color:#10b981;">4.3% — PASS</strong></td></tr>
+          <tr><td>Bid $0.80 / Ask $1.10</td><td>Spread $0.30 ÷ mid $0.95 = <strong style="color:#ef4444;">31% — hard fail, you're already down 15% on entry</strong></td></tr>
+        </table>
+
+        <div style="margin-top:10px; padding:10px 12px; background:var(--surface); border-radius:5px; font-size:12px; color:var(--muted); line-height:1.7;">
+          <strong style="color:var(--text);">Why it matters:</strong> a 30% spread means you're down ~15% the instant you enter (you buy at ask, would only get bid back). That's a massive edge giveaway before the trade has moved.<br>
+          <strong style="color:var(--text); display:block; margin-top:6px;">Where to check on Webull:</strong> Options Chain — Bid and Ask columns visible per strike. SPY/QQQ/AAPL/NVDA weeklies usually 1–3% (penny-wide). Small-caps and far-OTM strikes often blow past 10% — skip those.
+        </div>
+      </div>
+
+      <!-- OPEN INTEREST -->
+      <div style="background:var(--surface2); border-radius:6px; padding:14px 16px;">
+        <div style="font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">📊 Open Interest (OI) — Crowd Position at Your Strike</div>
+        <div style="font-size:12.5px; color:var(--muted); line-height:1.75;">
+          <strong style="color:var(--text);">OI</strong> = total contracts outstanding at a strike. Different from <strong style="color:var(--text);">Volume</strong>:<br>
+          • <strong style="color:var(--text);">Volume</strong> = today's trades only (resets daily)<br>
+          • <strong style="color:var(--text);">OI</strong> = all contracts still open (built up over time)
+        </div>
+
+        <table class="crit-table" style="margin-top:12px;">
+          <tr><td colspan="2" style="color:var(--text); font-weight:600; padding-top:6px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em;">How to read OI at your strike</td></tr>
+          <tr><td><strong style="color:#10b981;">High OI (&gt;500) + growing day-over-day</strong></td><td>Ideal — crowd agrees on this level · tight spreads · easy fills</td></tr>
+          <tr><td><strong style="color:var(--text);">High OI but flat/falling</strong></td><td>Acceptable · lower conviction · positions unwinding</td></tr>
+          <tr><td><strong style="color:#ef4444;">OI &lt; 500</strong></td><td>Skip — illiquid · wide spreads · hard to exit at fair price</td></tr>
+          <tr><td><strong style="color:var(--text);">OI building at strikes above current price</strong></td><td>Bullish positioning · institutions expecting upside</td></tr>
+          <tr><td><strong style="color:var(--text);">OI building at strikes below current price</strong></td><td>Bearish positioning · hedging or directional shorts</td></tr>
+        </table>
+
+        <div style="margin-top:10px; padding:10px 12px; background:var(--surface); border-radius:5px; font-size:12px; color:var(--muted); line-height:1.7;">
+          <strong style="color:var(--text);">Practical use:</strong> when picking a strike in card ③, favor strikes where OI is &gt;500 AND growing. High OI = liquid = you can exit when you want, not when the market lets you. Check on Webull options chain (OI column) or in the Top Options tab to see where the heaviest positioning is.
+        </div>
       </div>
 
     </div>
