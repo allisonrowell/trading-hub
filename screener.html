@@ -111,6 +111,10 @@
     color: #10b981;
     border-bottom-color: #10b981;
   }
+  .tab.active-live {
+    color: #ef4444;
+    border-bottom-color: #ef4444;
+  }
 
   /* CONTENT */
   .panel { display: none; padding: 28px 32px; }
@@ -527,6 +531,7 @@
     <button class="tab" onclick="switchTab('setup')">🎯 Setup &amp; Math</button>
     <button class="tab" onclick="switchTab('webull')">⚙ Webull Manual</button>
     <button class="tab" onclick="switchTab('options')">📚 Options 101</button>
+    <button class="tab" onclick="switchTab('live')">🔴 Live Trading</button>
   </div>
 </header>
 
@@ -802,6 +807,13 @@
         <div style="background:var(--surface); border:1px solid var(--border); border-left:3px solid #10b981; border-radius:6px; padding:13px 15px; transition:border-color 0.15s;">
           <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">📚 Options 101 →</div>
           <div style="font-size:12px; color:var(--muted); line-height:1.55;">ITM / ATM / OTM strike selection · Bid/Ask &lt;10% liquidity rule · Open Interest read</div>
+        </div>
+      </a>
+
+      <a href="#" onclick="return jumpTo('live')" style="text-decoration:none;">
+        <div style="background:var(--surface); border:1px solid var(--border); border-left:3px solid #ef4444; border-radius:6px; padding:13px 15px; transition:border-color 0.15s;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">🔴 Live Trading →</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.55;">Entry trigger (1-min) · monitoring discipline (4H/Daily only) · three ways out + cardinal sins</div>
         </div>
       </a>
 
@@ -1844,15 +1856,172 @@
   </div>
 </div>
 
+<!-- ===================== LIVE TRADING TAB ===================== -->
+<div id="panel-live" class="panel">
+  <div class="section">
+    <div class="section-label" style="color:#ef4444; border-color:rgba(239,68,68,0.3);">🔴 Live Trading — Entry · Monitoring · Exit</div>
+    <p style="color:var(--muted); font-size:13px; margin-bottom:8px; line-height:1.6;">When you're <strong style="color:var(--text);">about to enter</strong>, <strong style="color:var(--text);">already in</strong>, or <strong style="color:var(--text);">deciding to exit</strong>. Three cards, one job each. Glance, act, close.</p>
+  </div>
+
+  <!-- ENTRY CARD -->
+  <div id="live-entry" style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid #10b981;">
+      <div class="card-title" style="color: #10b981;">🟢 Entry — Pulling the Trigger</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">After Setup &amp; Math confirmed the trade. Now you're at the chart, ready to place the order. Three timeframes in sequence, then fire.</p>
+
+      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Sequence — Daily → 4H → 1-min</div>
+      <table class="crit-table" style="margin-bottom:14px;">
+        <tr><td><strong style="color:var(--text);">Daily</strong> (last check)</td><td>Confirm price is at your S/R level — not approaching, AT it. No E-marker (earnings) within DTE.</td></tr>
+        <tr><td><strong style="color:var(--text);">4H</strong> (last check)</td><td>Still 3 of 4 indicators aligned? MA Ribbon · RSI 45–55 rising · MACD bullish/bearish · Stoch K position.</td></tr>
+        <tr><td><strong style="color:#10b981;">1-min</strong> (trigger candle)</td><td><strong style="color:var(--text);">Pull the trigger here.</strong> Wait for the cross.</td></tr>
+      </table>
+
+      <div class="grid-2" style="gap:10px; margin-bottom:14px;">
+        <div style="background:var(--surface2); border-left:2px solid #3b82f6; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">📈 LONG — 1-min trigger</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Stoch RSI K <strong style="color:var(--text);">crosses above 20</strong> from oversold<br>
+            • Price <strong style="color:var(--text);">holding above</strong> your S/R level<br>
+            • Volume bar <strong style="color:#10b981;">green and bigger than average</strong><br>
+            • <strong style="color:#a78bfa;">SMC:</strong> SmartTrend Entry signal fires
+          </div>
+        </div>
+        <div style="background:var(--surface2); border-left:2px solid #ef4444; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">📉 SHORT — 1-min trigger</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Stoch RSI K <strong style="color:var(--text);">crosses below 80</strong> from overbought<br>
+            • Price <strong style="color:var(--text);">holding below</strong> your S/R level<br>
+            • Volume bar <strong style="color:#ef4444;">red and bigger than average</strong><br>
+            • <strong style="color:#a78bfa;">SMC:</strong> SmartTrend Entry signal fires
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:6px; padding:12px 14px; margin-bottom:12px;">
+        <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">⚡ Order Placement — Bracket / OCO</div>
+        <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+          <strong style="color:var(--text);">Order type:</strong> Bracket / OCO (entry + stop + take-profit in one ticket)<br>
+          <strong style="color:var(--text);">Entry:</strong> Limit order at the mid or 1¢ favorable<br>
+          <strong style="color:var(--text);">Stop loss:</strong> Just below swing low (longs) or above swing high (shorts) · 5–10¢ buffer<br>
+          <strong style="color:var(--text);">Take profit:</strong> T1 = first FVG fill or next S/R<br>
+          <strong style="color:#ef4444;">Submit — never enter without the stop attached.</strong>
+        </div>
+      </div>
+
+      <div style="padding:11px 13px; background:var(--surface2); border-radius:5px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+        <strong style="color:var(--text);">After fill:</strong> close the 1-min chart, switch to 4H or Daily, watch Positions tab.
+        Full reference: <a href="#" onclick="return jumpTo('setup','entry-stop-target')" style="color:#10b981; text-decoration:none;">Setup &amp; Math → Entry/Stop/Target/R:R</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- MONITORING CARD -->
+  <div id="live-monitoring" style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid #3b82f6;">
+      <div class="card-title" style="color: #3b82f6;">👁 Monitoring — In the Trade</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Your bracket order is doing the watching. You just need to spot setup invalidation or approaching targets. <strong style="color:#ef4444;">Do not watch the 1-min mid-trade.</strong></p>
+
+      <div class="grid-2" style="gap:10px; margin-bottom:14px;">
+        <div style="background:var(--surface2); border-left:2px solid #10b981; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">✅ Watch on 4H + Daily</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • <strong style="color:var(--text);">4H:</strong> still 3 of 4 indicators aligned?<br>
+            • <strong style="color:var(--text);">Daily:</strong> setup not invalidated · S/R intact · no E-marker approaching<br>
+            • <strong style="color:var(--text);">Frequency:</strong> pre-market · ~30 min before known catalysts · end of day
+          </div>
+        </div>
+        <div style="background:var(--surface2); border-left:2px solid #ef4444; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">❌ Do NOT watch</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • <strong style="color:var(--text);">1-min · 5-min mid-trade</strong> — noise will panic-exit you<br>
+            • <strong style="color:var(--text);">Random news</strong> in unrelated tickers<br>
+            • <strong style="color:var(--text);">P&amp;L every 5 minutes</strong> — refresh-anxiety kills trades
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">What each 4H signal means for an open trade</div>
+      <table class="crit-table" style="margin-bottom:14px;">
+        <tr><td><strong style="color:#10b981;">3 of 4 indicators still aligned</strong></td><td>Hold · stay in · stick to plan</td></tr>
+        <tr><td><strong style="color:#f59e0b;">1 indicator started disagreeing</strong> (e.g., RSI hit 75)</td><td>Note it · still hold unless 2+ flip</td></tr>
+        <tr><td><strong style="color:#ef4444;">2+ indicators flip against you</strong></td><td>Real warning — consider exit at next bounce/dip</td></tr>
+        <tr><td><strong style="color:#ef4444;">Price closes back through your S/R</strong></td><td><strong style="color:var(--text);">Setup invalidated — manual exit, don't wait for stop</strong></td></tr>
+        <tr><td><strong style="color:#10b981;">Approaching T1 target</strong></td><td>Be ready to close 50% · trail stop up to lock in profit</td></tr>
+        <tr><td><strong style="color:var(--text);">Catalyst day approaching</strong> (Fed/CPI/earnings)</td><td>Decide BEFORE: hold through or close prior · don't be caught by surprise</td></tr>
+      </table>
+
+      <div style="padding:11px 13px; background:rgba(59,130,246,0.08); border-left:2px solid #3b82f6; border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+        <strong style="color:#3b82f6;">The discipline:</strong> the whole reason we set up bracket orders is so you DON'T have to babysit. Stop is automated. T1 is automated (if you set it). You're free to live your life — check 4H twice a day, that's it. <strong style="color:var(--text);">If you find yourself on the 1-min mid-trade, that's your tell that you're trading the emotion, not the system.</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXIT CARD -->
+  <div id="live-exit" style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid #ef4444;">
+      <div class="card-title" style="color: #ef4444;">🛑 Exit — Three Ways Out</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Every trade ends one of three ways. Plan all three before entry. Pre-defined exits = good trader. Reactive exits = bad trader.</p>
+
+      <div class="grid-3" style="gap:10px; margin-bottom:14px;">
+
+        <div style="background:var(--surface2); border-left:2px solid #10b981; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">✅ Target hit (planned)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • <strong style="color:var(--text);">T1</strong> hit → close <strong style="color:var(--text);">50%</strong><br>
+            • <strong style="color:var(--text);">T2</strong> hit → close another <strong style="color:var(--text);">30%</strong><br>
+            • <strong style="color:var(--text);">T3</strong> hit → close last <strong style="color:var(--text);">20%</strong><br>
+            • OR trail stop up to lock in profit, let it ride
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-left:2px solid #ef4444; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">🛑 Stop hit (automated)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Bracket order does this for you<br>
+            • <strong style="color:var(--text);">Don't second-guess</strong> — accept the loss<br>
+            • The stop existing IS the system working<br>
+            • <strong style="color:#ef4444;">No revenge re-entry</strong> — log it, move on
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-left:2px solid #f59e0b; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">⚠ Manual exit (invalidation)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • 4H trend flipped (2+ indicators against)<br>
+            • Daily close back through your S/R<br>
+            • News changed the picture<br>
+            • DTE ≤5 days, not at target → exit before theta crush
+          </div>
+        </div>
+
+      </div>
+
+      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Cardinal sins — never do these</div>
+      <table class="crit-table" style="margin-bottom:14px;">
+        <tr><td><strong style="color:#ef4444;">Move stop further away</strong></td><td>To "give it room" — that's hope, not strategy. The trade is invalidating. Take the loss.</td></tr>
+        <tr><td><strong style="color:#ef4444;">Hold past invalidation</strong></td><td>Hoping it comes back. The system says exit. Stop hoping, start acting.</td></tr>
+        <tr><td><strong style="color:#ef4444;">Exit early on noise</strong></td><td>2–3% pullback on the 1-min ≠ invalidation. Stay on 4H. Don't look at the 1-min.</td></tr>
+        <tr><td><strong style="color:#ef4444;">Re-enter to make it back</strong></td><td>Revenge trading. Every revenge trade compounds the loss. Log the L, take a break, screen tomorrow.</td></tr>
+        <tr><td><strong style="color:#ef4444;">Add to a losing position</strong></td><td>Averaging down on options = doubling the loss. Cut, don't average.</td></tr>
+      </table>
+
+      <div style="padding:11px 13px; background:rgba(239,68,68,0.08); border-left:2px solid #ef4444; border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+        <strong style="color:#ef4444;">From LJ's IWM lesson:</strong> "You can't just let it go to zero. Bad habit. Cut it, don't just let it go all the way down." Mental stops fail under pressure — that's why we use bracket orders. If the bracket isn't there and you're watching it bleed, <strong style="color:var(--text);">close manually now</strong>, don't hope.
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <script>
   function switchTab(type) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => {
-      t.classList.remove('active-swing', 'active-position', 'active-scalp', 'active-setup', 'active-webull', 'active-options');
+      t.classList.remove('active-swing', 'active-position', 'active-scalp', 'active-setup', 'active-webull', 'active-options', 'active-live');
     });
     document.getElementById('panel-' + type).classList.add('active');
     const tabs = document.querySelectorAll('.tab');
-    const map = { swing: 0, position: 1, scalp: 2, setup: 3, webull: 4, options: 5 };
+    const map = { swing: 0, position: 1, scalp: 2, setup: 3, webull: 4, options: 5, live: 6 };
     tabs[map[type]].classList.add('active-' + type);
     window.scrollTo({top: 0});
   }
