@@ -521,7 +521,7 @@
 <header>
   <div class="header-top">
     <h1>⬡ TRADING SCREENER HUB</h1>
-    <span class="tagline">LJ System · Webull · TradingView</span>
+    <span class="tagline">LJ · SMC · TradingView + your broker</span>
     <a href="/" class="back-to-hub">← Hub</a>
   </div>
   <div class="tabs">
@@ -529,8 +529,6 @@
     <button class="tab" onclick="switchTab('position')">📊 Position / 10+ Days</button>
     <button class="tab" onclick="switchTab('scalp')">⚡ Scalping (Partner)</button>
     <button class="tab" onclick="switchTab('setup')">🎯 Setup &amp; Math</button>
-    <button class="tab" onclick="switchTab('webull')">⚙ Webull Manual</button>
-    <button class="tab" onclick="switchTab('options')">📚 Options 101</button>
     <button class="tab" onclick="switchTab('live')">🔴 Live Trading</button>
   </div>
 </header>
@@ -598,7 +596,7 @@
       <li>
         <div class="step-content">
           <strong>Run the screener + apply sub-sector filter</strong>
-          <span>Apply your 4 base filters (see <strong style="color:#3b82f6">card ① below</strong>) → then add the sub-sector filter matching the ETF you identified in step 1. The mapping below covers both Webull (more granular sub-sectors) and TradingView taxonomies.</span>
+          <span>Apply your 4 base filters (see <strong style="color:#3b82f6">card ① below</strong>) → then add the sub-sector filter matching the ETF you identified in step 1. The mapping below covers Webull-style sub-sectors and their TradingView equivalents (works for most brokers).</span>
           <div style="margin-top:12px; padding:11px 13px; background:var(--surface); border-radius:5px; font-size:11.5px; line-height:1.6;">
             <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">Sub-sector → ETF mapping</div>
             <table style="width:100%; border-collapse:collapse; color:var(--muted); font-size:12px;">
@@ -622,7 +620,7 @@
           </div>
           <div style="margin-top:10px; padding:11px 13px; background:var(--surface); border-left:2px solid var(--swing); border-radius:4px; color:var(--muted); font-size:12px; line-height:1.6;">
             <strong style="color:#e2e8f0; display:block; margin-bottom:6px;">Still &gt;20 names after sub-sector? Narrow further:</strong>
-            <strong style="color:#3b82f6;">①</strong> <strong style="color:#e2e8f0">Add a Technical Signal filter</strong> on Webull (MACD bullish cross, RSI exiting oversold) — pre-finds names already signaling the LJ direction.<br>
+            <strong style="color:#3b82f6;">①</strong> <strong style="color:#e2e8f0">Add a Technical Signal filter</strong> on your broker (MACD bullish cross, RSI exiting oversold) — pre-finds names already signaling the LJ direction.<br>
             <strong style="color:#3b82f6;">②</strong> <strong style="color:#e2e8f0">Sort by Change %</strong> descending → take top 10–15 names moving in your direction (positive for calls, negative for puts).<br>
             <strong style="color:#e2e8f0;">Target:</strong> 5–15 names to chart-read in step 3.
           </div>
@@ -685,7 +683,7 @@
       <div class="routine-reference-label">↓ Reference cards — used in the steps above</div>
       <div class="grid-3">
         <div class="card">
-          <div class="card-title">① Webull Screener Filter Stack</div>
+          <div class="card-title">① Screener Filter Stack</div>
           <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Save as preset <strong style="color:var(--text);">"LJ Swing Base."</strong> Pre-filter 2 of 4 LJ indicators at the screen level (MA + MACD), chart-read the other 2 (RSI + Stoch K) on 4H.</p>
           <table class="crit-table">
             <tr><td colspan="2" style="color:#3b82f6; font-weight:600; padding-top:8px; padding-bottom:6px; font-size:10px; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid var(--border);">Base filters (always on)</td></tr>
@@ -793,20 +791,6 @@
         <div style="background:var(--surface); border:1px solid var(--border); border-left:3px solid #a78bfa; border-radius:6px; padding:13px 15px; transition:border-color 0.15s;">
           <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">🎯 Setup &amp; Math →</div>
           <div style="font-size:12px; color:var(--muted); line-height:1.55;">Valid/Invalid · S/R Lookback · VRVP · Direction Reference · Entry/Stop/Target/R:R · SMC Lens · Sister Checks · Thesis Template</div>
-        </div>
-      </a>
-
-      <a href="#" onclick="return jumpTo('webull')" style="text-decoration:none;">
-        <div style="background:var(--surface); border:1px solid var(--border); border-left:3px solid #f59e0b; border-radius:6px; padding:13px 15px; transition:border-color 0.15s;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">⚙ Webull Manual →</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.55;">5 phases (Setup · Sunday · Daily · Live · Position management) + every screener tab explained + bracket order discipline</div>
-        </div>
-      </a>
-
-      <a href="#" onclick="return jumpTo('options')" style="text-decoration:none;">
-        <div style="background:var(--surface); border:1px solid var(--border); border-left:3px solid #10b981; border-radius:6px; padding:13px 15px; transition:border-color 0.15s;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">📚 Options 101 →</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.55;">ITM / ATM / OTM strike selection · Bid/Ask &lt;10% liquidity rule · Open Interest read</div>
         </div>
       </a>
 
@@ -1539,239 +1523,7 @@
       </div>
   </div>
 
-  <!-- REVERSAL SETUP RECIPE -->
-  <div id="reversal-setup" style="margin: 14px 0;">
-    <div class="card" style="border-left: 3px solid #a78bfa;">
-      <div class="card-title" style="color: #a78bfa;">🔄 Reversal Setup — Alternative to LJ Trend-Follow</div>
-      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">When the market is range-bound or no clean LJ setups exist, reversal plays profit from <strong style="color:var(--text);">extremes snapping back</strong>. Different mindset, different recipe, different rules.</p>
-
-      <!-- Mindset comparison -->
-      <div class="grid-2" style="gap:10px; margin-bottom:14px;">
-        <div style="background:var(--surface2); border-left:2px solid #3b82f6; border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">LJ Trend-Follow</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">"Ride the wave that's moving." Wait for 3 of 4 indicators to align WITH direction. Enter at S/R with the trend.</div>
-        </div>
-        <div style="background:var(--surface2); border-left:2px solid #a78bfa; border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Reversal Play</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">"Fade the extreme that's exhausted." Wait for oversold/overbought to start turning. Enter against recent move, betting on snap-back.</div>
-        </div>
-      </div>
-
-      <!-- When to use / when not -->
-      <table class="crit-table" style="margin-bottom:14px;">
-        <tr style="background:var(--surface);">
-          <td style="font-family:var(--mono); font-size:10px; color:#10b981; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">✅ Use reversal mode when</td>
-          <td style="font-family:var(--mono); font-size:10px; color:#ef4444; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">❌ Skip reversal mode when</td>
-        </tr>
-        <tr>
-          <td>Market is range-bound (VIX low, SPY chopping)</td>
-          <td>Strong trend in place — don't fight clean trends</td>
-        </tr>
-        <tr>
-          <td>LJ screens return zero clean setups across sectors</td>
-          <td>"Catching a falling knife" without confirmation</td>
-        </tr>
-        <tr>
-          <td>Specific name showing <strong style="color:var(--text);">capitulation</strong> (oversold + high volume bar)</td>
-          <td>Pre-earnings / pre-catalyst — don't fade events</td>
-        </tr>
-        <tr>
-          <td>Post-news overreaction (gap already faded once)</td>
-          <td>4H MA Ribbon shows strong opposite-direction trend</td>
-        </tr>
-      </table>
-
-      <!-- Webull screen recipe -->
-      <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:12px;">
-        <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">⚙ Webull screen recipe</div>
-        <table class="crit-table">
-          <tr><td>Base filters (same as LJ)</td><td>US · $20–500 · Avg Vol 60D &gt;5M · ATR &gt;2%</td></tr>
-          <tr><td><strong style="color:var(--text);">IV Percentile</strong></td><td><strong style="color:#a78bfa;">50–90</strong> (higher IV = more rebound potential — different from LJ's 20–70)</td></tr>
-          <tr><td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding-top:10px; padding-bottom:6px;">Pick ONE oscillator signal (don't stack)</td></tr>
-          <tr><td><strong style="color:#3b82f6;">Long reversal</strong> via Williams %R</td><td>W%R &lt; -80 AND turning up</td></tr>
-          <tr><td><strong style="color:#ef4444;">Short reversal</strong> via Williams %R</td><td>W%R &gt; -20 AND turning down</td></tr>
-          <tr><td><strong style="color:#3b82f6;">Long reversal</strong> via SlowStoch (alternative)</td><td>SlowStoch &lt; 20 AND turning up</td></tr>
-          <tr><td><strong style="color:#ef4444;">Short reversal</strong> via SlowStoch (alternative)</td><td>SlowStoch &gt; 80 AND turning down</td></tr>
-        </table>
-      </div>
-
-      <!-- Entry / Stop / Target -->
-      <div class="grid-2" style="gap:10px; margin-bottom:14px;">
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">📍 Entry trigger</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            Wait for the <strong style="color:var(--text);">cross back into range</strong>:<br>
-            • W%R crosses above -80 (longs) / below -20 (shorts)<br>
-            • SlowStoch crosses above 20 (longs) / below 80 (shorts)<br>
-            Confirmed by a <strong style="color:var(--text);">strong volume bar</strong> in your direction.<br>
-            <strong style="color:#f59e0b;">Veto:</strong> if 4H MA Ribbon shows opposite-direction strong trend — skip, don't fight.
-          </div>
-        </div>
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">🛑 Stop · 🎯 Target · 📐 R:R</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            <strong style="color:var(--text);">Stop:</strong> just below the swing low (longs) / above swing high (shorts). <strong style="color:#f59e0b;">TIGHT</strong> — reversal plays are lower probability.<br>
-            <strong style="color:var(--text);">Target:</strong> opposite end of recent range OR the 20 SMA on daily (whichever is closer).<br>
-            <strong style="color:var(--text);">R:R:</strong> aim for <strong style="color:#10b981;">2R+ minimum</strong>. Reversal trades are lower probability, need higher reward to compensate.
-          </div>
-        </div>
-      </div>
-
-      <div style="padding:11px 13px; background:var(--surface); border:1px dashed var(--border); border-radius:6px; font-size:12px; color:var(--muted); line-height:1.7;">
-        <strong style="color:var(--text); display:block; margin-bottom:4px;">Worked example — XLE bounce-and-reject (your last analysis)</strong>
-        XLE deep oversold (Stoch K = 16), price below both MAs in downtrend. Wait for bounce up to the 20 SMA at $56.23 → if it <em>rejects</em> (closes back below) on volume → fresh PUT entry. Stop above $57.18 (the 50 SMA). Target the recent swing low. Classic reversal-rejection setup.<br>
-        <span style="color:#f59e0b;">⚠ If XLE breaks above the 50 SMA instead</span> → setup invalidates, the downtrend may be ending.
-      </div>
-
-      <div style="margin-top:12px; padding:10px 12px; background:rgba(167,139,250,0.08); border-left:2px solid #a78bfa; border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.55;">
-        <strong style="color:#a78bfa;">Mental note:</strong> reversal is a <em>secondary</em> system, not a replacement for LJ trend-follow. Use it when trend-follow setups are absent. Don't switch between systems mid-trade — pick the lens before you screen.
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== WEBULL MANUAL TAB ===================== -->
-<div id="panel-webull" class="panel">
-  <div class="section">
-    <div class="section-label" style="color:#f59e0b; border-color:rgba(245,158,11,0.3);">Webull Manual — Operating Reference</div>
-    <p style="color:var(--muted); font-size:13px; margin-bottom:8px; line-height:1.6;">5 phases of how to use Webull as primary screener + execution platform. Plus every screener tab explained.</p>
-  </div>
-
-  <div id="webull-operating-manual" style="margin: 14px 0;">
-    <div class="card" style="border-left: 3px solid #f59e0b;">
-      <div class="card-title">⚙ Webull Operating Manual — 5 Phases + Tab Reference</div>
-      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">How to use Webull as your <strong style="color:var(--text);">primary screener + execution</strong>. TradingView stays the charting workbench (4-indicator template, S/R drawings, VRVP, SMC zones). Web app is fine for most uses; desktop app for Sunday planning and live execution when you want multiple panels visible.</p>
-
-      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">The 5 Phases</div>
-      <div class="grid-2" style="gap:10px; margin-bottom:16px;">
-
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 1 · Setup (one-time)</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            • Pin News + Analyst panel to right side<br>
-            • Build 4 watchlists matching Notion Status: <strong style="color:var(--text);">Pending Entry · Live · Researching · Partner's Scalps</strong><br>
-            • Save <strong style="color:var(--text);">"LJ Swing Base"</strong> screener preset (filters from Swing tab card ①)<br>
-            • Pin <strong style="color:var(--text);">Positions tab</strong> to bottom strip — always visible
-          </div>
-        </div>
-
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 2 · Sunday (30–45 min)</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            • TradingView → sector ETF check<br>
-            • Webull → load <strong style="color:var(--text);">"LJ Swing Base"</strong> preset + add sub-sector + technical signal<br>
-            • Cross-check <strong style="color:var(--text);">Top Options</strong> for institutional flow<br>
-            • Save 2–3 finalists to <strong style="color:var(--text);">"Pending Entry"</strong> watchlist
-          </div>
-        </div>
-
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 3 · Daily prep (10–15 min · 8–9:15 AM)</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            • Open <strong style="color:var(--text);">"Pending Entry"</strong> watchlist<br>
-            • News panel per name — overnight gap? Catalyst?<br>
-            • TradingView 4H check + SMC zone read<br>
-            • Right-click ticker → <strong style="color:var(--text);">Set Alert</strong> at your entry trigger
-          </div>
-        </div>
-
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 4 · Live execution</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            • Right-click ticker → <strong style="color:var(--text);">Options Chain</strong> (pre-load it)<br>
-            • Confirm strike: DTE 14–45 · <strong style="color:var(--text);">OI &gt;500</strong> · <strong style="color:var(--text);">Bid/Ask &lt;10%</strong> · no earnings<br>
-            • Build <strong style="color:#f59e0b;">Bracket / OCO order</strong> — entry + stop in one ticket<br>
-            • Submit → confirm fill → watch Positions tab
-          </div>
-        </div>
-
-        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 5 · Position management</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            • T1 hit → <strong style="color:var(--text);">close 50%</strong> (right-click → Close Partial)<br>
-            • Trade keeps moving → <strong style="color:var(--text);">trail stop up</strong> (never against you)<br>
-            • Setup invalidates → manual close, don't wait<br>
-            • Approaching ≤5 DTE → exit before theta crush
-          </div>
-        </div>
-
-        <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:6px; padding:12px 14px;">
-          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">⚡ Bracket Order Discipline</div>
-          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
-            Always enter with the <strong style="color:var(--text);">stop loss attached in the same OCO ticket</strong>. Eliminates the IWM-style mental-stop failure pattern from LJ's lesson. <strong style="color:var(--text);">Single most important Webull feature.</strong> Without it, you're back to hoping you'll act on a mental stop under pressure — you won't.
-          </div>
-        </div>
-      </div>
-
-      <div style="font-family:var(--mono); font-size:10px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Screener Tab Reference — what each is for</div>
-      <table class="crit-table">
-        <tr><td><strong style="color:var(--text);">Screeners</strong></td><td>Stock screen with full filter stack — your Sunday workflow lives here</td></tr>
-        <tr><td><strong style="color:var(--text);">Option Screener</strong></td><td>Filter options directly (DTE · IV · Delta · OI · spread) — pre-find tradeable contracts</td></tr>
-        <tr><td><strong style="color:var(--text);">Top Options</strong></td><td>Today's most-traded option strikes. <strong style="color:var(--text);">Skip SPY/QQQ at top</strong> — that's normal. Watch when a <em>single-name</em> stock shows up high = institutional positioning. Cross-reference with your screener candidates</td></tr>
-        <tr><td><strong style="color:var(--text);">Tops · Top Gainers</strong></td><td>Biggest % gainers today. Momentum lens. Use for catalyst-driven setups you might miss in a sector screen. <strong style="color:#f59e0b;">Caution:</strong> often already-extended names — late entries are risky</td></tr>
-        <tr><td><strong style="color:var(--text);">Tops · Top Losers</strong></td><td>Biggest % losers. Pullback/reversal candidates if in an uptrending sector. Also lets you spot capitulation in oversold names where Stoch K is below 20</td></tr>
-        <tr><td><strong style="color:var(--text);">Active</strong></td><td>Most volume traded today. Liquidity lens — high volume = tight spreads = tradeable options</td></tr>
-        <tr><td><strong style="color:var(--text);">52 Week</strong></td><td>New 52-week highs / lows. Breakout (longs) or breakdown (puts) candidates. Cross-check with LJ's 3-touch S/R rule before treating as valid</td></tr>
-        <tr><td><strong style="color:var(--text);">ETFs</strong></td><td>ETF-specific screen. Use for sector ETF momentum check or finding tradeable index ETFs (SPY/QQQ/IWM)</td></tr>
-        <tr><td><strong style="color:var(--text);">Bonds</strong></td><td>Skip — not relevant for swing options</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- TECHNICAL SIGNALS REFERENCE -->
-  <div id="technical-signals" style="margin: 14px 0;">
-    <div class="card" style="border-left: 3px solid #f59e0b;">
-      <div class="card-title">📡 Technical Signals Reference — All 9 Webull Filters</div>
-      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Every Technical Signal Webull offers, what it actually measures, when to use it, and when to skip. <strong style="color:var(--text);">Don't stack more than 2–3</strong> — too many filters = empty results.</p>
-
-      <table class="crit-table">
-        <tr style="background:var(--surface);">
-          <td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">Trend / Momentum signals (best for LJ-style trend-follow)</td>
-        </tr>
-        <tr><td><strong style="color:var(--text);">MA</strong> <span style="color:var(--muted);">(your LJ stack — card ①)</span></td><td><strong>What:</strong> Moving averages — direction of trend · price position vs averages.<br><strong>Use:</strong> Trend confirmation. Stack 3 conditions (Price&gt;MA20, Price&gt;MA60, MA20&gt;MA60) for longs.<br><strong>Skip when:</strong> Choppy markets · tangled MAs.</td></tr>
-        <tr><td><strong style="color:var(--text);">MACD</strong> <span style="color:var(--muted);">(your LJ stack)</span></td><td><strong>What:</strong> Difference between 12-EMA and 26-EMA + 9-EMA signal line.<br><strong>Use:</strong> Trend momentum + bullish/bearish crosses · divergences.<br><strong>Skip when:</strong> Ranging markets (false crosses) · trade through earnings.</td></tr>
-        <tr><td><strong style="color:var(--text);">KST</strong> <span style="color:var(--muted);">(Know Sure Thing — Pring)</span></td><td><strong>What:</strong> Long-term smoothed momentum from 4 ROC periods.<br><strong>Use:</strong> Multi-week trend confirmation · signal line crossover for slow swings.<br><strong>Skip when:</strong> Scalping or fast entries — too slow.</td></tr>
-        <tr><td><strong style="color:var(--text);">MOM</strong> <span style="color:var(--muted);">(Momentum)</span></td><td><strong>What:</strong> Simple rate-of-change of price.<br><strong>Use:</strong> Confirm trend strength · spot divergences from price.<br><strong>Skip when:</strong> Standalone — needs a direction filter (MA) alongside.</td></tr>
-
-        <tr style="background:var(--surface);">
-          <td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">Oscillators — overbought/oversold (best for REVERSAL plays)</td>
-        </tr>
-        <tr><td><strong style="color:var(--text);">RSI</strong> <span style="color:var(--muted);">(your LJ stack)</span></td><td><strong>What:</strong> Relative strength, 0–100 scale.<br><strong>Use:</strong> Above 50 trend · 45–55 LJ entry zone · &gt;70 overbought, &lt;30 oversold.<br><strong>Skip when:</strong> Strong trends — can stay overbought a long time without reversing.</td></tr>
-        <tr><td><strong style="color:#a78bfa;">Williams %R</strong> <span style="color:var(--muted);">(reversal plays)</span></td><td><strong>What:</strong> Inverted Stochastic, -100 to 0 scale.<br><strong>Use:</strong> &lt;-80 = oversold reversal long candidate · &gt;-20 = overbought reversal short candidate.<br><strong>Skip when:</strong> Trend-following entries (redundant with LJ Stoch RSI). Use for <strong style="color:var(--text);">reversal scalping at extremes</strong> instead.</td></tr>
-        <tr><td><strong style="color:#a78bfa;">SlowStoch</strong> <span style="color:var(--muted);">(reversal plays)</span></td><td><strong>What:</strong> Smoothed Stochastic — slower, more reliable than FSTO.<br><strong>Use:</strong> Swing reversals at extremes (&lt;20 = oversold, &gt;80 = overbought).<br><strong>Skip when:</strong> Trending markets (whipsaws) · LJ stack (redundant with Stoch RSI K).</td></tr>
-        <tr><td><strong style="color:var(--muted);">FSTO</strong> <span style="color:var(--muted);">(Fast Stoch)</span></td><td><strong>What:</strong> Fast Stochastic — reacts to every wiggle.<br><strong>Use:</strong> Intraday scalping only · very short-term reversals.<br><strong>Skip when:</strong> Swing trading (too noisy) · LJ stack (redundant + worse than SlowStoch).</td></tr>
-        <tr><td><strong style="color:var(--text);">CCI</strong> <span style="color:var(--muted);">(Commodity Channel Index)</span></td><td><strong>What:</strong> Deviation from average, typically -100 to +100 range.<br><strong>Use:</strong> Spot extreme deviations · divergences for reversal setups.<br><strong>Skip when:</strong> Choppy markets · standalone signal (use with trend filter).</td></tr>
-
-        <tr style="background:var(--surface);">
-          <td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">Volatility</td>
-        </tr>
-        <tr><td><strong style="color:var(--text);">BOLL</strong> <span style="color:var(--muted);">(Bollinger Bands)</span></td><td><strong>What:</strong> Volatility envelope (20 SMA ± 2 std deviations).<br><strong>Use:</strong> Identify <strong style="color:var(--text);">squeezes</strong> (low vol = setup forming) and breakouts (price punching through band) · dynamic S/R at bands.<br><strong>Skip when:</strong> Strong trends — price can ride a band for weeks. Use with trend filter, not alone.</td></tr>
-      </table>
-
-      <div style="margin-top:14px; padding:12px 14px; background:var(--surface2); border-radius:6px;">
-        <div style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Pre-screen recipes — which combos for which setup</div>
-        <table class="crit-table">
-          <tr><td><strong style="color:#3b82f6;">LJ trend-follow</strong></td><td><strong>MA</strong> (3 conditions, longs or puts) + <strong>MACD</strong> bullish/bearish cross · already in card ①</td></tr>
-          <tr><td><strong style="color:#a78bfa;">Reversal play</strong></td><td><strong>Williams %R</strong> &lt;-80 turning up (long) or &gt;-20 turning down (short) · OR <strong>SlowStoch</strong> equivalent · paired with high IV Percentile (50–90) for max rebound</td></tr>
-          <tr><td><strong style="color:#10b981;">Breakout play</strong></td><td><strong>BOLL</strong> squeeze (low band width) + <strong>MACD</strong> bullish cross · catches volatility expansion</td></tr>
-          <tr><td><strong style="color:#f59e0b;">Pure momentum continuation</strong></td><td><strong>RSI</strong> above 50 + <strong>MOM</strong> positive · simple "is this thing moving?" filter</td></tr>
-        </table>
-      </div>
-
-      <div style="margin-top:12px; padding:10px 12px; background:rgba(245,158,11,0.08); border-left:2px solid #f59e0b; border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.55;">
-        <strong style="color:#f59e0b;">⚠ Anti-pattern:</strong> stacking 4+ signals will return zero results most days. Pick the recipe that matches the setup type you're hunting, use 2–3 signals max. If you want trend-follow today, don't add reversal signals — they'll cancel each other out.
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== OPTIONS 101 TAB ===================== -->
-<div id="panel-options" class="panel">
-  <div class="section">
-    <div class="section-label" style="color:#10b981; border-color:rgba(16,185,129,0.3);">Options 101 — Fundamentals Reference</div>
-    <p style="color:var(--muted); font-size:13px; margin-bottom:8px; line-height:1.6;">Strike selection (ITM/ATM/OTM), liquidity friction (bid/ask), and Open Interest. Reference these when picking a strike in the Swing tab's card ③.</p>
-  </div>
-
+  <!-- OPTIONS FUNDAMENTALS (folded from former Options 101 tab) -->
   <div id="options-fundamentals" style="margin: 12px 0;">
     <div class="card" style="border-left: 3px solid #10b981;">
       <div class="card-title" style="color: #10b981;">📚 Options Fundamentals — Strike Selection · Liquidity · OI</div>
@@ -1825,7 +1577,7 @@
 
         <div style="margin-top:10px; padding:10px 12px; background:var(--surface); border-radius:5px; font-size:12px; color:var(--muted); line-height:1.7;">
           <strong style="color:var(--text);">Why it matters:</strong> a 30% spread means you're down ~15% the instant you enter (you buy at ask, would only get bid back). That's a massive edge giveaway before the trade has moved.<br>
-          <strong style="color:var(--text); display:block; margin-top:6px;">Where to check on Webull:</strong> Options Chain — Bid and Ask columns visible per strike. SPY/QQQ/AAPL/NVDA weeklies usually 1–3% (penny-wide). Small-caps and far-OTM strikes often blow past 10% — skip those.
+          <strong style="color:var(--text); display:block; margin-top:6px;">Where to check in your broker:</strong> Options Chain — Bid and Ask columns visible per strike. SPY/QQQ/AAPL/NVDA weeklies usually 1–3% (penny-wide). Small-caps and far-OTM strikes often blow past 10% — skip those.
         </div>
       </div>
 
@@ -1848,10 +1600,146 @@
         </table>
 
         <div style="margin-top:10px; padding:10px 12px; background:var(--surface); border-radius:5px; font-size:12px; color:var(--muted); line-height:1.7;">
-          <strong style="color:var(--text);">Practical use:</strong> when picking a strike in card ③, favor strikes where OI is &gt;500 AND growing. High OI = liquid = you can exit when you want, not when the market lets you. Check on Webull options chain (OI column) or in the Top Options tab to see where the heaviest positioning is.
+          <strong style="color:var(--text);">Practical use:</strong> when picking a strike in card ③, favor strikes where OI is &gt;500 AND growing. High OI = liquid = you can exit when you want, not when the market lets you. Check in your broker's options chain (OI column) or the Top Options tab to see where the heaviest positioning is.
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- TECHNICAL SIGNALS REFERENCE (folded from former Webull Manual tab) -->
+  <div id="technical-signals" style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid #f59e0b;">
+      <div class="card-title">📡 Technical Signals Reference — 9 Common Screener Filters</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">Every Technical Signal filter (Webull / most brokers), what it actually measures, when to use it, and when to skip. <strong style="color:var(--text);">Don't stack more than 2–3</strong> — too many filters = empty results.</p>
+
+      <table class="crit-table">
+        <tr style="background:var(--surface);">
+          <td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">Trend / Momentum signals (best for LJ-style trend-follow)</td>
+        </tr>
+        <tr><td><strong style="color:var(--text);">MA</strong> <span style="color:var(--muted);">(your LJ stack — card ①)</span></td><td><strong>What:</strong> Moving averages — direction of trend · price position vs averages.<br><strong>Use:</strong> Trend confirmation. Stack 3 conditions (Price&gt;MA20, Price&gt;MA60, MA20&gt;MA60) for longs.<br><strong>Skip when:</strong> Choppy markets · tangled MAs.</td></tr>
+        <tr><td><strong style="color:var(--text);">MACD</strong> <span style="color:var(--muted);">(your LJ stack)</span></td><td><strong>What:</strong> Difference between 12-EMA and 26-EMA + 9-EMA signal line.<br><strong>Use:</strong> Trend momentum + bullish/bearish crosses · divergences.<br><strong>Skip when:</strong> Ranging markets (false crosses) · trade through earnings.</td></tr>
+        <tr><td><strong style="color:var(--text);">KST</strong> <span style="color:var(--muted);">(Know Sure Thing — Pring)</span></td><td><strong>What:</strong> Long-term smoothed momentum from 4 ROC periods.<br><strong>Use:</strong> Multi-week trend confirmation · signal line crossover for slow swings.<br><strong>Skip when:</strong> Scalping or fast entries — too slow.</td></tr>
+        <tr><td><strong style="color:var(--text);">MOM</strong> <span style="color:var(--muted);">(Momentum)</span></td><td><strong>What:</strong> Simple rate-of-change of price.<br><strong>Use:</strong> Confirm trend strength · spot divergences from price.<br><strong>Skip when:</strong> Standalone — needs a direction filter (MA) alongside.</td></tr>
+
+        <tr style="background:var(--surface);">
+          <td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">Oscillators — overbought/oversold (best for REVERSAL plays)</td>
+        </tr>
+        <tr><td><strong style="color:var(--text);">RSI</strong> <span style="color:var(--muted);">(your LJ stack)</span></td><td><strong>What:</strong> Relative strength, 0–100 scale.<br><strong>Use:</strong> Above 50 trend · 45–55 LJ entry zone · &gt;70 overbought, &lt;30 oversold.<br><strong>Skip when:</strong> Strong trends — can stay overbought a long time without reversing.</td></tr>
+        <tr><td><strong style="color:#a78bfa;">Williams %R</strong> <span style="color:var(--muted);">(reversal plays)</span></td><td><strong>What:</strong> Inverted Stochastic, -100 to 0 scale.<br><strong>Use:</strong> &lt;-80 = oversold reversal long candidate · &gt;-20 = overbought reversal short candidate.<br><strong>Skip when:</strong> Trend-following entries (redundant with LJ Stoch RSI). Use for <strong style="color:var(--text);">reversal scalping at extremes</strong> instead.</td></tr>
+        <tr><td><strong style="color:#a78bfa;">SlowStoch</strong> <span style="color:var(--muted);">(reversal plays)</span></td><td><strong>What:</strong> Smoothed Stochastic — slower, more reliable than FSTO.<br><strong>Use:</strong> Swing reversals at extremes (&lt;20 = oversold, &gt;80 = overbought).<br><strong>Skip when:</strong> Trending markets (whipsaws) · LJ stack (redundant with Stoch RSI K).</td></tr>
+        <tr><td><strong style="color:var(--muted);">FSTO</strong> <span style="color:var(--muted);">(Fast Stoch)</span></td><td><strong>What:</strong> Fast Stochastic — reacts to every wiggle.<br><strong>Use:</strong> Intraday scalping only · very short-term reversals.<br><strong>Skip when:</strong> Swing trading (too noisy) · LJ stack (redundant + worse than SlowStoch).</td></tr>
+        <tr><td><strong style="color:var(--text);">CCI</strong> <span style="color:var(--muted);">(Commodity Channel Index)</span></td><td><strong>What:</strong> Deviation from average, typically -100 to +100 range.<br><strong>Use:</strong> Spot extreme deviations · divergences for reversal setups.<br><strong>Skip when:</strong> Choppy markets · standalone signal (use with trend filter).</td></tr>
+
+        <tr style="background:var(--surface);">
+          <td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">Volatility</td>
+        </tr>
+        <tr><td><strong style="color:var(--text);">BOLL</strong> <span style="color:var(--muted);">(Bollinger Bands)</span></td><td><strong>What:</strong> Volatility envelope (20 SMA ± 2 std deviations).<br><strong>Use:</strong> Identify <strong style="color:var(--text);">squeezes</strong> (low vol = setup forming) and breakouts (price punching through band) · dynamic S/R at bands.<br><strong>Skip when:</strong> Strong trends — price can ride a band for weeks. Use with trend filter, not alone.</td></tr>
+      </table>
+
+      <div style="margin-top:14px; padding:12px 14px; background:var(--surface2); border-radius:6px;">
+        <div style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Pre-screen recipes — which combos for which setup</div>
+        <table class="crit-table">
+          <tr><td><strong style="color:#3b82f6;">LJ trend-follow</strong></td><td><strong>MA</strong> (3 conditions, longs or puts) + <strong>MACD</strong> bullish/bearish cross · already in card ①</td></tr>
+          <tr><td><strong style="color:#a78bfa;">Reversal play</strong></td><td><strong>Williams %R</strong> &lt;-80 turning up (long) or &gt;-20 turning down (short) · OR <strong>SlowStoch</strong> equivalent · paired with high IV Percentile (50–90) for max rebound</td></tr>
+          <tr><td><strong style="color:#10b981;">Breakout play</strong></td><td><strong>BOLL</strong> squeeze (low band width) + <strong>MACD</strong> bullish cross · catches volatility expansion</td></tr>
+          <tr><td><strong style="color:#f59e0b;">Pure momentum continuation</strong></td><td><strong>RSI</strong> above 50 + <strong>MOM</strong> positive · simple "is this thing moving?" filter</td></tr>
+        </table>
+      </div>
+
+      <div style="margin-top:12px; padding:10px 12px; background:rgba(245,158,11,0.08); border-left:2px solid #f59e0b; border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.55;">
+        <strong style="color:#f59e0b;">⚠ Anti-pattern:</strong> stacking 4+ signals will return zero results most days. Pick the recipe that matches the setup type you're hunting, use 2–3 signals max. If you want trend-follow today, don't add reversal signals — they'll cancel each other out.
+      </div>
+    </div>
+  </div>
+
+  <!-- REVERSAL SETUP RECIPE -->
+  <div id="reversal-setup" style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid #a78bfa;">
+      <div class="card-title" style="color: #a78bfa;">🔄 Reversal Setup — Alternative to LJ Trend-Follow</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">When the market is range-bound or no clean LJ setups exist, reversal plays profit from <strong style="color:var(--text);">extremes snapping back</strong>. Different mindset, different recipe, different rules.</p>
+
+      <!-- Mindset comparison -->
+      <div class="grid-2" style="gap:10px; margin-bottom:14px;">
+        <div style="background:var(--surface2); border-left:2px solid #3b82f6; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">LJ Trend-Follow</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">"Ride the wave that's moving." Wait for 3 of 4 indicators to align WITH direction. Enter at S/R with the trend.</div>
+        </div>
+        <div style="background:var(--surface2); border-left:2px solid #a78bfa; border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Reversal Play</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">"Fade the extreme that's exhausted." Wait for oversold/overbought to start turning. Enter against recent move, betting on snap-back.</div>
+        </div>
+      </div>
+
+      <!-- When to use / when not -->
+      <table class="crit-table" style="margin-bottom:14px;">
+        <tr style="background:var(--surface);">
+          <td style="font-family:var(--mono); font-size:10px; color:#10b981; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">✅ Use reversal mode when</td>
+          <td style="font-family:var(--mono); font-size:10px; color:#ef4444; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px;">❌ Skip reversal mode when</td>
+        </tr>
+        <tr>
+          <td>Market is range-bound (VIX low, SPY chopping)</td>
+          <td>Strong trend in place — don't fight clean trends</td>
+        </tr>
+        <tr>
+          <td>LJ screens return zero clean setups across sectors</td>
+          <td>"Catching a falling knife" without confirmation</td>
+        </tr>
+        <tr>
+          <td>Specific name showing <strong style="color:var(--text);">capitulation</strong> (oversold + high volume bar)</td>
+          <td>Pre-earnings / pre-catalyst — don't fade events</td>
+        </tr>
+        <tr>
+          <td>Post-news overreaction (gap already faded once)</td>
+          <td>4H MA Ribbon shows strong opposite-direction trend</td>
+        </tr>
+      </table>
+
+      <!-- Webull screen recipe -->
+      <div style="background:var(--surface2); border-radius:6px; padding:14px 16px; margin-bottom:12px;">
+        <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">⚙ Screen recipe</div>
+        <table class="crit-table">
+          <tr><td>Base filters (same as LJ)</td><td>US · $20–500 · Avg Vol 60D &gt;5M · ATR &gt;2%</td></tr>
+          <tr><td><strong style="color:var(--text);">IV Percentile</strong></td><td><strong style="color:#a78bfa;">50–90</strong> (higher IV = more rebound potential — different from LJ's 20–70)</td></tr>
+          <tr><td colspan="2" style="font-family:var(--mono); font-size:10px; color:var(--text); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding-top:10px; padding-bottom:6px;">Pick ONE oscillator signal (don't stack)</td></tr>
+          <tr><td><strong style="color:#3b82f6;">Long reversal</strong> via Williams %R</td><td>W%R &lt; -80 AND turning up</td></tr>
+          <tr><td><strong style="color:#ef4444;">Short reversal</strong> via Williams %R</td><td>W%R &gt; -20 AND turning down</td></tr>
+          <tr><td><strong style="color:#3b82f6;">Long reversal</strong> via SlowStoch (alternative)</td><td>SlowStoch &lt; 20 AND turning up</td></tr>
+          <tr><td><strong style="color:#ef4444;">Short reversal</strong> via SlowStoch (alternative)</td><td>SlowStoch &gt; 80 AND turning down</td></tr>
+        </table>
+      </div>
+
+      <!-- Entry / Stop / Target -->
+      <div class="grid-2" style="gap:10px; margin-bottom:14px;">
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">📍 Entry trigger</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            Wait for the <strong style="color:var(--text);">cross back into range</strong>:<br>
+            • W%R crosses above -80 (longs) / below -20 (shorts)<br>
+            • SlowStoch crosses above 20 (longs) / below 80 (shorts)<br>
+            Confirmed by a <strong style="color:var(--text);">strong volume bar</strong> in your direction.<br>
+            <strong style="color:#f59e0b;">Veto:</strong> if 4H MA Ribbon shows opposite-direction strong trend — skip, don't fight.
+          </div>
+        </div>
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#ef4444; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">🛑 Stop · 🎯 Target · 📐 R:R</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            <strong style="color:var(--text);">Stop:</strong> just below the swing low (longs) / above swing high (shorts). <strong style="color:#f59e0b;">TIGHT</strong> — reversal plays are lower probability.<br>
+            <strong style="color:var(--text);">Target:</strong> opposite end of recent range OR the 20 SMA on daily (whichever is closer).<br>
+            <strong style="color:var(--text);">R:R:</strong> aim for <strong style="color:#10b981;">2R+ minimum</strong>. Reversal trades are lower probability, need higher reward to compensate.
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:11px 13px; background:var(--surface); border:1px dashed var(--border); border-radius:6px; font-size:12px; color:var(--muted); line-height:1.7;">
+        <strong style="color:var(--text); display:block; margin-bottom:4px;">Worked example — XLE bounce-and-reject (your last analysis)</strong>
+        XLE deep oversold (Stoch K = 16), price below both MAs in downtrend. Wait for bounce up to the 20 SMA at $56.23 → if it <em>rejects</em> (closes back below) on volume → fresh PUT entry. Stop above $57.18 (the 50 SMA). Target the recent swing low. Classic reversal-rejection setup.<br>
+        <span style="color:#f59e0b;">⚠ If XLE breaks above the 50 SMA instead</span> → setup invalidates, the downtrend may be ending.
+      </div>
+
+      <div style="margin-top:12px; padding:10px 12px; background:rgba(167,139,250,0.08); border-left:2px solid #a78bfa; border-radius:4px; font-size:11.5px; color:var(--muted); line-height:1.55;">
+        <strong style="color:#a78bfa;">Mental note:</strong> reversal is a <em>secondary</em> system, not a replacement for LJ trend-follow. Use it when trend-follow setups are absent. Don't switch between systems mid-trade — pick the lens before you screen.
+      </div>
     </div>
   </div>
 </div>
@@ -1861,6 +1749,73 @@
   <div class="section">
     <div class="section-label" style="color:#ef4444; border-color:rgba(239,68,68,0.3);">🔴 Live Trading — Entry · Monitoring · Exit</div>
     <p style="color:var(--muted); font-size:13px; margin-bottom:8px; line-height:1.6;">When you're <strong style="color:var(--text);">about to enter</strong>, <strong style="color:var(--text);">already in</strong>, or <strong style="color:var(--text);">deciding to exit</strong>. Three cards, one job each. Glance, act, close.</p>
+  </div>
+
+  <!-- 5-PHASE WORKFLOW (folded from former Webull Manual tab) -->
+  <div id="workflow-phases" style="margin: 14px 0;">
+    <div class="card" style="border-left: 3px solid var(--swing);">
+      <div class="card-title">⚙ 5-Phase Workflow — Sunday · Daily · Live · After</div>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">The full arc of a trade: setup preparation, weekly screening, daily prep, execution, and management. Broker-agnostic — works whether you're on Webull, Tastytrade, or moving between.</p>
+      <div class="grid-2" style="gap:10px; margin-bottom:16px;">
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#a78bfa; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 1 · Setup (one-time)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Pin News + Analyst panel to right side<br>
+            • Build 4 watchlists matching Notion Status: <strong style="color:var(--text);">Pending Entry · Live · Researching · Partner's Scalps</strong><br>
+            • Save <strong style="color:var(--text);">"LJ Swing Base"</strong> screener preset (filters from Swing tab card ①)<br>
+            • Pin <strong style="color:var(--text);">Positions tab</strong> to bottom strip — always visible
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 2 · Sunday (30–45 min)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • TradingView → sector ETF check<br>
+            • Your broker → load <strong style="color:var(--text);">"LJ Swing Base"</strong> preset + add sub-sector + technical signal<br>
+            • Cross-check <strong style="color:var(--text);">Top Options</strong> for institutional flow<br>
+            • Save 2–3 finalists to <strong style="color:var(--text);">"Pending Entry"</strong> watchlist
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 3 · Daily prep (10–15 min · 8–9:15 AM)</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Open <strong style="color:var(--text);">"Pending Entry"</strong> watchlist<br>
+            • News panel per name — overnight gap? Catalyst?<br>
+            • TradingView 4H check + SMC zone read<br>
+            • Right-click ticker → <strong style="color:var(--text);">Set Alert</strong> at your entry trigger
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 4 · Live execution</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • Right-click ticker → <strong style="color:var(--text);">Options Chain</strong> (pre-load it)<br>
+            • Confirm strike: DTE 14–45 · <strong style="color:var(--text);">OI &gt;500</strong> · <strong style="color:var(--text);">Bid/Ask &lt;10%</strong> · no earnings<br>
+            • Build <strong style="color:#f59e0b;">Bracket / OCO order</strong> — entry + stop in one ticket<br>
+            • Submit → confirm fill → watch Positions tab
+          </div>
+        </div>
+
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#10b981; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Phase 5 · Position management</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            • T1 hit → <strong style="color:var(--text);">close 50%</strong> (right-click → Close Partial)<br>
+            • Trade keeps moving → <strong style="color:var(--text);">trail stop up</strong> (never against you)<br>
+            • Setup invalidates → manual close, don't wait<br>
+            • Approaching ≤5 DTE → exit before theta crush
+          </div>
+        </div>
+
+        <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--mono); font-size:11px; font-weight:600; color:#f59e0b; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">⚡ Bracket Order Discipline</div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">
+            Always enter with the <strong style="color:var(--text);">stop loss attached in the same OCO ticket</strong>. Eliminates the IWM-style mental-stop failure pattern from LJ's lesson. <strong style="color:var(--text);">Single most important broker feature.</strong> Without it, you're back to hoping you'll act on a mental stop under pressure — you won't.
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ENTRY CARD -->
@@ -2017,11 +1972,11 @@
   function switchTab(type) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => {
-      t.classList.remove('active-swing', 'active-position', 'active-scalp', 'active-setup', 'active-webull', 'active-options', 'active-live');
+      t.classList.remove('active-swing', 'active-position', 'active-scalp', 'active-setup', 'active-live');
     });
     document.getElementById('panel-' + type).classList.add('active');
     const tabs = document.querySelectorAll('.tab');
-    const map = { swing: 0, position: 1, scalp: 2, setup: 3, webull: 4, options: 5, live: 6 };
+    const map = { swing: 0, position: 1, scalp: 2, setup: 3, live: 4 };
     tabs[map[type]].classList.add('active-' + type);
     window.scrollTo({top: 0});
   }
