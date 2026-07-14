@@ -18,6 +18,8 @@
     --screener: #3b82f6;
     --lj: #f7c14f;
     --smc: #a78bfa;
+    --research: #06b6d4;
+    --equity: #10b981;
     --live: #10b981;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'Inter', sans-serif;
@@ -70,6 +72,9 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
+  @media (min-width: 1200px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
 
   .card {
     background: var(--surface);
@@ -88,6 +93,8 @@
   .card.screener { border-top-color: var(--screener); }
   .card.lj       { border-top-color: var(--lj); }
   .card.smc      { border-top-color: var(--smc); }
+  .card.research { border-top-color: var(--research); }
+  .card.equity   { border-top-color: var(--equity); }
 
   .card:hover:not(.disabled) {
     transform: translateY(-2px);
@@ -96,6 +103,8 @@
   .card.screener:hover:not(.disabled) { border-top-color: var(--screener); }
   .card.lj:hover:not(.disabled)       { border-top-color: var(--lj); }
   .card.smc:hover:not(.disabled)      { border-top-color: var(--smc); }
+  .card.research:hover:not(.disabled) { border-top-color: var(--research); }
+  .card.equity:hover:not(.disabled)   { border-top-color: var(--equity); }
 
   .card.disabled {
     opacity: 0.5;
@@ -118,6 +127,8 @@
   .card.screener h2 { color: var(--screener); }
   .card.lj h2       { color: var(--lj); }
   .card.smc h2      { color: var(--smc); }
+  .card.research h2 { color: var(--research); }
+  .card.equity h2   { color: var(--equity); }
 
   .summary {
     font-size: 13px;
@@ -232,6 +243,36 @@
         <strong>🚀 Start Here</strong> · install + checklist<br>
         <strong>SMC + SmartTrend</strong> · indicator deep-dives<br>
         <strong>Zones</strong> · scalp · swing · pitfalls
+      </div>
+      <div class="card-cta">
+        <span class="status live">Live</span>
+        <span class="arrow">Open →</span>
+      </div>
+    </a>
+
+    <a class="card research" href="/research.html">
+      <div class="icon">🔍</div>
+      <h2>Stock Research Hub</h2>
+      <div class="summary">Market outlook · weekly picks · Notion watchlist mirror · post-trade journal. Fed by Sunday group sessions.</div>
+      <div class="tabs-mini">
+        <strong>📅 This Week</strong> · outlook + calendar + picks<br>
+        <strong>🎯 Watchlist &amp; Plays</strong> · Notion sync<br>
+        <strong>📚 Session Archives</strong> · 📝 Journal
+      </div>
+      <div class="card-cta">
+        <span class="status live">Live</span>
+        <span class="arrow">Open →</span>
+      </div>
+    </a>
+
+    <a class="card equity" href="/equity.html">
+      <div class="icon">💼</div>
+      <h2>Equity Hub</h2>
+      <div class="summary">Fractional shares · long-term positions · dividends. Scaffold only — populate once broker (Fidelity → IBKR) is picked.</div>
+      <div class="tabs-mini">
+        <strong>📚 Strategy</strong> · long-hold approach<br>
+        <strong>🏢 Positions</strong> · 💰 Picks &amp; Watchlist<br>
+        <strong>🔁 Long-Term Reference</strong>
       </div>
       <div class="card-cta">
         <span class="status live">Live</span>

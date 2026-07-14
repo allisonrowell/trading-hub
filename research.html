@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Research Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #131b2e;
+    --surface2: #1d2940;
+    --border: #2a3b5b;
+    --border-hover: #334155;
+    --text: #f1f5fa;
+    --muted: #a3b1c7;
+    --research: #06b6d4;
+    --research-dim: #164e5c;
+    --bull: #10b981;
+    --bear: #ef4444;
+    --caution: #f59e0b;
+    --danger: #ef4444;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  header {
+    padding: 28px 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .header-top h1 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .header-top .tagline {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .back-to-hub {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .back-to-hub:hover {
+    color: var(--text);
+    border-color: #334155;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 10px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--text); }
+
+  .tab.active-research {
+    color: var(--research);
+    border-bottom-color: var(--research);
+  }
+
+  .panel { display: none; padding: 28px 32px; }
+  .panel.active { display: block; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    color: var(--research);
+    border-color: var(--research-dim);
+  }
+
+  .section { margin-bottom: 28px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  @media (max-width: 700px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    header, .panel { padding: 20px 16px; }
+    .tab { padding: 10px 14px; }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .crit-table { width: 100%; border-collapse: collapse; }
+
+  .crit-table th, .crit-table td {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .crit-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .crit-table td:first-child {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    width: 30%;
+  }
+
+  .crit-table td:last-child { color: var(--text); }
+
+  .crit-table tr:last-child td { border-bottom: none; }
+
+  .phase-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .phase-accumulation { background: rgba(16,185,129,0.15); color: var(--bull); }
+  .phase-uptrend { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .phase-distribution { background: rgba(245,158,11,0.15); color: var(--caution); }
+  .phase-downtrend { background: rgba(239,68,68,0.15); color: var(--bear); }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  .placeholder-block {
+    padding: 30px 24px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .placeholder-block h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  a.link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+    margin-top: 12px;
+    font-family: var(--mono);
+  }
+  a.link-btn:hover { border-color: var(--research); color: var(--research); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>🔍 STOCK RESEARCH HUB</h1>
+    <span class="tagline">Market outlook · Watchlist · Plays · Sessions</span>
+    <a href="/" class="back-to-hub">← Hub</a>
+  </div>
+  <div class="tabs">
+    <button class="tab active-research" onclick="switchTab('week')">📅 This Week</button>
+    <button class="tab" onclick="switchTab('watchlist')">🎯 Watchlist &amp; Plays</button>
+    <button class="tab" onclick="switchTab('archives')">📚 Session Archives</button>
+    <button class="tab" onclick="switchTab('journal')">📝 Journal</button>
+  </div>
+</header>
+
+<!-- ===================== THIS WEEK ===================== -->
+<div id="panel-week" class="panel active">
+
+  <div class="section">
+    <div class="section-label">Market Phase &amp; Big-Picture Outlook</div>
+    <div class="card" style="border-left: 3px solid var(--caution);">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+        <span class="phase-badge phase-distribution">Stage 3 · Distribution</span>
+        <span style="font-family:var(--mono); font-size:11px; color:var(--muted);">as of July 5 Sunday session</span>
+      </div>
+      <p style="font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:12px;">
+        SPY has been <strong style="color:var(--text);">consolidating sideways since early May</strong> — rejecting highs, bouncing off lows. Classic distribution behavior. <strong style="color:var(--caution);">Death cross warning:</strong> 20 MA approaching 50 MA from above (last cross on Feb 26 preceded a sharp fall).
+      </p>
+      <div style="padding:10px 12px; background:var(--surface2); border-radius:4px; font-size:12px; color:var(--muted); line-height:1.7;">
+        <strong style="color:var(--text);">Four market phases (LJ concept):</strong>
+        <span class="phase-badge phase-accumulation">Accumulation</span> →
+        <span class="phase-badge phase-uptrend">Uptrend</span> →
+        <span class="phase-badge phase-distribution">Distribution</span> →
+        <span class="phase-badge phase-downtrend">Downtrend</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Big Three — Index ETFs</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title" style="color:var(--text);">SPY · S&amp;P 500</div>
+        <table class="crit-table">
+          <tr><td>RSI (Daily)</td><td>54, declining</td></tr>
+          <tr><td>MA Ribbon</td><td>Death cross forming</td></tr>
+          <tr><td>Resistance</td><td>750 (tested ~10×, rejected)</td></tr>
+          <tr><td>Above that</td><td>755–760</td></tr>
+          <tr><td>Support</td><td>723 → 708 → 693</td></tr>
+          <tr><td>Weekly 20 MA</td><td>705 (mean reversion target)</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--text);">QQQ · Nasdaq-100</div>
+        <table class="crit-table">
+          <tr><td>Outlook</td><td style="color:var(--bear);">More bearish than SPY</td></tr>
+          <tr><td>RSI (Daily)</td><td>48, pointing down</td></tr>
+          <tr><td>MACD</td><td>Has not crossed up yet</td></tr>
+          <tr><td>Resistance</td><td>727</td></tr>
+          <tr><td>Support</td><td>710 → 699 → 685 → 660s</td></tr>
+          <tr><td>Note</td><td>TQQQ options more liquid than SQQQ</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--text);">IWM · Russell 2000</div>
+        <table class="crit-table">
+          <tr><td>Pattern</td><td style="color:var(--caution);">Rising wedge, pulling down</td></tr>
+          <tr><td>RSI</td><td>58, pointing down</td></tr>
+          <tr><td>MACD</td><td>Pending cross down</td></tr>
+          <tr><td>Stoch RSI</td><td>Peaked ~97, momentum down</td></tr>
+          <tr><td>Support</td><td>293</td></tr>
+          <tr><td>Below 293</td><td>286 (test MAs)</td></tr>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--muted); margin-top:10px; line-height:1.6;">
+      SPY, QQQ, IWM tend to move together — watch the <strong style="color:var(--text);">big three</strong> for any flush.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">This Week's Economic Calendar</div>
+    <div class="card">
+      <table class="crit-table">
+        <tr><td>Mon Jul 6 · 10am</td><td><strong style="color:var(--text);">Services PMI</strong> — Fed uses PMI to gauge inflation. Could move the market.</td></tr>
+        <tr><td>Tue</td><td>No major events</td></tr>
+        <tr><td>Wed · 2pm</td><td><strong style="color:var(--text);">FOMC meeting minutes</strong> — new Fed chair (Kevin Warsh) tight-lipped, so minutes may provide rare clarity. Key volatility.</td></tr>
+        <tr><td>Thu</td><td>Existing home sales — low impact</td></tr>
+        <tr><td>Fri</td><td>Quiet day</td></tr>
+      </table>
+      <div style="margin-top:12px; padding:10px 12px; background:var(--surface2); border-radius:4px; font-size:12px; color:var(--muted); line-height:1.6;">
+        <strong style="color:var(--text);">Key focus days: Monday and Wednesday.</strong> Three things that shake the market: <strong style="color:var(--text);">Fed news, jobs data, inflation data</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">This Week's Stock Picks (from Sunday sessions)</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">📈 AAPL — Bull Flag on Weekly</div>
+        <table class="crit-table">
+          <tr><td>Structure</td><td>Bull flag · tested 315–317 resistance multiple times</td></tr>
+          <tr><td>MACD</td><td>Just crossed up</td></tr>
+          <tr><td>Stoch RSI</td><td>89, climbing</td></tr>
+          <tr><td>Catalyst</td><td>New MacBooks · Apple Glasses · chips · new CEO</td></tr>
+          <tr><td>Resistance</td><td>315</td></tr>
+          <tr><td>Support</td><td>302 → 288</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">📈 HOOD — Support Watch</div>
+        <table class="crit-table">
+          <tr><td>Prior call</td><td>$70 → hit $120 target</td></tr>
+          <tr><td>Catalyst</td><td>Expanding into banking · Trump $1,000 child accounts</td></tr>
+          <tr><td>Support</td><td>108</td></tr>
+          <tr><td>Watching</td><td>Retest of 120</td></tr>
+          <tr><td>ATH</td><td>~153–154</td></tr>
+          <tr><td>Type</td><td>Long-term hold</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">📈 SHOP — Room to Run</div>
+        <table class="crit-table">
+          <tr><td>Support</td><td>106 (held, pushing up)</td></tr>
+          <tr><td>Target</td><td>135</td></tr>
+          <tr><td>Weekly MACD</td><td>Crossed up with follow-through</td></tr>
+          <tr><td>Weekly RSI</td><td>48 (room to run)</td></tr>
+          <tr><td>Note</td><td>SHOP owns 10% AFRM — moves together</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">📈 AFRM — Broke $75</div>
+        <table class="crit-table">
+          <tr><td>Now</td><td>$84–85</td></tr>
+          <tr><td>Long-term target</td><td>$120</td></tr>
+          <tr><td>Resistance</td><td>85–87</td></tr>
+          <tr><td>Support</td><td>79–80 (good pullback entry)</td></tr>
+          <tr><td>Daily Stoch RSI</td><td>99 (max, pullback possible)</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">📈 BB — Cup &amp; Handle Runner</div>
+        <table class="crit-table">
+          <tr><td>Prior call</td><td>May 4 at $73/contract · peaked +860% · now +600%</td></tr>
+          <tr><td>Expiration</td><td>January contracts</td></tr>
+          <tr><td>Support</td><td>$11.51</td></tr>
+          <tr><td>Entry range</td><td>$12.16–$12.57</td></tr>
+          <tr><td>Targets</td><td>$15–$20</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--caution);">⚠ OKTA — Cup &amp; Handle Watch</div>
+        <table class="crit-table">
+          <tr><td>Structure</td><td>Cup and handle forming</td></tr>
+          <tr><td>Current support</td><td>140</td></tr>
+          <tr><td>Below 140</td><td>Pullback to 130</td></tr>
+          <tr><td>Break above</td><td>Needs to clear 145 wick</td></tr>
+          <tr><td>MACD</td><td>Crossed up 3–4 days ago</td></tr>
+          <tr><td>Stoch RSI</td><td>Flat at 100 (max)</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--caution);">⚠ CRWD — Cup &amp; Handle Watch</div>
+        <table class="crit-table">
+          <tr><td>Structure</td><td>Cup and handle · resistance 196</td></tr>
+          <tr><td>Gap risk</td><td>Break below 186 → down to 180</td></tr>
+          <tr><td>Cool-down likely</td><td>Given broad market</td></tr>
+          <tr><td>Type</td><td>Buy on pullback</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">📈 MU — Group's Top Swing</div>
+        <table class="crit-table">
+          <tr><td>Prior</td><td>Group's top swing ~2 months · $10k days</td></tr>
+          <tr><td>Contract cost</td><td>$1,500–$2,000 (up from ~$700)</td></tr>
+          <tr><td>Buy zone</td><td>Around $994 (post-earnings)</td></tr>
+          <tr><td>Long-term valuation</td><td>$1,500–$1,600</td></tr>
+          <tr><td>Ripple effect</td><td>MU ↓ = SNDK, WDC ↓ (buy opportunity)</td></tr>
+          <tr><td>Note</td><td>Post-earnings stock (not options)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Reminders for the Week</div>
+    <div class="card" style="border-left:3px solid var(--research);">
+      <ul style="list-style:none; padding:0; margin:0; font-size:13px; color:var(--muted); line-height:2;">
+        <li>• <strong style="color:var(--text);">Always check Fed/FOMC news before trading</strong> — extreme volatility risk</li>
+        <li>• <strong style="color:var(--text);">TradingView Economic Calendar</strong> · filter "High importance"</li>
+        <li>• <strong style="color:var(--text);">MACD crossover</strong> = "an option trader's best friend" for entries</li>
+        <li>• <strong style="color:var(--text);">Multi-timeframe analysis</strong> — lower TF may show upside while larger TFs confirm downtrend</li>
+        <li>• <strong style="color:var(--text);">Mean reversion</strong> — price tends to revert to moving averages</li>
+        <li>• <strong style="color:var(--text);">No indicator predicts earnings</strong> — Nvidia example (good beat, stock dropped)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== WATCHLIST & PLAYS ===================== -->
+<div id="panel-watchlist" class="panel">
+
+  <div class="section">
+    <div class="section-label">Notion Watchlist — Live Sync</div>
+    <div class="placeholder-block">
+      <h3>🎯 Watchlist lives in Notion</h3>
+      <p>
+        Your Watchlist database is the source of truth: <strong style="color:var(--text);">Ticker · Asset Class · System (LJ Swing / Position / Equity / SMC+SmartTrend) · Sector · Conviction · Status · Thesis · Next Action</strong>
+      </p>
+      <a class="link-btn" href="https://app.notion.com/p/16bb0da51872411fad3069a1d7689668" target="_blank">
+        Open Watchlist in Notion ↗
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Status Categories (mirror Notion)</div>
+    <div class="grid-3">
+      <div class="card" style="border-left:3px solid var(--muted);">
+        <div class="card-title">⚪ Researching</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Names you're investigating but haven't committed to. Sunday sessions land here first, then move up or get rejected.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--caution);">
+        <div class="card-title" style="color:var(--caution);">🟡 Pending Entry</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Setup validated, waiting for entry trigger. This is where Sunday's 2–3 finalists live. Alert set at entry level.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--bull);">
+        <div class="card-title" style="color:var(--bull);">🟢 Live Position</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Entered. Bracket order active. Managed per the Live Trading rules (4H/Daily monitoring, no 1-min).</p>
+      </div>
+      <div class="card" style="border-left:3px solid #3b82f6;">
+        <div class="card-title" style="color:#3b82f6;">🔵 Exited</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Closed. Log the outcome in Journal tab. Lessons captured.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--bear);">
+        <div class="card-title" style="color:var(--bear);">🔴 Rejected</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Setup invalidated before entry, OR chart-read failed the LJ method. Don't feel bad about rejects — protects capital.</p>
+      </div>
+      <div class="card" style="border-left:3px solid #f7c14f;">
+        <div class="card-title" style="color:#f7c14f;">📝 Paper Position</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Test trades while learning a new setup (reversal plays, new sector, new broker workflow). No real capital.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Workflow — From Idea to Play</div>
+    <div class="card">
+      <ol style="list-style:decimal; padding-left:24px; color:var(--muted); font-size:13px; line-height:1.9;">
+        <li><strong style="color:var(--text);">Sunday session</strong> or your own screener surfaces a name → add to Notion as <strong>Researching</strong></li>
+        <li>Chart-read on TradingView (4H + Daily for swings · use EMAs 9/20/50 for options)</li>
+        <li>If LJ method confirms (3 of 4 indicators aligned + S/R + no earnings in DTE) → move to <strong>Pending Entry</strong></li>
+        <li>Set Webull/broker price alert at entry level</li>
+        <li>Alert triggers → confirm 1-min setup → place bracket order → move to <strong>Live Position</strong></li>
+        <li>Trade closes (target · stop · manual invalidation) → move to <strong>Exited</strong> · log in Journal</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== SESSION ARCHIVES ===================== -->
+<div id="panel-archives" class="panel">
+
+  <div class="section">
+    <div class="section-label">Sunday Session Archive · Newest First</div>
+    <p style="color:var(--muted); font-size:13px; margin-bottom:16px;">
+      Weekly market outlook, sector rotation, individual stock breakdowns, pattern-of-the-week educational segments.
+    </p>
+
+    <!-- July 5 -->
+    <div class="card" style="margin-bottom:12px; border-left:3px solid var(--research);">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap;">
+        <div style="font-family:var(--mono); font-size:12px; color:var(--research); font-weight:600;">July 5, 2026</div>
+        <div style="font-family:var(--mono); font-size:11px; color:var(--muted);">Sunday · Market Outlook + 7 Stock Picks</div>
+      </div>
+      <p style="font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:10px;">
+        SPY in <strong style="color:var(--caution);">Stage 3 Distribution</strong> · death cross warning (20 MA approaching 50) · QQQ more bearish than SPY · IWM rising wedge pulling down · <strong style="color:var(--text);">Big Three flush watch</strong>. Stock breakdowns: AAPL (bull flag) · HOOD (long-term hold) · SHOP (105→135) · AFRM (target $120) · BB (still opportunity) · OKTA + CRWD (cup &amp; handle).
+      </p>
+      <a class="link-btn" href="https://app.notion.com/p/385eb3bb35f68042afc2f7fd57151174" target="_blank">Open in Notion ↗</a>
+    </div>
+
+    <!-- June 21 -->
+    <div class="card" style="margin-bottom:12px; border-left:3px solid var(--research);">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap;">
+        <div style="font-family:var(--mono); font-size:12px; color:var(--research); font-weight:600;">June 21, 2026</div>
+        <div style="font-family:var(--mono); font-size:11px; color:var(--muted);">Sunday · Market Outlook + Head &amp; Shoulders Pattern + Stock Picks</div>
+      </div>
+      <p style="font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:10px;">
+        SPY healthy (RSI 55.14 · MA ribbon bullish · MACD positive) · bullish scenario 745→752→758–760 vs bear 745→735→728. <strong style="color:var(--text);">Educational: Head &amp; Shoulders</strong> (bearish reversal · neckline break · options play = puts on neckline break · stage profit-taking with prior support levels). Picks: MU (group's top swing · earnings Wed · buy dip $994 · 6mo-1yr hold) · IWM (N-shape · target 297→300–305) · HPE (cup &amp; handle · support 46.75–47 · target $52–53) · CVS (support $97–98 · near-term $100–101 · long-term $150) · IBM ($1B quantum grant · buy the dip · target 265–280).
+      </p>
+      <a class="link-btn" href="https://app.notion.com/p/386eb3bb35f680e7b22cf1a1ec2c9905" target="_blank">Open in Notion ↗</a>
+    </div>
+
+    <!-- Placeholder for older + upcoming -->
+    <div class="placeholder-block" style="margin-top:20px;">
+      <h3>📚 More sessions to add</h3>
+      <p>
+        Saturday sessions (June 13/20/27, July 4) · Sunday June 14 · Wednesday June 17 (Intro to Options) — pull these in as needed, or as new sessions land each week.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== JOURNAL ===================== -->
+<div id="panel-journal" class="panel">
+
+  <div class="section">
+    <div class="section-label">Post-Trade Journal</div>
+    <div class="placeholder-block">
+      <h3>📝 Trade Journal — Notion Database</h3>
+      <p>Log every closed trade. What worked, what didn't, what to change. Use the Notion Trade Log database.</p>
+      <a class="link-btn" href="https://app.notion.com/p/9c62f5c1d45c436eb740146cfbcbe2be" target="_blank">Open Trade Log in Notion ↗</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Post-Trade Template — What to Log</div>
+    <div class="card">
+      <table class="crit-table">
+        <tr><td>Ticker</td><td>The symbol traded</td></tr>
+        <tr><td>System</td><td>LJ Swing · Position · Equity · SMC+SmartTrend · Other</td></tr>
+        <tr><td>Direction</td><td>Long / Short</td></tr>
+        <tr><td>Entry price · date</td><td>What triggered you in</td></tr>
+        <tr><td>Exit price · date</td><td>Target hit · stop hit · manual invalidation</td></tr>
+        <tr><td>R multiple</td><td>Actual R vs planned R (e.g., +2.3R vs planned 3R)</td></tr>
+        <tr><td>What worked</td><td>Specific — "MACD cross was clean, entry was patient"</td></tr>
+        <tr><td>What didn't</td><td>Specific — "took profit too early on T1, missed T2"</td></tr>
+        <tr><td>Lesson for next time</td><td>ONE actionable behavior change</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Weekly Review Prompts</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="color:var(--bull);">✅ What worked this week?</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Which setups paid off? Which system-signal combo? Any patterns in the winners you can lean into?</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--bear);">❌ What didn't work?</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Which setups failed? Was it entry timing · stop placement · position size · lens (trend vs reversal)? Isolate the pattern.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--caution);">⚠ What emotions crept in?</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Revenge trade? Exit early on noise? Held past invalidation hoping? Name them, they're the tells.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--research);">🎯 One change for next week</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.7;">Single behavior to fix. Not five. One. Track whether you did it.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(type) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active-research'));
+    document.getElementById('panel-' + type).classList.add('active');
+    const tabs = document.querySelectorAll('.tab');
+    const map = { week: 0, watchlist: 1, archives: 2, journal: 3 };
+    tabs[map[type]].classList.add('active-research');
+    window.scrollTo({top: 0});
+  }
+</script>
+
+</body>
+</html>

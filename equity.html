@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equity Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #131b2e;
+    --surface2: #1d2940;
+    --border: #2a3b5b;
+    --border-hover: #334155;
+    --text: #f1f5fa;
+    --muted: #a3b1c7;
+    --equity: #10b981;
+    --equity-dim: #064e35;
+    --bull: #10b981;
+    --bear: #ef4444;
+    --caution: #f59e0b;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  header {
+    padding: 28px 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .header-top h1 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .header-top .tagline {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .back-to-hub {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .back-to-hub:hover { color: var(--text); border-color: #334155; }
+
+  .tabs { display: flex; gap: 0; overflow-x: auto; }
+
+  .tab {
+    padding: 10px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--text); }
+
+  .tab.active-equity {
+    color: var(--equity);
+    border-bottom-color: var(--equity);
+  }
+
+  .panel { display: none; padding: 28px 32px; }
+  .panel.active { display: block; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--equity-dim);
+    color: var(--equity);
+  }
+
+  .section { margin-bottom: 28px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  @media (max-width: 700px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    header, .panel { padding: 20px 16px; }
+    .tab { padding: 10px 14px; }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .crit-table { width: 100%; border-collapse: collapse; }
+  .crit-table td {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .crit-table td:first-child {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    width: 35%;
+  }
+  .crit-table td:last-child { color: var(--text); }
+  .crit-table tr:last-child td { border-bottom: none; }
+
+  .placeholder-block {
+    padding: 30px 24px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .placeholder-block h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  a.link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+    margin-top: 12px;
+    font-family: var(--mono);
+  }
+  a.link-btn:hover { border-color: var(--equity); color: var(--equity); }
+
+  .todo-list { color: var(--muted); font-size: 13px; line-height: 2; }
+  .todo-list strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>💼 EQUITY HUB</h1>
+    <span class="tagline">Fractional shares · Long positions · Dividends · Long-term investing</span>
+    <a href="/" class="back-to-hub">← Hub</a>
+  </div>
+  <div class="tabs">
+    <button class="tab active-equity" onclick="switchTab('strategy')">📚 Strategy</button>
+    <button class="tab" onclick="switchTab('positions')">🏢 Positions &amp; Allocation</button>
+    <button class="tab" onclick="switchTab('picks')">💰 Picks &amp; Watchlist</button>
+    <button class="tab" onclick="switchTab('reference')">🔁 Long-Term Reference</button>
+  </div>
+</header>
+
+<!-- ===================== STRATEGY ===================== -->
+<div id="panel-strategy" class="panel active">
+
+  <div class="section">
+    <div class="section-label">Strategy — Placeholder (Fill In Together)</div>
+    <div class="placeholder-block">
+      <h3>📚 Not built yet — outline first</h3>
+      <p style="max-width:640px; margin:0 auto;">
+        This tab is scaffolded but not populated. Once broker is picked (Fidelity → IBKR consideration pending), we'll fill in:
+      </p>
+      <div class="todo-list" style="text-align:left; max-width:640px; margin:16px auto 0;">
+        • <strong>Fractional shares approach</strong> — allocation rules, minimum position sizes<br>
+        • <strong>Long-hold criteria</strong> — what qualifies for equity vs. option play<br>
+        • <strong>Position sizing</strong> — % of portfolio per name, sector caps<br>
+        • <strong>Entry philosophy</strong> — DCA vs lump sum, when to add<br>
+        • <strong>Exit rules</strong> — when to trim, when to hold, tax considerations<br>
+        • <strong>Rebalancing schedule</strong> — quarterly · annually · trigger-based
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What LJ Has Said About Long-Term (Session 1)</div>
+    <div class="card">
+      <table class="crit-table">
+        <tr><td>Fidelity</td><td>Legacy broker · 100+ years · <strong>Better for slower / long-term trading and bigger positions</strong>. Not for active day trading. "Things go in but don't really come out."</td></tr>
+        <tr><td>Long-term goal split</td><td>Separate active day trading (Robinhood/Webull/Tastytrade) from long-term / dividends / equity (Fidelity or IBKR)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What LJ Has Said About Buying Stock vs Options (Session 2 · MU example)</div>
+    <div class="card" style="border-left: 3px solid var(--equity);">
+      <p style="font-size:13px; color:var(--muted); line-height:1.7;">
+        <strong style="color:var(--text);">LJ's MU plan (from June 21):</strong> if MU drops post-earnings, buy the <strong>stock</strong> (not options) around $994 · hold 6 months to a year · long-term valuation target $1,500–$1,600.
+      </p>
+      <p style="font-size:12px; color:var(--muted); margin-top:10px; line-height:1.7; font-style:italic;">
+        Pattern: high-conviction long-term names bought as stock, not options — avoids theta decay, aligns with buy-and-hold thesis.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== POSITIONS & ALLOCATION ===================== -->
+<div id="panel-positions" class="panel">
+
+  <div class="section">
+    <div class="section-label">Positions &amp; Allocation — Placeholder</div>
+    <div class="placeholder-block">
+      <h3>🏢 Not populated yet</h3>
+      <p>
+        Once your equity positions are opened (probably in the IBKR migration), we'll add:
+      </p>
+      <div class="todo-list" style="text-align:left; max-width:640px; margin:16px auto 0;">
+        • Current holdings table (ticker · shares · cost basis · current value · % of portfolio)<br>
+        • Sector allocation pie/table<br>
+        • Dividend yield &amp; income tracking<br>
+        • Rebalancing triggers<br>
+        • Tax lot organization for long-term capital gains treatment
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Notion Watchlist Filter — Equity Only</div>
+    <div class="card">
+      <p style="font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:12px;">
+        Your Notion Watchlist supports an <strong style="color:var(--text);">Asset Class = Equity</strong> filter and <strong style="color:var(--text);">System = Equity</strong> tag. Use both to isolate long-term equity plays from options plays.
+      </p>
+      <a class="link-btn" href="https://app.notion.com/p/16bb0da51872411fad3069a1d7689668" target="_blank">Open Watchlist ↗</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== PICKS & WATCHLIST ===================== -->
+<div id="panel-picks" class="panel">
+
+  <div class="section">
+    <div class="section-label">Equity Picks — Placeholder</div>
+    <div class="placeholder-block">
+      <h3>💰 Long-hold candidates from LJ sessions</h3>
+      <p>
+        Group sessions have already surfaced a few long-hold candidates. Once you confirm the strategy, we'll formalize them here.
+      </p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Long-Hold Candidates from Recent Sessions</div>
+    <div class="grid-2">
+
+      <div class="card" style="border-left:3px solid var(--equity);">
+        <div class="card-title" style="color:var(--equity);">💼 MU · Micron Technology</div>
+        <table class="crit-table">
+          <tr><td>Session</td><td>June 21 Sunday</td></tr>
+          <tr><td>Entry plan</td><td>Buy stock (not options) around $994 post-earnings</td></tr>
+          <tr><td>Hold period</td><td>6 months to 1 year</td></tr>
+          <tr><td>Long-term target</td><td>$1,500–$1,600</td></tr>
+          <tr><td>Thesis</td><td>Memory/storage sector · earnings catalyst</td></tr>
+        </table>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--equity);">
+        <div class="card-title" style="color:var(--equity);">💼 HOOD · Robinhood</div>
+        <table class="crit-table">
+          <tr><td>Session</td><td>July 5 Sunday</td></tr>
+          <tr><td>Prior call</td><td>$70 → hit $120 target</td></tr>
+          <tr><td>Type</td><td>LJ is <strong style="color:var(--text);">long-term holder</strong></td></tr>
+          <tr><td>Support</td><td>108</td></tr>
+          <tr><td>Watching</td><td>Retest of 120</td></tr>
+          <tr><td>Catalyst</td><td>Banking expansion · Trump $1,000 accounts</td></tr>
+        </table>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--equity);">
+        <div class="card-title" style="color:var(--equity);">💼 IBM · Long-Term Bull</div>
+        <table class="crit-table">
+          <tr><td>Session</td><td>June 21 Sunday</td></tr>
+          <tr><td>Catalyst</td><td>Billion-dollar quantum computing grant</td></tr>
+          <tr><td>Behavior</td><td>Buy-the-dip on major support</td></tr>
+          <tr><td>Bull scenario</td><td>265 → 267 (50-day MA) → 265–280 range</td></tr>
+        </table>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--equity);">
+        <div class="card-title" style="color:var(--equity);">💼 HPE · Value Discrepancy</div>
+        <table class="crit-table">
+          <tr><td>Session</td><td>June 21 Sunday</td></tr>
+          <tr><td>Current</td><td>~$47</td></tr>
+          <tr><td>LJ's long-term valuation</td><td>$75–$80</td></tr>
+          <tr><td>Structure</td><td>Cup and handle forming</td></tr>
+          <tr><td>Support</td><td>46.75–47</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== LONG-TERM REFERENCE ===================== -->
+<div id="panel-reference" class="panel">
+
+  <div class="section">
+    <div class="section-label">Broker Consideration — Fidelity → IBKR</div>
+    <div class="card">
+      <table class="crit-table">
+        <tr><td>Current</td><td>Fidelity for long-term / equity holdings</td></tr>
+        <tr><td>Considering</td><td>Interactive Brokers (IBKR)</td></tr>
+        <tr><td>IBKR strengths</td><td>Professional-grade tools · fractional shares · international access · lower fees on scale</td></tr>
+        <tr><td>Decision status</td><td><strong style="color:var(--caution);">Pending</strong></td></tr>
+      </table>
+      <div style="margin-top:12px; padding:10px 12px; background:var(--surface2); border-radius:4px; font-size:12px; color:var(--muted); line-height:1.6;">
+        Once broker is picked, this tab gets fleshed out with broker-specific workflow (fractional order placement · dividend reinvestment setup · tax lot management).
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Fractional Shares — What to Know (Placeholder)</div>
+    <div class="placeholder-block">
+      <h3>🧩 Fractional shares reference</h3>
+      <div class="todo-list" style="text-align:left; max-width:640px; margin:16px auto 0;">
+        • <strong>What fractional shares are</strong> — buy portions of shares instead of whole ones<br>
+        • <strong>Why they matter</strong> — access high-priced names (BRK.B, GOOGL) with any $ amount<br>
+        • <strong>Broker differences</strong> — Fidelity supports · IBKR supports · Tastytrade limited<br>
+        • <strong>Dividend treatment</strong> — proportional dividend on fractional holdings<br>
+        • <strong>Tax implications</strong> — no different from whole shares<br>
+        • <strong>Limitations</strong> — some brokers only allow market orders on fractionals
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Quarterly Review Template — Placeholder</div>
+    <div class="placeholder-block">
+      <h3>🔁 Quarterly rebalancing checklist</h3>
+      <p>
+        Placeholder — will populate with your review cadence: check allocations · trim overweight positions · add to underweight · re-evaluate thesis on each name.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(type) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active-equity'));
+    document.getElementById('panel-' + type).classList.add('active');
+    const tabs = document.querySelectorAll('.tab');
+    const map = { strategy: 0, positions: 1, picks: 2, reference: 3 };
+    tabs[map[type]].classList.add('active-equity');
+    window.scrollTo({top: 0});
+  }
+</script>
+
+</body>
+</html>
