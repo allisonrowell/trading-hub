@@ -20,6 +20,7 @@
     --smc: #a78bfa;
     --research: #06b6d4;
     --equity: #10b981;
+    --my-research: #f97316;
     --live: #10b981;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'Inter', sans-serif;
@@ -95,6 +96,7 @@
   .card.smc      { border-top-color: var(--smc); }
   .card.research { border-top-color: var(--research); }
   .card.equity   { border-top-color: var(--equity); }
+  .card.my-research { border-top-color: var(--my-research); }
 
   .card:hover:not(.disabled) {
     transform: translateY(-2px);
@@ -105,6 +107,7 @@
   .card.smc:hover:not(.disabled)      { border-top-color: var(--smc); }
   .card.research:hover:not(.disabled) { border-top-color: var(--research); }
   .card.equity:hover:not(.disabled)   { border-top-color: var(--equity); }
+  .card.my-research:hover:not(.disabled) { border-top-color: var(--my-research); }
 
   .card.disabled {
     opacity: 0.5;
@@ -129,6 +132,7 @@
   .card.smc h2      { color: var(--smc); }
   .card.research h2 { color: var(--research); }
   .card.equity h2   { color: var(--equity); }
+  .card.my-research h2 { color: var(--my-research); }
 
   .summary {
     font-size: 13px;
@@ -258,6 +262,21 @@
         <strong>📅 This Week</strong> · outlook + calendar + picks<br>
         <strong>🎯 Watchlist &amp; Plays</strong> · Notion sync<br>
         <strong>📚 Session Archives</strong> · 📝 Journal
+      </div>
+      <div class="card-cta">
+        <span class="status live">Live</span>
+        <span class="arrow">Open →</span>
+      </div>
+    </a>
+
+    <a class="card my-research" href="/my_research_hub.html">
+      <div class="icon">◆</div>
+      <h2>My Research Hub</h2>
+      <div class="summary">Independent research process — my criteria, my 3-bucket portfolio ($10k). 8-field rubric, valuation reference, per-ticker eval workflow.</div>
+      <div class="tabs-mini">
+        <strong>📋 Rubric</strong> · 8 fields · valuation glossary<br>
+        <strong>🚀 Aggressive</strong> · 📈 Growth · 💰 Income<br>
+        <strong>🎯 Watchlist</strong> · ⚙️ Rules
       </div>
       <div class="card-cta">
         <span class="status live">Live</span>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Research Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #131b2e;
+    --surface2: #1d2940;
+    --border: #2a3b5b;
+    --border-hover: #334155;
+    --text: #f1f5fa;
+    --muted: #a3b1c7;
+    --accent: #f97316;       /* orange - my own hub */
+    --accent-dim: #6b3a0f;
+    --bull: #10b981;
+    --bear: #ef4444;
+    --caution: #f59e0b;
+    --danger: #ef4444;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  header { padding: 28px 32px 0; border-bottom: 1px solid var(--border); }
+
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .header-top h1 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .header-top .tagline {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  .back-to-hub {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .back-to-hub:hover { color: var(--text); border-color: #334155; }
+
+  .tabs { display: flex; gap: 0; overflow-x: auto; }
+  .tab {
+    padding: 10px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .panel { display: none; padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+  .panel.active { display: block; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--accent-dim);
+    color: var(--accent);
+  }
+  .section { margin-bottom: 32px; }
+
+  .sub-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin: 18px 0 10px;
+  }
+
+  p, li { color: var(--muted); }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--text); font-style: italic; }
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--surface2);
+    color: var(--accent);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  ul, ol { margin: 8px 0 12px 22px; }
+  li { margin-bottom: 4px; }
+
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin: 12px 0 16px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .callout.warn { border-left-color: var(--caution); }
+  .callout.warn strong { color: var(--caution); }
+  .callout.danger { border-left-color: var(--danger); }
+  .callout.danger strong { color: var(--danger); }
+
+  .rubric-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+  .rubric-block .fld { color: var(--accent); font-weight: 600; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 16px;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface);
+  }
+  td.tick {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    width: 90px;
+  }
+  td.yield {
+    font-family: var(--mono);
+    color: var(--bull);
+    white-space: nowrap;
+    width: 70px;
+  }
+  td.why { color: var(--muted); }
+  tr:last-child td { border-bottom: none; }
+  .tbl-scroll { overflow-x: auto; }
+  table.wide { min-width: 600px; }
+
+  .verdict {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .verdict.buy { background: rgba(16,185,129,0.18); color: var(--bull); }
+  .verdict.watch { background: rgba(245,158,11,0.18); color: var(--caution); }
+  .verdict.pass { background: rgba(239,68,68,0.18); color: var(--bear); }
+  .verdict.held { background: rgba(6,182,212,0.18); color: #06b6d4; }
+  .verdict.research { background: rgba(163,177,199,0.18); color: var(--muted); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  @media (max-width: 800px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    header, .panel { padding: 20px 16px; }
+    .tab { padding: 10px 12px; }
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .stat-card .lbl {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .stat-card .val {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .stat-card .sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>◆ MY RESEARCH HUB</h1>
+    <span class="tagline">Independent · My criteria · 3-bucket portfolio</span>
+    <a href="/index.html" class="back-to-hub">← Hub</a>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('rubric', event)">📋 Rubric</button>
+    <button class="tab" onclick="switchTab('aggressive', event)">🚀 Aggressive</button>
+    <button class="tab" onclick="switchTab('growth', event)">📈 Growth</button>
+    <button class="tab" onclick="switchTab('income', event)">💰 Income</button>
+    <button class="tab" onclick="switchTab('watchlist', event)">🎯 Watchlist</button>
+    <button class="tab" onclick="switchTab('rules', event)">⚙️ Rules</button>
+  </div>
+</header>
+
+<!-- ==================== RUBRIC PANEL ==================== -->
+<div class="panel active" id="panel-rubric">
+
+  <div class="section">
+    <div class="section-label">Purpose</div>
+    <p>This is <strong>my</strong> research process — separate from the BCG watchlist / Sunday session output. Every ticker being considered for one of the 3 buckets ($10,000 total) runs through the 8-field rubric below. Verdict is <span class="verdict buy">Buy</span>, <span class="verdict watch">Watch</span>, or <span class="verdict pass">Pass</span> — no exceptions, no gut adds.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Capital Layout</div>
+    <div class="grid-4">
+      <div class="stat-card">
+        <div class="lbl">Total</div>
+        <div class="val">$10,000</div>
+        <div class="sub">Across 3 buckets</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Aggressive</div>
+        <div class="val">~$3,333</div>
+        <div class="sub">AI · Memory · Chips · Quantum · Space</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Growth</div>
+        <div class="val">~$3,333</div>
+        <div class="sub">ETFs + quality growth singles</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Income</div>
+        <div class="val">~$3,333</div>
+        <div class="sub">Yield that pays the bills</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The 8-Field Rubric — Copy Per Ticker</div>
+    <p>Copy this block into a Notion card or a <code>research/&lt;TICKER&gt;.md</code> file. Fill every field. <em>If you can't fill a field, that's the answer — pass.</em></p>
+    <div class="rubric-block"><span class="fld">Ticker:</span> &lt;SYM&gt;
+<span class="fld">Bucket candidate:</span> Aggressive | Growth | Income
+<span class="fld">Sector:</span> &lt;sub-sector&gt;
+<span class="fld">Date:</span> &lt;YYYY-MM-DD&gt;
+
+<span class="fld">1. BUSINESS &amp; MOAT</span>  (2 sentences)
+   What does it do? What's the durable edge?
+   (network effect / switching cost / IP / scale / brand)
+
+<span class="fld">2. GROWTH THESIS / CATALYST</span>
+   Why now? Next 3–12 month catalyst?
+   Multi-year secular story?
+
+<span class="fld">3. FINANCIALS</span>  (last 4Q trend)
+   Revenue growth YoY: ___%
+   Gross margin: ___%
+   FCF positive? Y/N   Cash: $__   Debt: $__
+   Guidance direction: raised / held / cut
+
+<span class="fld">4. VALUATION</span>
+   Forward P/E: ___   EV/Sales: ___   PEG: ___
+   vs 5yr avg: cheap / fair / rich
+   vs peers: cheap / fair / rich
+
+<span class="fld">5. TECHNICALS</span>  (TradingView)
+   Trend (weekly): up / range / down
+   Buy zone: $___   Stop: $___
+   R1/R2: $___/$___
+   Distance to buy: ___%
+
+<span class="fld">6. RISKS</span>  (top 3)
+   1)
+   2)
+   3)
+
+<span class="fld">7. SIZING</span>
+   $ amount: $___   ( ___% of bucket)
+   Rationale for size vs conviction:
+
+<span class="fld">8. VERDICT</span>
+   BUY   → place order per Section 5, set stop, log fill
+   WATCH → add to TradingView alerts + Notion (no order)
+   PASS  → log reason in research/passed.md
+   Next review date: &lt;YYYY-MM-DD&gt;</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">How This Rubric Is Different From BCG's</div>
+    <ul>
+      <li><strong>Fundamentals-first, technicals second.</strong> BCG's Sunday sessions lead with chart setups; mine leads with business quality and valuation. Chart is field 5 of 8.</li>
+      <li><strong>Financials are numeric, not vibes.</strong> Rev growth %, GM %, FCF Y/N — fill in numbers or fail the field.</li>
+      <li><strong>Sizing is tied to conviction.</strong> Not equal-weight, not vibes. Field 7 forces a written rationale for why the size matches the confidence.</li>
+      <li><strong>Explicit PASS with reason.</strong> BCG's watchlist has no "passed" state — mine does, in <code>research/passed.md</code>, so I don't re-litigate the same ticker every month.</li>
+      <li><strong>Review date is required.</strong> Every BUY/WATCH has a next-review-date. Nothing sits stale.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Valuation Mini-Reference — What Each Term Means</div>
+    <p>These are the numbers Field 4 wants. All the ratios below are answering the same question in different ways: <em>am I paying a lot or a little for what this company produces?</em> No single ratio is right for every stock — use the one that fits the business (earnings-based for profitable companies, sales-based for pre-profit growth, book-based for banks/insurers).</p>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Term</th><th>Stands for</th><th>Formula</th><th>How to read it</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tick">P/E</td>
+          <td><strong>Price-to-Earnings</strong></td>
+          <td>Share price ÷ EPS (earnings per share)</td>
+          <td class="why">What you pay per $1 of annual profit. P/E 20 = paying $20 for $1 of profit. Compare to sector median and 5yr avg.</td>
+        </tr>
+        <tr>
+          <td class="tick">Fwd P/E</td>
+          <td><strong>Forward P/E</strong></td>
+          <td>Share price ÷ next-12-month expected EPS</td>
+          <td class="why">Better for growth — TTM is backward-looking. If forward P/E &lt; TTM P/E, analysts expect earnings to grow.</td>
+        </tr>
+        <tr>
+          <td class="tick">TTM P/E</td>
+          <td><strong>Trailing Twelve Months P/E</strong></td>
+          <td>Share price ÷ last 4Q actual EPS</td>
+          <td class="why">Backward-looking. Uses only reported numbers, so no analyst optimism.</td>
+        </tr>
+        <tr>
+          <td class="tick">PEG</td>
+          <td><strong>P/E to Growth</strong></td>
+          <td>Fwd P/E ÷ EPS growth rate (%)</td>
+          <td class="why">Adjusts P/E for growth. PEG &lt; 1 often "cheap for a grower"; PEG &gt; 2 often "priced for perfection." Don't trust for &lt;10% growth names.</td>
+        </tr>
+        <tr>
+          <td class="tick">EV/Sales</td>
+          <td><strong>Enterprise Value to Sales</strong></td>
+          <td>(Market cap + debt − cash) ÷ Revenue</td>
+          <td class="why">Used when a company isn't yet profitable. EV/S 10 = paying $10 for $1 of annual sales. Adjusts for debt/cash.</td>
+        </tr>
+        <tr>
+          <td class="tick">EV/EBITDA</td>
+          <td><strong>EV to EBITDA</strong> (earnings before interest, tax, depreciation, amortization)</td>
+          <td>(Market cap + debt − cash) ÷ EBITDA</td>
+          <td class="why">The "operating cash flow" version. Used for capex-heavy businesses (industrials, telecom, energy) where GAAP earnings distort.</td>
+        </tr>
+        <tr>
+          <td class="tick">P/S</td>
+          <td><strong>Price-to-Sales</strong></td>
+          <td>Share price ÷ Revenue per share</td>
+          <td class="why">Simpler EV/Sales without adjusting for debt. Fine for cash-rich, debt-light companies.</td>
+        </tr>
+        <tr>
+          <td class="tick">P/B</td>
+          <td><strong>Price-to-Book</strong></td>
+          <td>Share price ÷ Book value per share</td>
+          <td class="why">Mostly used for banks, insurers, and REITs where "book" (net assets) is meaningful. P/B 1.0 = trading at accounting equity.</td>
+        </tr>
+        <tr>
+          <td class="tick">FCF Yield</td>
+          <td><strong>Free Cash Flow Yield</strong></td>
+          <td>FCF ÷ Market cap × 100</td>
+          <td class="why">What % of your investment comes back as free cash each year. FCF yield 5% ≈ "P/FCF of 20." Higher = cheaper on a cash-generation basis.</td>
+        </tr>
+        <tr>
+          <td class="tick">Payout Ratio</td>
+          <td><strong>Dividend Payout Ratio</strong></td>
+          <td>Dividends ÷ Earnings (or FCF)</td>
+          <td class="why">For income names only. &gt;80% is a yellow flag — little cushion if earnings dip, dividend may get cut. &gt;100% = paying div from balance sheet.</td>
+        </tr>
+        <tr>
+          <td class="tick">Yield-on-Cost</td>
+          <td><strong>YOC</strong></td>
+          <td>Current annual dividend ÷ YOUR entry price</td>
+          <td class="why">Income-name magic: buy at $50 with 3% starting yield → 10yr later div grew to $4 → YOC = 8%. What you actually earn on the money you put in.</td>
+        </tr>
+        <tr>
+          <td class="tick">Net Debt / EBITDA</td>
+          <td><strong>Leverage ratio</strong></td>
+          <td>(Debt − cash) ÷ EBITDA</td>
+          <td class="why">How many years of cash flow would it take to pay off debt. &gt;3x is high for most; utilities/REITs run 5–7x normally.</td>
+        </tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><strong>Rule of thumb:</strong> Aggressive/Growth bucket → prioritize Fwd P/E, PEG, EV/Sales, FCF Yield. Income bucket → prioritize Yield, Payout Ratio, Net Debt/EBITDA, Div growth streak.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Field 5 — What "Distance to Buy" Means</div>
+    <p><code>Distance to buy: ___%</code> is how far <em>above</em> your buy line current price sits, expressed as the % drop needed to hit the buy. It tells you how imminent an order fill is — useful for prioritizing which orders to place first with limited cash.</p>
+    <div class="rubric-block"><span class="fld">Formula:</span>  Distance = ((current − buy line) ÷ current) × 100
+
+<span class="fld">Example 1  — NVDA at $180, buy line $160</span>
+   Distance = ((180 − 160) ÷ 180) × 100 = <span class="fld">+11.1%</span>
+   Read as: price needs to drop 11% to hit your buy.
+
+<span class="fld">Example 2  — CRWV at $77.76, buy line $82</span>
+   Distance = ((77.76 − 82) ÷ 77.76) × 100 = <span class="fld">−5.5%</span>
+   Read as: price is already 5.5% BELOW buy — a limit at $82 fills instantly.
+   (This actually happened on 2026-07-15.)
+
+<span class="fld">Distance ≈ 0%</span>  → order will fill soon; place FIRST if cash-limited
+<span class="fld">Distance +1–5%</span> → close; place next
+<span class="fld">Distance +5–10%</span> → wait a beat
+<span class="fld">Distance +10%+</span>  → far away; GTC and forget until an alert fires</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Per-Ticker Eval Workflow</div>
+    <p>For each ticker you want to research, this hub links to a per-ticker workflow:</p>
+    <ol>
+      <li><strong>You say:</strong> "eval &lt;TICKER&gt;" in a session.</li>
+      <li><strong>I pull live data</strong> from Robinhood MCP (fundamentals, financials, price, quote history) and Yahoo where useful, then generate <code>research/&lt;TICKER&gt;.md</code> with:
+        <ul style="margin-top:6px">
+          <li><strong>Field 1</strong> (Business & Moat) — pre-filled with citations</li>
+          <li><strong>Field 2</strong> (Growth Thesis / Catalyst) — pre-filled</li>
+          <li><strong>Field 3</strong> (Financials) — pre-filled from live data</li>
+          <li><strong>Field 4</strong> (Valuation) — pre-filled from live data</li>
+          <li><strong>Field 6</strong> (Risks) — 2 of 3 pre-filled; <em>you</em> add the 3rd for practice</li>
+        </ul>
+      </li>
+      <li><strong>You fill:</strong> Field 5 (Technicals from TradingView), Field 7 (Sizing draft), Field 8 (Verdict).</li>
+      <li><strong>I help finalize:</strong> polish 5 & 7 based on the file's data + bucket rules.</li>
+      <li><strong>Send to Notion:</strong> either copy-paste the markdown into a Notion card, or ask me to push it via the Notion MCP directly.</li>
+    </ol>
+    <div class="callout"><strong>Template:</strong> see <code>research/TEMPLATE.md</code>. Every eval starts as a copy of this template.</div>
+    <div class="callout warn"><strong>Data caveat:</strong> live data is a snapshot — timestamped when pulled. Re-pull before placing an actual order; numbers move.</div>
+  </div>
+</div>
+
+<!-- ==================== AGGRESSIVE PANEL ==================== -->
+<div class="panel" id="panel-aggressive">
+
+  <div class="section">
+    <div class="section-label">Bucket A — Super Aggressive (~$3,333)</div>
+    <p>Themes: AI pipeline · Memory · Chips · Quantum · Space. All growth, no dividends, high volatility. Target 6–10 names post-research, avg $333–555 each. ETFs 40–60% of bucket, singles 40–60%.</p>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">AI Chips / Semis</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">SMH</td><td>VanEck Semiconductor</td><td class="why">Top 25 semis cap-weighted (NVDA ~20%, TSM ~12%, AVGO). Cleanest one-ticker semi exposure.</td></tr>
+        <tr><td class="tick">SOXX</td><td>iShares Semiconductor</td><td class="why">Similar universe, less top-heavy NVDA — SMH alternative.</td></tr>
+        <tr><td class="tick">XSD</td><td>SPDR S&P Semi</td><td class="why">Equal-weighted; captures small/mid semis if the base broadens.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">NVDA</td><td>Nvidia</td><td class="why">~90% share of AI training GPUs. Only true picks-and-shovels for AI capex. Valuation is the risk.</td></tr>
+        <tr><td class="tick">AVGO</td><td>Broadcom</td><td class="why">Custom AI ASICs for hyperscalers + VMware SW. Second horse if NVDA slips.</td></tr>
+        <tr><td class="tick">AMD</td><td>AMD</td><td class="why">MI300/400 GPU line + Xilinx FPGA. #2 GPU seat if AI compute out-runs NVDA supply.</td></tr>
+        <tr><td class="tick">TSM</td><td>TSMC</td><td class="why">Foundry monopoly (makes chips for NVDA/AMD/AAPL). Taiwan geo risk.</td></tr>
+        <tr><td class="tick">ARM</td><td>Arm Holdings</td><td class="why">Chip IP licensing (Cortex in every phone). Rides mobile + AI edge. High multiple.</td></tr>
+        <tr><td class="tick">MRVL</td><td>Marvell</td><td class="why">Custom silicon + optical DSPs for AI DCs. Less crowded AI-chip trade.</td></tr>
+        <tr><td class="tick">KLAC</td><td>KLA Corp</td><td class="why">Semi cap equipment. Every fab expansion needs their gear.</td></tr>
+        <tr><td class="tick">LRCX</td><td>Lam Research</td><td class="why">Etch/deposition equipment. Long-cycle capex trade.</td></tr>
+        <tr><td class="tick">AMAT</td><td>Applied Materials</td><td class="why">Broadest semi-cap-equipment name. Cheaper than KLAC/LRCX.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Memory (HBM / DRAM / NAND)</div>
+    <p style="font-size:12px">HBM is the AI capacity bottleneck. No pure memory ETF — play via singles or SMH (which holds MU).</p>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">MU</td><td>Micron</td><td class="why">DRAM + NAND + HBM3E supplying NVDA. Memory upcycle + AI HBM demand. Cyclical.</td></tr>
+        <tr><td class="tick">WDC</td><td>Western Digital</td><td class="why">NAND + HDD. Enterprise storage + AI data-center HDDs for big-data staging.</td></tr>
+        <tr><td class="tick">STX</td><td>Seagate</td><td class="why">HDDs benefiting from AI data-storage demand. Cheaper cyclical.</td></tr>
+        <tr><td class="tick">SNDK</td><td>SanDisk/Kioxia US</td><td class="why">NAND flash pure-play if you believe NAND cycle bottoms in 2026.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">AI Power / Datacenter Energy</div>
+    <p style="font-size:12px">No clean AI-power ETF. Play via singles or utility ETF. Overlaps with income bucket (utilities).</p>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs (adjacent)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">XLU</td><td>SPDR Utilities</td><td class="why">Broad utility exposure with AI-power names inside. Low-vol approach.</td></tr>
+        <tr><td class="tick">URA</td><td>Global X Uranium</td><td class="why">SMR / dedicated-nuclear narrative for AI DCs.</td></tr>
+        <tr><td class="tick">NLR</td><td>VanEck Uranium+Nuclear</td><td class="why">Broader nuclear than URA (utilities + fuel).</td></tr>
+        <tr><td class="tick">PAVE</td><td>Global X Infrastructure</td><td class="why">Transformers, grid upgrades — indirect AI-power capex.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">VST</td><td>Vistra</td><td class="why">Merchant power w/ nuclear + gas. Direct AI-power narrative. Already in v1.</td></tr>
+        <tr><td class="tick">CEG</td><td>Constellation Energy</td><td class="why">Largest US nuclear operator. Microsoft PPA — the flagship AI-nuclear name.</td></tr>
+        <tr><td class="tick">TLN</td><td>Talen Energy</td><td class="why">Nuclear + gas; AWS data-center PPA. Small-cap CEG.</td></tr>
+        <tr><td class="tick">NEE</td><td>NextEra</td><td class="why">Utility + renewables. Div + growth + AI-power. Bridges to income bucket.</td></tr>
+        <tr><td class="tick">GEV</td><td>GE Vernova</td><td class="why">Grid equipment + turbines. Picks-and-shovels of grid capex.</td></tr>
+        <tr><td class="tick">ETN</td><td>Eaton</td><td class="why">Power management; data-center electrical. Direct AI-DC spend beneficiary.</td></tr>
+        <tr><td class="tick">SMR</td><td>NuScale</td><td class="why">SMR pure-play. Very speculative — years to revenue.</td></tr>
+        <tr><td class="tick">OKLO</td><td>Oklo</td><td class="why">Alt SMR pure-play. Sam Altman backed. High risk / high beta.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">AI Compute / Neocloud</div>
+    <p style="font-size:12px">Emerging category: dedicated GPU cloud renting to AI shops. No pure ETF.</p>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">CRWV</td><td>CoreWeave</td><td class="why">GPU neocloud, NVIDIA-backed. <span class="verdict held">Held</span> in v1. Pure AI compute rental.</td></tr>
+        <tr><td class="tick">NBIS</td><td>Nebius</td><td class="why">European neocloud, ex-Yandex spin. International AI-cloud pure play.</td></tr>
+        <tr><td class="tick">IREN</td><td>Iris Energy</td><td class="why">BTC miner pivoting to AI compute. Speculative pivot thesis.</td></tr>
+        <tr><td class="tick">CIFR</td><td>Cipher Mining</td><td class="why">Same as IREN — BTC → AI compute. Cheap optionality if pivot works.</td></tr>
+        <tr><td class="tick">WULF</td><td>TeraWulf</td><td class="why">Same theme. Fewer AI contracts signed vs peers.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">AI Software / Platforms</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">AIQ</td><td>Global X AI</td><td class="why">Broad AI-theme basket (NVDA, MSFT, GOOGL, META, PLTR).</td></tr>
+        <tr><td class="tick">CHAT</td><td>Roundhill GenAI</td><td class="why">More concentrated generative AI focus.</td></tr>
+        <tr><td class="tick">BOTZ</td><td>Global X Robotics/AI</td><td class="why">Robotics tilt (physical AI).</td></tr>
+        <tr><td class="tick">ROBO</td><td>ROBO Global Robotics</td><td class="why">Older, more equal-weighted robotics.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">PLTR</td><td>Palantir</td><td class="why">Data/AI ops platform for gov + enterprise. AIP stickiness. Already in v1.</td></tr>
+        <tr><td class="tick">NOW</td><td>ServiceNow</td><td class="why">Enterprise workflow + AI agents. Durable SaaS moat.</td></tr>
+        <tr><td class="tick">MDB</td><td>MongoDB</td><td class="why">Dev database for AI/vector workloads. Infra layer for AI apps.</td></tr>
+        <tr><td class="tick">SNOW</td><td>Snowflake</td><td class="why">Cloud data warehouse + AI query layer. Data gravity for enterprise AI.</td></tr>
+        <tr><td class="tick">TEM</td><td>Tempus AI</td><td class="why">Health AI/data. Specialty vertical, small-cap growth.</td></tr>
+        <tr><td class="tick">AI</td><td>C3.ai</td><td class="why">Enterprise AI apps. Speculative rebound. Long track of missed guidance.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Quantum Computing</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETF</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">QTUM</td><td>Defiance Quantum</td><td class="why">Holds IONQ, RGTI, IBM, HON, GOOGL. The only real quantum ETF; diversified quantum + adjacent compute.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">IONQ</td><td>IonQ</td><td class="why">Trapped-ion quantum, pure play. Most-liquid quantum single. Pre-revenue.</td></tr>
+        <tr><td class="tick">RGTI</td><td>Rigetti Computing</td><td class="why">Superconducting quantum. Pure alt to IONQ; smaller.</td></tr>
+        <tr><td class="tick">QUBT</td><td>Quantum Computing Inc</td><td class="why">Quantum-adjacent optical. Speculative — go/no-go on tech.</td></tr>
+        <tr><td class="tick">QBTS</td><td>D-Wave</td><td class="why">Quantum annealing (diff arch than gate-based). Commercial optimization niche.</td></tr>
+        <tr><td class="tick">IBM</td><td>IBM</td><td class="why">Quantum System Two, roadmap to fault-tolerant. Conservative quantum + AI + dividend.</td></tr>
+        <tr><td class="tick">HON</td><td>Honeywell</td><td class="why">Quantinuum stake (trapped-ion; best qubit fidelity). Industrial + hidden quantum.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Space Pipeline</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">UFO</td><td>Procure Space</td><td class="why">Broad space theme (LMT, RKLB, IRDM). Already in v1.</td></tr>
+        <tr><td class="tick">ARKX</td><td>ARK Space Exploration</td><td class="why">More speculative / growth tilt vs UFO.</td></tr>
+        <tr><td class="tick">ROKT</td><td>SPDR Kensho Final Frontiers</td><td class="why">Space + deep-sea combined; niche.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">RKLB</td><td>Rocket Lab</td><td class="why">Small-launch + Neutron rocket + spacecraft. The "next SpaceX" pure play.</td></tr>
+        <tr><td class="tick">ASTS</td><td>AST SpaceMobile</td><td class="why">Satellite-to-cell service. Massive TAM. Constellation build-out — binary.</td></tr>
+        <tr><td class="tick">IRDM</td><td>Iridium</td><td class="why">Established sat-comms; cash-flowing. Boring space cash cow. Small div.</td></tr>
+        <tr><td class="tick">PL</td><td>Planet Labs</td><td class="why">Earth-imaging satellites. SaaS-like data revenue from constellation.</td></tr>
+        <tr><td class="tick">RDW</td><td>Redwire</td><td class="why">Space infra components. Picks-and-shovels for space capex.</td></tr>
+        <tr><td class="tick">BKSY</td><td>BlackSky</td><td class="why">Earth intel imagery + defense contracts. Defense-adjacent space growth.</td></tr>
+        <tr><td class="tick">KTOS</td><td>Kratos</td><td class="why">Defense tech / drones / space systems. Defense budget tailwind.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ==================== GROWTH PANEL ==================== -->
+<div class="panel" id="panel-growth">
+
+  <div class="section">
+    <div class="section-label">Bucket B — Moderate Aggressive Growth (~$3,333)</div>
+    <p>Themes: Broad tech growth · Mega-cap tech · Cyber · Cloud/SaaS · Consumer digital · Fintech · Medical growth · EV/autonomy. Target 6–10 names post-research. ETFs 40–70% of bucket.</p>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Broad Growth ETFs (one-decision cores)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">QQQ</td><td>Invesco Nasdaq 100</td><td class="why">AAPL/MSFT/NVDA/AMZN/META/AVGO/TSLA top holdings. The growth default.</td></tr>
+        <tr><td class="tick">VUG</td><td>Vanguard Growth</td><td class="why">Broader than QQQ, lower fees, more diversified.</td></tr>
+        <tr><td class="tick">MGK</td><td>Vanguard Mega-Cap Growth</td><td class="why">Concentrated top 100 — QQQ but even more concentrated.</td></tr>
+        <tr><td class="tick">SCHG</td><td>Schwab US Large-Cap Growth</td><td class="why">Cheap VUG alt.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Mega-Cap Tech (singles for earnings dip-limits)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">AAPL</td><td>Apple</td><td class="why">Quality anchor + Vision Pro spatial optionality + small div. Cornerstone.</td></tr>
+        <tr><td class="tick">MSFT</td><td>Microsoft</td><td class="why">Azure + OpenAI + Copilot + gaming. Most diversified AI winner. Dividend growth.</td></tr>
+        <tr><td class="tick">GOOGL</td><td>Alphabet</td><td class="why">Search + Cloud + YouTube + Waymo + Quantum. Cheap AI name; regulatory overhang.</td></tr>
+        <tr><td class="tick">META</td><td>Meta</td><td class="why">Ads + Reality Labs + Llama. Ad monopoly + AR/VR optionality + cash-flow monster.</td></tr>
+        <tr><td class="tick">AMZN</td><td>Amazon</td><td class="why">Retail + AWS + ads + Prime Video. AWS reaccel + retail margin story.</td></tr>
+        <tr><td class="tick">TSLA</td><td>Tesla</td><td class="why">EV + robotaxi/FSD + Optimus + energy. Binary on FSD/robotaxi execution.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Cybersecurity</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">CIBR</td><td>First Trust Cyber</td><td class="why">Top: CRWD, PANW, ZS, FTNT. Cleanest cyber basket.</td></tr>
+        <tr><td class="tick">HACK</td><td>ETFMG Prime Cyber</td><td class="why">Oldest cyber ETF; slightly different weighting.</td></tr>
+        <tr><td class="tick">BUG</td><td>Global X Cybersecurity</td><td class="why">Third option, smaller AUM.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">CRWD</td><td>CrowdStrike</td><td class="why">Endpoint + XDR + cloud sec platform. Best-of-breed; 2024 outage risk priced in.</td></tr>
+        <tr><td class="tick">PANW</td><td>Palo Alto</td><td class="why">Network + cloud sec platform (Prisma). Platformization consolidation winner.</td></tr>
+        <tr><td class="tick">ZS</td><td>Zscaler</td><td class="why">Zero-trust cloud sec. SASE transition tailwind.</td></tr>
+        <tr><td class="tick">FTNT</td><td>Fortinet</td><td class="why">Network sec HW + SW. Cash-flowing, cheaper multiple.</td></tr>
+        <tr><td class="tick">NET</td><td>Cloudflare</td><td class="why">CDN + zero-trust edge. Developer-first + Workers AI.</td></tr>
+        <tr><td class="tick">S</td><td>SentinelOne</td><td class="why">CRWD alt at lower price. Turnaround if AI-native pitch lands.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Cloud / SaaS</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">WCLD</td><td>WisdomTree Cloud</td><td class="why">Equal-weighted SaaS. Doesn't over-index the mega-caps.</td></tr>
+        <tr><td class="tick">SKYY</td><td>First Trust Cloud</td><td class="why">Broader (includes AMZN/MSFT/GOOGL). Hyperscalers baked in.</td></tr>
+        <tr><td class="tick">CLOU</td><td>Global X Cloud</td><td class="why">Third option.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">SNOW</td><td>Snowflake</td><td class="why">Cloud data warehouse. Data gravity + AI query layer.</td></tr>
+        <tr><td class="tick">DDOG</td><td>Datadog</td><td class="why">Observability platform. Consumption model + AI-app monitoring tailwind.</td></tr>
+        <tr><td class="tick">MDB</td><td>MongoDB</td><td class="why">Dev database. Overlaps Bucket A AI software.</td></tr>
+        <tr><td class="tick">CRM</td><td>Salesforce</td><td class="why">CRM + Agentforce AI agents. Turnaround-quality growth + margin story.</td></tr>
+        <tr><td class="tick">WDAY</td><td>Workday</td><td class="why">HCM + finance SaaS. Durable enterprise moat.</td></tr>
+        <tr><td class="tick">ADBE</td><td>Adobe</td><td class="why">Creative + Firefly AI. Cash-flow monster; AI threat is the debate.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">E-commerce / Digital Consumer</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">EBIZ</td><td>Global X E-commerce</td><td class="why">Broad basket including intl (MELI, SE, PDD).</td></tr>
+        <tr><td class="tick">IBUY</td><td>Amplify Online Retail</td><td class="why">More US-tilted alternative.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">SHOP</td><td>Shopify</td><td class="why">SMB commerce platform + payments. Margin re-rating. Already in v1.</td></tr>
+        <tr><td class="tick">MELI</td><td>MercadoLibre</td><td class="why">LatAm Amazon + fintech. Best growth in commerce, region-dominant.</td></tr>
+        <tr><td class="tick">CPNG</td><td>Coupang</td><td class="why">Korean e-commerce/logistics. The "MELI of Asia" case.</td></tr>
+        <tr><td class="tick">SE</td><td>Sea Ltd</td><td class="why">SE-Asia Shopee + Garena + fintech. Regional growth.</td></tr>
+        <tr><td class="tick">ETSY</td><td>Etsy</td><td class="why">Handmade marketplace. Contrarian rebound if consumer resilient.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Fintech</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">FINX</td><td>Global X FinTech</td><td class="why">Broad fintech basket.</td></tr>
+        <tr><td class="tick">ARKF</td><td>ARK Fintech Innovation</td><td class="why">Speculative-tilt (COIN, HOOD).</td></tr>
+        <tr><td class="tick">IPAY</td><td>ETFMG Mobile Payments</td><td class="why">Payments-focused subset.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">SQ</td><td>Block</td><td class="why">Square + Cash App + Bitcoin. Turnaround / margin story.</td></tr>
+        <tr><td class="tick">PYPL</td><td>PayPal</td><td class="why">Legacy digital payments. Value/turnaround + capital returns.</td></tr>
+        <tr><td class="tick">SOFI</td><td>SoFi</td><td class="why">Bank/lending + tech platform. Neo-bank compounding.</td></tr>
+        <tr><td class="tick">HOOD</td><td>Robinhood</td><td class="why">Retail broker + crypto + prediction markets. Structural shift beneficiary.</td></tr>
+        <tr><td class="tick">NU</td><td>Nubank</td><td class="why">Brazilian neobank. LatAm banking greenfield.</td></tr>
+        <tr><td class="tick">COIN</td><td>Coinbase</td><td class="why">Crypto exchange. Crypto beta with a real business.</td></tr>
+        <tr><td class="tick">UPST</td><td>Upstart</td><td class="why">AI credit underwriting. Turnaround + rate-sensitive.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Medical Devices / Biotech Growth</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">IHI</td><td>iShares US Med Devices</td><td class="why">Top: ISRG, ABT, TMO, MDT, BSX. Cleanest device basket.</td></tr>
+        <tr><td class="tick">XBI</td><td>SPDR Biotech</td><td class="why">Equal-weighted; small-cap biotech beta.</td></tr>
+        <tr><td class="tick">IBB</td><td>iShares Biotech</td><td class="why">Cap-weighted; large-cap biotech.</td></tr>
+        <tr><td class="tick">ARKG</td><td>ARK Genomic Revolution</td><td class="why">Speculative gene therapy / CRISPR.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">ISRG</td><td>Intuitive Surgical</td><td class="why">da Vinci robotic surgery monopoly. Dominant + growing. Already in v1.</td></tr>
+        <tr><td class="tick">DXCM</td><td>Dexcom</td><td class="why">CGM. GLP-1 headwinds priced in; recovery watch.</td></tr>
+        <tr><td class="tick">VEEV</td><td>Veeva</td><td class="why">Life-sciences SaaS. Healthcare software moat.</td></tr>
+        <tr><td class="tick">ILMN</td><td>Illumina</td><td class="why">DNA sequencing turnaround. Picks-and-shovels of genomics.</td></tr>
+        <tr><td class="tick">BSX</td><td>Boston Scientific</td><td class="why">Structural heart. Consistent grower. Bridges to income.</td></tr>
+        <tr><td class="tick">VRTX</td><td>Vertex</td><td class="why">CF + non-opioid pain (Journavx). Pipeline catalyst.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">EV / Robotics / Autonomy</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">DRIV</td><td>Global X Autonomous & EV</td><td class="why">Broad basket incl. chip + auto exposure.</td></tr>
+        <tr><td class="tick">IDRV</td><td>iShares Self-Driving/EV</td><td class="why">Alt to DRIV.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">RIVN</td><td>Rivian</td><td class="why">VW JV, R2 launch. If you believe #2 EV in US.</td></tr>
+        <tr><td class="tick">UBER</td><td>Uber</td><td class="why">Mobility + autonomy partnerships (Waymo). Autonomy monetization vehicle.</td></tr>
+        <tr><td class="tick">MBLY</td><td>Mobileye</td><td class="why">ADAS chips + software. Cheaper autonomy exposure.</td></tr>
+        <tr><td class="tick">JOBY</td><td>Joby Aviation</td><td class="why">eVTOL. Speculative — flying taxis.</td></tr>
+        <tr><td class="tick">ACHR</td><td>Archer Aviation</td><td class="why">Alt eVTOL. Same speculative class as JOBY.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ==================== INCOME PANEL ==================== -->
+<div class="panel" id="panel-income">
+
+  <div class="section">
+    <div class="section-label">Bucket C — Income / Dividend (~$3,333)</div>
+    <p>Purpose: pay-the-bills yield, year in and year out. Prioritize <strong>durability of the check</strong> over price appreciation. Reinvest for now → later flip to cash distributions. Target 6–10 names, ETFs 60–80% of bucket.</p>
+    <div class="callout warn"><strong>Yield trap flag:</strong> a very-high yield is often the market pricing in a dividend cut. Verify the payout ratio (dividend / FCF) is &lt; 80% and that the trailing 5-year div record is stable or growing.</div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Dividend Growth ETFs (Income Core)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">SCHD</td><td>Schwab US Div Equity</td><td class="yield">~3.5%</td><td class="why">Flagship div-growth ETF. Lowest fee (0.06%). Top: TXN, PEP, MRK, CVX.</td></tr>
+        <tr><td class="tick">VIG</td><td>Vanguard Div Appreciation</td><td class="yield">~1.8%</td><td class="why">Dividend GROWTH (quality), not high yield. Cushion / compounder.</td></tr>
+        <tr><td class="tick">DGRO</td><td>iShares Div Growth</td><td class="yield">~2.4%</td><td class="why">Middle ground between SCHD and VIG.</td></tr>
+        <tr><td class="tick">NOBL</td><td>ProShares Aristocrats</td><td class="yield">~2.0%</td><td class="why">Div Aristocrats basket (25+yr streak). Highest div discipline.</td></tr>
+        <tr><td class="tick">DGRW</td><td>WisdomTree Quality Div Growth</td><td class="yield">~2.0%</td><td class="why">Methodology tilts to quality metrics.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">High-Yield Dividend ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">VYM</td><td>Vanguard High Div Yield</td><td class="yield">~2.8%</td><td class="why">More yield than SCHD, less quality tilt.</td></tr>
+        <tr><td class="tick">HDV</td><td>iShares Core High Div</td><td class="yield">~3.5%</td><td class="why">Narrower, focused on cash-flow quality.</td></tr>
+        <tr><td class="tick">SPYD</td><td>SPDR High Div</td><td class="yield">~4.5%</td><td class="why">Highest yield of the bunch. More cyclical exposure.</td></tr>
+        <tr><td class="tick">DVY</td><td>iShares Select Dividend</td><td class="yield">~3.5%</td><td class="why">Longer track record; deep-dividend focus.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Covered Call / Enhanced Income ETFs</div>
+    <div class="callout danger"><strong>Structural trade-off:</strong> Covered-call ETFs sell upside to generate current yield. Great if you're <em>spending</em> the yield; poor if you're <em>compounding</em> for growth. Long-term NAV tends to lag the underlying because the biggest up-moves get capped. Understand the trade before sizing.</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">JEPI</td><td>JPM Equity Premium Income</td><td class="yield">~7–9%</td><td class="why">Low-vol S&P + option overlay. Popular monthly-income core.</td></tr>
+        <tr><td class="tick">JEPQ</td><td>JPM Nasdaq Premium Income</td><td class="yield">~9–12%</td><td class="why">JEPI on Nasdaq. Higher yield, more tech exposure.</td></tr>
+        <tr><td class="tick">DIVO</td><td>Amplify Enhanced Div Income</td><td class="yield">~5%</td><td class="why">Growth+income blend, active mgmt.</td></tr>
+        <tr><td class="tick">QYLD</td><td>Global X Nasdaq 100 CC</td><td class="yield">~12%</td><td class="why">Highest yield BUT structurally caps upside → NAV decay long-term.</td></tr>
+        <tr><td class="tick">SPYI</td><td>NEOS S&P 500 High Income</td><td class="yield">~12%</td><td class="why">Newer; tax-efficient structure via 1256 options.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Bond ETFs (Fixed-Income Anchor)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">BND</td><td>Vanguard Total Bond</td><td class="yield">~4.3%</td><td class="why">The default bond core.</td></tr>
+        <tr><td class="tick">AGG</td><td>iShares Core Total Bond</td><td class="yield">~4.3%</td><td class="why">BND alternative.</td></tr>
+        <tr><td class="tick">SHY</td><td>1–3yr Treasury</td><td class="yield">~4.5%</td><td class="why">Near-cash. Minimal rate risk.</td></tr>
+        <tr><td class="tick">IEF</td><td>7–10yr Treasury</td><td class="yield">~4.4%</td><td class="why">Intermediate. Balances rate risk.</td></tr>
+        <tr><td class="tick">TLT</td><td>20+yr Treasury</td><td class="yield">~4.8%</td><td class="why">Long duration. The "rates cut" trade.</td></tr>
+        <tr><td class="tick">LQD</td><td>Inv-Grade Corp</td><td class="yield">~5%</td><td class="why">Slight yield pickup vs Treasuries.</td></tr>
+        <tr><td class="tick">HYG</td><td>High-Yield Corp ("junk")</td><td class="yield">~7%</td><td class="why">More yield, credit risk.</td></tr>
+        <tr><td class="tick">TIP</td><td>TIPS (inflation-protected)</td><td class="yield">~4%</td><td class="why">Hedge if inflation re-accels.</td></tr>
+        <tr><td class="tick">MUB</td><td>Muni Bonds</td><td class="yield">~3.5%</td><td class="why">Tax-free federal. High tax bracket play.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Preferred Stock</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">PFF</td><td>iShares Preferred</td><td class="yield">~6.5%</td><td class="why">Senior to common; higher yield than IG bonds.</td></tr>
+        <tr><td class="tick">PFFA</td><td>Virtus Preferred (levered)</td><td class="yield">~8–9%</td><td class="why">More yield, more risk (uses leverage).</td></tr>
+        <tr><td class="tick">PGX</td><td>Invesco Preferred</td><td class="yield">~6%</td><td class="why">PFF alt.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">REITs</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">VNQ</td><td>Vanguard REIT</td><td class="yield">~4%</td><td class="why">Default REIT basket.</td></tr>
+        <tr><td class="tick">SCHH</td><td>Schwab REIT</td><td class="yield">~3.5%</td><td class="why">Cheaper VNQ alt.</td></tr>
+        <tr><td class="tick">REZ</td><td>iShares Residential REIT</td><td class="yield">~3%</td><td class="why">Residential-only tilt.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">O</td><td>Realty Income</td><td class="yield">~5.5%</td><td class="why">"The Monthly Dividend Company." Commercial retail net lease.</td></tr>
+        <tr><td class="tick">PLD</td><td>Prologis</td><td class="yield">~3.5%</td><td class="why">Industrial / logistics REIT. E-commerce warehousing tailwind.</td></tr>
+        <tr><td class="tick">AMT</td><td>American Tower</td><td class="yield">~3%</td><td class="why">Cell towers. 5G + connectivity growth.</td></tr>
+        <tr><td class="tick">STAG</td><td>STAG Industrial</td><td class="yield">~4%</td><td class="why">Industrial REIT with monthly dividend.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Utilities</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">XLU</td><td>SPDR Utilities</td><td class="yield">~3%</td><td class="why">Broad utility exposure; some AI-power overlap.</td></tr>
+        <tr><td class="tick">VPU</td><td>Vanguard Utilities</td><td class="yield">~3%</td><td class="why">XLU alt.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">NEE</td><td>NextEra Energy</td><td class="yield">~2.7%</td><td class="why">Utility + renewables leader. Growth + income + AI-power overlap.</td></tr>
+        <tr><td class="tick">DUK</td><td>Duke Energy</td><td class="yield">~3.8%</td><td class="why">Regulated utility. Classic bond-proxy.</td></tr>
+        <tr><td class="tick">SO</td><td>Southern Company</td><td class="yield">~3.5%</td><td class="why">Regulated + nuclear (Vogtle). Nuclear-forward utility.</td></tr>
+        <tr><td class="tick">D</td><td>Dominion Energy</td><td class="yield">~4.5%</td><td class="why">VA data-center corridor. Direct AI-power beneficiary.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Consumer Staples</div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">ETFs</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">XLP</td><td>SPDR Staples</td><td class="yield">~2.4%</td><td class="why">Recession-proof core.</td></tr>
+        <tr><td class="tick">VDC</td><td>Vanguard Staples</td><td class="yield">~2.4%</td><td class="why">XLP alt.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sub-label" style="color:var(--muted); font-size:10px">Individual (all also Aristocrats)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">PG</td><td>Procter & Gamble</td><td class="yield">~2.4%</td><td class="why">Definition of durable div.</td></tr>
+        <tr><td class="tick">KO</td><td>Coca-Cola</td><td class="yield">~2.9%</td><td class="why">Buffett-endorsed dividend.</td></tr>
+        <tr><td class="tick">PEP</td><td>PepsiCo</td><td class="yield">~3.3%</td><td class="why">Snacks + beverages. Recent lag = better entry.</td></tr>
+        <tr><td class="tick">COST</td><td>Costco</td><td class="yield">~0.5%+special</td><td class="why">Growth-y staple; membership moat + occasional specials.</td></tr>
+        <tr><td class="tick">MO</td><td>Altria</td><td class="yield">~8%</td><td class="why">Highest-yield staple. Tobacco decline offset by pricing power.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Dividend Aristocrats (Individual Picks)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">JNJ</td><td>Johnson & Johnson</td><td class="yield">~3%</td><td class="why">Pharma + devices. Boring compounder.</td></tr>
+        <tr><td class="tick">ABBV</td><td>AbbVie</td><td class="yield">~3.5%</td><td class="why">Post-Humira pipeline. Already in v1 income.</td></tr>
+        <tr><td class="tick">XOM</td><td>ExxonMobil</td><td class="yield">~3.5%</td><td class="why">Energy anchor. Already in v1 income.</td></tr>
+        <tr><td class="tick">CVX</td><td>Chevron</td><td class="yield">~4.5%</td><td class="why">XOM alt or complement. Buyback engine.</td></tr>
+        <tr><td class="tick">ADP</td><td>Automatic Data Processing</td><td class="yield">~2.2%</td><td class="why">Payroll SaaS. Durable compounder.</td></tr>
+        <tr><td class="tick">MCD</td><td>McDonald's</td><td class="yield">~2.5%</td><td class="why">Consumer discretionary/staple hybrid.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">MLPs (Pipelines, High Yield)</div>
+    <div class="callout warn"><strong>Tax note:</strong> individual MLPs (EPD, ET) issue a <strong>K-1</strong> tax form, not a 1099 — complicates tax season. AMLP is an ETF wrapper that avoids the K-1.</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">AMLP</td><td>Alerian MLP ETF</td><td class="yield">~7%</td><td class="why">MLP exposure WITHOUT the K-1. Default pick.</td></tr>
+        <tr><td class="tick">MLPX</td><td>Global X MLP & Infra</td><td class="yield">~5%</td><td class="why">AMLP alt with more infra names.</td></tr>
+        <tr><td class="tick">EPD</td><td>Enterprise Products</td><td class="yield">~6.5%</td><td class="why">Best-of-breed pipeline MLP. K-1.</td></tr>
+        <tr><td class="tick">ET</td><td>Energy Transfer</td><td class="yield">~7%</td><td class="why">Higher yield; more complex structure. K-1.</td></tr>
+        <tr><td class="tick">KMI</td><td>Kinder Morgan</td><td class="yield">~4.3%</td><td class="why">C-corp (no K-1). Pipelines without tax-form pain.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">BDCs (Business Development Companies)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Yield</th><th>Why consider</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">ARCC</td><td>Ares Capital</td><td class="yield">~9%</td><td class="why">Largest BDC. Direct-lending yield; credit-cycle sensitive.</td></tr>
+        <tr><td class="tick">MAIN</td><td>Main Street Capital</td><td class="yield">~5.5%+</td><td class="why">Best-in-class BDC quality. Monthly div + occasional specials. Trades premium to NAV.</td></tr>
+        <tr><td class="tick">OBDC</td><td>Blue Owl Capital</td><td class="yield">~10%</td><td class="why">High-yield alt to ARCC.</td></tr>
+        <tr><td class="tick">HTGC</td><td>Hercules Capital</td><td class="yield">~9%</td><td class="why">Venture debt. Tech-lending flavor.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="sub-label">Ultra-High Yield / YieldMax</div>
+    <div class="callout danger"><strong>⚠️ NAV decay risk:</strong> YieldMax funds (MSTY, TSLY, NVDY etc) sell single-stock covered calls — yields 30–100%+, but NAV can bleed 20–50%/yr as the underlying rallies past the call cap. <strong>You get high yield AND lose principal.</strong> Suitable only as a small tactical allocation with a stop.</div>
+    <p style="font-size:12px">If considering, size &lt;2% of income bucket and set a hard stop at −15% NAV.</p>
+  </div>
+</div>
+
+<!-- ==================== WATCHLIST PANEL ==================== -->
+<div class="panel" id="panel-watchlist">
+
+  <div class="section">
+    <div class="section-label">My Watchlist — Status Categories</div>
+    <p>Every ticker being considered sits in one of five states. This is <strong>my</strong> lifecycle, not the BCG Notion mirror.</p>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Status</th><th>Meaning</th><th>Next action</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="verdict research">Research</span></td>
+          <td>Just added to menu. Rubric not yet run.</td>
+          <td>Complete 8-field rubric this week.</td>
+        </tr>
+        <tr>
+          <td><span class="verdict watch">Watch</span></td>
+          <td>Rubric run, thesis fine, but entry criteria not met (price / earnings pending / trend).</td>
+          <td>TradingView alert armed at buy line. No order.</td>
+        </tr>
+        <tr>
+          <td><span class="verdict buy">Buy</span></td>
+          <td>Rubric passed and entry criteria met.</td>
+          <td>Place order per Section 5. Set stop after fill.</td>
+        </tr>
+        <tr>
+          <td><span class="verdict held">Held</span></td>
+          <td>Position live in one of the 3 buckets.</td>
+          <td>Manage — quarterly re-run of rubric. Trim/exit if any field fails.</td>
+        </tr>
+        <tr>
+          <td><span class="verdict pass">Pass</span></td>
+          <td>Rubric failed OR thesis broke. Logged in <code>research/passed.md</code> with reason.</td>
+          <td>Don't re-litigate for 6 months unless new material catalyst.</td>
+        </tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Held Positions (as of 2026-07-15)</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Bucket</th><th>Broker</th><th>Entry</th><th>Stop</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tick">CRWV</td>
+          <td>Aggressive (A)</td>
+          <td>IBKR</td>
+          <td>77.77 · ~$100</td>
+          <td>&lt;74</td>
+          <td>First IBKR fill. 5% stop room. AI neocloud.</td>
+        </tr>
+        <tr>
+          <td class="tick">DRAM</td>
+          <td>—</td>
+          <td>Webull</td>
+          <td>57.68 · 2 sh</td>
+          <td>&lt;54</td>
+          <td>Pre-restructure. Exit candidate — not being re-bought.</td>
+        </tr>
+        <tr>
+          <td class="tick">MU</td>
+          <td>—</td>
+          <td>Robinhood</td>
+          <td>928.85 · 0.0269 sh</td>
+          <td>&lt;864</td>
+          <td>Tiny flier. SMH covers MU — leave and forget.</td>
+        </tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Passed Log</div>
+    <p>Track passes so you don't re-litigate. Format: ticker · date · reason.</p>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Ticker</th><th>Date</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td class="tick">RBLX</td><td>2026-07-15</td><td class="why">Real controversies (child safety litigation, DAU accounting questions from short-sellers, cash burn). Not a strong-conviction spatial name — METV ETF gives the same theme exposure cleaner.</td></tr>
+        <tr><td class="tick">AFRM</td><td>2026-07-15</td><td class="why">Thin theme home in either growth or aggressive bucket after restructure. Not a conviction fintech pick vs SQ / HOOD / SOFI. Revisit if it makes a fintech-bucket case.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ==================== RULES PANEL ==================== -->
+<div class="panel" id="panel-rules">
+
+  <div class="section">
+    <div class="section-label">Portfolio-Building Rules</div>
+    <ol>
+      <li><strong>No ticker in more than one bucket.</strong> CRWV is Aggressive only. AAPL is Growth only. XOM is Income only. Prevents unintended concentration.</li>
+      <li><strong>ETF-first for satellite themes.</strong> If a quality ETF exists for a theme (SMH, QTUM, METV, SCHD, JEPI), it's the default. Singles are add-ons for conviction, not the base.</li>
+      <li><strong>Don't buy holdings your ETF already gives you.</strong> Skip NVDA/AMD/AVGO/TSM/MU as singles if you own SMH. Skip IBM/HON as singles if you own QTUM.</li>
+      <li><strong>Size to conviction, not equal-weight.</strong> Core ETFs $400–800. Conviction singles $200–400. Speculative satellites $100–200 (max 2% of bucket).</li>
+      <li><strong>Set the stop after every fill.</strong> No naked positions. Stops are <em>Stop-Market GTC</em> unless the ETF is a core hold (SMH, SCHD).</li>
+      <li><strong>Quarterly rubric re-run on every held.</strong> If any of the 8 fields fails on re-run, trim or exit. Log the change.</li>
+      <li><strong>Cap ~20–25 names total across all 3 buckets.</strong> More than that = over-diversified; hard to manage.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Entry Order Types</div>
+    <div class="tbl-scroll"><table class="wide">
+      <thead><tr><th>Position type</th><th>Order type</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td>Core ETF (SMH, QQQ, SCHD, JEPI)</td><td>Market or limit at current − 1%</td><td class="why">Dip-timing on liquid ETFs is close to noise. Just get in.</td></tr>
+        <tr><td>Mega-cap earnings names (AAPL, META, AMZN, TSLA)</td><td>GTC dip-limit at S1/S2</td><td class="why">Earnings volatility gives you a real dip window.</td></tr>
+        <tr><td>Individual conviction singles</td><td>GTC dip-limit at S1</td><td class="why">Wait for support retest instead of chasing a run.</td></tr>
+        <tr><td>Speculative singles (IONQ, ASTS, small biotech)</td><td>Small market entry, tight stop</td><td class="why">Levels are unreliable on pre-revenue names; use position size + stop as risk control.</td></tr>
+        <tr><td>Income singles (ABBV, XOM, JNJ, O)</td><td>Market or limit near current</td><td class="why">Timing matters less on 10-yr holds. Yield-on-cost is what matters.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Exit Rules</div>
+    <ul>
+      <li><strong>Stop hit</strong> → exit. Don't average down "just to see."</li>
+      <li><strong>Thesis broken</strong> (any of rubric fields 1–4 flips negative on re-run) → exit or trim to a starter.</li>
+      <li><strong>Dividend cut on income name</strong> → immediate exit. The whole reason it was there is now gone.</li>
+      <li><strong>ETF replaces the reason for the single</strong> (e.g., own SMH and NVDA as separate; on next re-run consolidate into SMH) → trim single, keep ETF.</li>
+      <li><strong>Better idea takes the slot</strong> — replacements only within the same bucket to preserve balance.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Files &amp; Sync</div>
+    <ul>
+      <li><code>stocks/buy-hold/portfolio.md</code> — index + master fills log</li>
+      <li><code>stocks/buy-hold/portfolio-aggressive.md</code> — Bucket A holdings</li>
+      <li><code>stocks/buy-hold/portfolio-growth-income.md</code> — Bucket B (v1; will split when C is live)</li>
+      <li><code>stocks/buy-hold/tradingview_levels.md</code> — source of truth for TV alerts (all buckets)</li>
+      <li><code>stocks/buy-hold/research-menu.md</code> — long-form version of this hub</li>
+      <li><code>research/&lt;TICKER&gt;.md</code> — one file per ticker with completed rubric (TBD folder)</li>
+      <li><code>research/passed.md</code> — pass log (TBD file)</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  My Research Hub · Independent · Built 2026-07-15
+</footer>
+
+<script>
+  function switchTab(name, e) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    (e ? e.target : document.querySelector('.tab')).classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
+
+</body>
+</html>
